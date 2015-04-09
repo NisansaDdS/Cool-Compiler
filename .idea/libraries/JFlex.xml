@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="JFlex">
+    <CLASSES>
+      <root url="jar://D:/Dropbox/Academic - Study - UO/2015_03_Spring/Compiler/Scanner/tools/jflex-1.4.3/lib/JFlex.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
