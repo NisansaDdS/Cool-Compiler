@@ -37,7 +37,7 @@ class ScanDriver {
 	    
 	    ComplexSymbolFactory.ComplexSymbol s = scanner.next_token(); 
 	    while (s.sym != sym.EOF) {
-		System.out.println(s.xleft.getLine() + "," + 
+		System.out.println(s.xleft.getLine() + "," +
 				   s.xleft.getColumn() + ": " +
 				   sym.terminalNames[s.sym] + "\t" +
 				   s.value.toString());

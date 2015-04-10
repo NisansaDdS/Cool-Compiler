@@ -106,7 +106,9 @@ import java_cup.runtime.ComplexSymbolFactory.Location;
        System.exit(1); 
     }
   }
-  
+
+  int commentDepthCounter=0;
+
 %}
 // %debug
 
@@ -115,7 +117,7 @@ import java_cup.runtime.ComplexSymbolFactory.Location;
 %xstate INCOMMENT
 %xstate STRING
 
-SPACE = [ \n\t]+
+SPACE = [ \n\t\f\r\v]+
 FILE = [.-_/a-zA-Z0-9]+
 LINECOMMENT = "--".*[\n]
 // FIXME:  You'll want to define a few more patterns here, to
@@ -124,7 +126,7 @@ LINECOMMENT = "--".*[\n]
 %%
 
 {SPACE}    { ; /* skip */ }
-{LINECOMMENT}  { ; /* skip */ }
+{LINECOMMENT}  { ; /* skip */  }
 
 
   // FIXME
@@ -135,15 +137,16 @@ LINECOMMENT = "--".*[\n]
    *  the DFA with some state ... keep track of nesting level. 
    */ 
 
-"(*" { yybegin(INCOMMENT); comment_begin_line = yyline; }
+"(*" { yybegin(INCOMMENT); comment_begin_line = yyline; commentDepthCounter=1; }
 <INCOMMENT> {
-  "*)"  { yybegin(YYINITIAL);  }
-  [^\*]+ { /* skip */ }
+  "(*"  { commentDepthCounter++;  }
+  "*)"  { commentDepthCounter--;  if(commentDepthCounter==0){yybegin(YYINITIAL);}  }
+  [^\*(]+ { /* skip */ }
   .     { /* skip */ }
   \n    { /* skip */ }
-  <<EOF>> { lexical_error("Comment \"(*...\"  missing ending \"*)\"" +
-                          "\nComment began on line " +comment_begin_line ); 
-	    yybegin(YYINITIAL); 
+  <<EOF>> {
+                lexical_error("Comment \"(*...\"  missing ending \"*)\"" +"\nComment began on line " +comment_begin_line );
+	            yybegin(YYINITIAL);
           }
 }
 
@@ -181,38 +184,40 @@ LINECOMMENT = "--".*[\n]
 "<"	   { return mkSym( sym.LT );  }
 "<="	   { return mkSym( sym.LEQ); }
 "=>"	   { return mkSym( sym.RIGHTARROW); }
-"/"        { return mkSym( sym.DIV ); }
 ":="	   { return mkSym( sym.ASSIGN); }
+"<-"	   { return mkSym( sym.ASSIGN); }
 "~"	   { return mkSym( sym.NEG); }
 "@"	   { return mkSym( sym.AT); }
 "*"		{ return mkSym( sym.TIMES); }
 "+"		{ return mkSym( sym.PLUS); }
 "-"		{ return mkSym( sym.MINUS); }
+"/"        { return mkSym( sym.DIV ); }
 ":" 	{ return mkSym( sym.COLON); }
 ","		{ return mkSym( sym.COMMA); }
 /* FIXME: There's a bunch more */ 
 
 
-/* Keywords */
-"true"	    { return mkSym( sym.TRUE ); }
-"false"	    { return mkSym( sym.FALSE ); }
-"inherits"  { return mkSym( sym.INHERITS ); }
-"case"	    { return mkSym( sym.CASE ); }
-"esac"	    { return mkSym( sym.ESAC ); }
-"class"	    { return mkSym( sym.CLASS ); }
-"else"	    { return mkSym( sym.ELSE ); }
-"fi"	    { return mkSym( sym.FI ); }
-"if"	    { return mkSym( sym.IF ); }
-"in"	    { return mkSym( sym.IN ); }
-"isvoid"    { return mkSym( sym.ISVOID ); }
-"let"	    { return mkSym( sym.LET ); }
-"do"	    { return mkSym( sym.DO ); }
-"od"	    { return mkSym( sym.OD ); }
-"then"	    { return mkSym( sym.THEN ); }
-"while"	    { return mkSym( sym.WHILE ); }
-"new"	    { return mkSym( sym.NEW ); }
-"of"	    { return mkSym( sym.OF ); }
-"not"	    { return mkSym( sym.NOT ); }
+"true"	                            { return mkSym( sym.TRUE ); }
+"false"             	            { return mkSym( sym.FALSE ); }
+[iI][nN][hH][eE][rR][iI][tT][sS]    { return mkSym( sym.INHERITS ); }
+[cC][aA][sS][eE]            	    { return mkSym( sym.CASE ); }
+[eE][sS][aA][cC]            	    { return mkSym( sym.ESAC ); }
+[cC][lL][aA][sS][sS]        	    { return mkSym( sym.CLASS ); }
+[eE][lL][sS][eE]            	    { return mkSym( sym.ELSE ); }
+[fF][iI]                    	    { return mkSym( sym.FI ); }
+[iI][fF]                    	    { return mkSym( sym.IF ); }
+[iI][nN]                    	    { return mkSym( sym.IN ); }
+[iI][sS][vV][oO][iI][dD]            { return mkSym( sym.ISVOID ); }
+[lL][eE][tT]                	    { return mkSym( sym.LET ); }
+[dD][oO]                    	    { return mkSym( sym.DO ); }
+[oO][dD]                    	    { return mkSym( sym.OD ); }
+[tT][hH][eE][nN]            	    { return mkSym( sym.THEN ); }
+[wW][hH][iI][lL][eE]	            { return mkSym( sym.WHILE ); }
+[nN][eE][wW]                	    { return mkSym( sym.NEW ); }
+[oO][fF]                    	    { return mkSym( sym.OF ); }
+[nN][oO][tT]                	    { return mkSym( sym.NOT ); }
+[lL][oO][oO][pP]            	    { return mkSym( sym.LOOP ); }
+[pP][oO][oO][lL]            	    { return mkSym( sym.POOL ); }
 /* FIXME: There's a bunch more */
 
 
@@ -241,9 +246,22 @@ LINECOMMENT = "--".*[\n]
 "\""   { yybegin(STRING); lit="";  }
 <STRING> {
     /* Need some lexical errors here */
-    [^\n\"\\]+		{ lit=lit+yytext();  }
+    [^\n\b\t\f\"\\]+	{ lit=lit+yytext();}
     "\\n"			{lit=lit+"\n"; }
-    "\""	      { yybegin(YYINITIAL);  return mkSym( sym.STRINGLIT, lit );  }
+    "\\b"			{lit=lit+"\b"; }
+    "\\t"			{lit=lit+"\t"; }
+    "\\f"			{lit=lit+"\f"; }
+    "\\"			{ lit=lit+"\\"; }
+    "\\\n"			{ lit=lit+"\n";   /* ignore */  }
+    "\""	      {
+                    yybegin(YYINITIAL);
+                    if(lit.length()>1024){
+                        lexical_error("String length cannot be greater than 1024 ");
+                    }
+                    else{
+                        return mkSym( sym.STRINGLIT, lit );
+                    }
+                  }
 
    }
 
