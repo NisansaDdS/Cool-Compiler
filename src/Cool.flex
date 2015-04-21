@@ -179,13 +179,13 @@ LINECOMMENT = "--".*[\n]
 "{"	   { return mkSym( sym.LBRACE ); }
 "}"	   { return mkSym( sym.RBRACE ); }
 ";"	   { return mkSym( sym.SEMI ); }
-"."	   { return mkSym( sym.DOT );  }
 "="	   { return mkSym( sym.EQ );  }
 "<"	   { return mkSym( sym.LT );  }
 "<="	   { return mkSym( sym.LEQ); }
 "=>"	   { return mkSym( sym.RIGHTARROW); }
 ":="	   { return mkSym( sym.ASSIGN); }
 "<-"	   { return mkSym( sym.ASSIGN); }
+"."	   { return mkSym( sym.DOT );  }
 "~"	   { return mkSym( sym.NEG); }
 "@"	   { return mkSym( sym.AT); }
 "*"		{ return mkSym( sym.TIMES); }
@@ -197,8 +197,8 @@ LINECOMMENT = "--".*[\n]
 /* FIXME: There's a bunch more */ 
 
 
-"true"	                            { return mkSym( sym.TRUE ); }
-"false"             	            { return mkSym( sym.FALSE ); }
+t[rR][uU][eE]                       { return mkSym( sym.TRUE ); }
+f[aA][lL][sS][eE]      	            { return mkSym( sym.FALSE ); }
 [iI][nN][hH][eE][rR][iI][tT][sS]    { return mkSym( sym.INHERITS ); }
 [cC][aA][sS][eE]            	    { return mkSym( sym.CASE ); }
 [eE][sS][aA][cC]            	    { return mkSym( sym.ESAC ); }
@@ -252,7 +252,7 @@ LINECOMMENT = "--".*[\n]
     "\\t"			{lit=lit+"\t"; }
     "\\f"			{lit=lit+"\f"; }
     "\\"			{ lit=lit+"\\"; }
-    "\\\n"			{ lit=lit+"\n";   /* ignore */  }
+    "\\\n"			{ lit=lit+"\n";  }
     "\""	      {
                     yybegin(YYINITIAL);
                     if(lit.length()>1024){
