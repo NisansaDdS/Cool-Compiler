@@ -3,14 +3,13 @@
  *
  */
 
-import java_cup.runtime.Symbol;
-import java_cup.runtime.SymbolFactory; 
 import java_cup.runtime.ComplexSymbolFactory;
-
-
-import java.io.*;
-import org.apache.commons.cli.*; // Command line parsing package
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.Options;
+
+import java.io.FileReader;
 
 class ScanDriver {
 

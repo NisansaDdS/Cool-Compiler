@@ -5,6 +5,7 @@
 
 import java_cup.runtime.Symbol;
 import java_cup.runtime.ComplexSymbolFactory;
+import java_cup.runtime.ComplexSymbolFactory.Location;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20150326 (SVN rev 63) generated parser.
@@ -36,7 +37,7 @@ public class parser extends java_cup.runtime.lr_parser {
     "\002\006\003\000\002\007\003\000\002\007\003\000\002" +
     "\010\013\000\002\012\003\000\002\012\003\000\002\014" +
     "\003\000\002\014\005\000\002\011\006\000\002\016\004" +
-    "\000\002\016\003\000\002\015\004\000\002\017\003\000" +
+    "\000\002\016\003\000\002\015\005\000\002\017\003\000" +
     "\002\017\003\000\002\017\005\000\002\017\004\000\002" +
     "\020\003\000\002\020\003\000\002\020\003\000\002\020" +
     "\003\000\002\021\003\000\002\021\003\000\002\021\003" +
@@ -61,8 +62,8 @@ public class parser extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\237\000\006\003\006\030\010\001\002\000\004\002" +
-    "\241\001\002\000\004\006\240\001\002\000\004\006\237" +
+    "\000\240\000\006\003\006\030\010\001\002\000\004\002" +
+    "\242\001\002\000\004\006\241\001\002\000\004\006\240" +
     "\001\002\000\006\002\001\030\010\001\002\000\004\057" +
     "\011\001\002\000\006\004\uffb5\031\013\001\002\000\004" +
     "\004\016\001\002\000\004\057\015\001\002\000\004\004" +
@@ -71,8 +72,8 @@ public class parser extends java_cup.runtime.lr_parser {
     "\006\005\ufff8\056\ufff8\001\002\000\006\007\027\014\030" +
     "\001\002\000\004\006\026\001\002\000\004\006\ufffc\001" +
     "\002\000\004\006\ufff7\001\002\000\004\006\ufff6\001\002" +
-    "\000\006\005\ufff9\056\ufff9\001\002\000\004\057\233\001" +
-    "\002\000\006\015\uffb5\056\031\001\002\000\004\057\232" +
+    "\000\006\005\ufff9\056\ufff9\001\002\000\004\057\234\001" +
+    "\002\000\006\015\uffb5\056\031\001\002\000\004\007\232" +
     "\001\002\000\006\011\ufff2\015\ufff2\001\002\000\004\015" +
     "\040\001\002\000\004\015\ufff3\001\002\000\006\011\036" +
     "\015\ufff4\001\002\000\004\056\031\001\002\000\006\011" +
@@ -308,11 +309,12 @@ public class parser extends java_cup.runtime.lr_parser {
     "\006\uffd9\010\uffd9\011\uffd9\015\uffd9\017\uffd9\020\uffd9\021" +
     "\uffd9\022\uffd9\023\uffd9\024\uffd9\025\uffd9\033\uffd9\034\uffd9" +
     "\035\uffd9\037\uffd9\040\uffd9\042\uffd9\044\uffd9\050\uffd9\051" +
-    "\uffd9\001\002\000\006\011\uffed\015\uffed\001\002\000\006" +
-    "\006\uffb5\010\120\001\002\000\004\006\ufff0\001\002\000" +
-    "\004\006\236\001\002\000\006\002\uffff\030\uffff\001\002" +
-    "\000\006\002\ufffd\030\ufffd\001\002\000\006\002\ufffe\030" +
-    "\ufffe\001\002\000\004\002\000\001\002" });
+    "\uffd9\001\002\000\004\057\233\001\002\000\006\011\uffed" +
+    "\015\uffed\001\002\000\006\006\uffb5\010\120\001\002\000" +
+    "\004\006\ufff0\001\002\000\004\006\237\001\002\000\006" +
+    "\002\uffff\030\uffff\001\002\000\006\002\ufffd\030\ufffd\001" +
+    "\002\000\006\002\ufffe\030\ufffe\001\002\000\004\002\000" +
+    "\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -320,9 +322,9 @@ public class parser extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\237\000\010\002\003\003\006\004\004\001\001\000" +
+    "\000\240\000\010\002\003\003\006\004\004\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\004" +
-    "\004\234\001\001\000\002\001\001\000\006\005\011\046" +
+    "\004\235\001\001\000\002\001\001\000\006\005\011\046" +
     "\013\001\001\000\002\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\006\006\016\046\017\001" +
     "\001\000\010\007\021\010\023\011\024\001\001\000\002" +
@@ -429,10 +431,10 @@ public class parser extends java_cup.runtime.lr_parser {
     "\027\064\030\063\031\062\032\060\033\057\035\053\036" +
     "\052\037\100\040\076\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001\000\006\016\233" +
-    "\046\115\001\001\000\002\001\001\000\002\001\001\000" +
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\006\016\234\046\115\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001" });
+    "\001\001\000\002\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -558,8 +560,8 @@ class CUP$parser$actions {
           case 1: // $START ::= program EOF 
             {
               Object RESULT =null;
-		int start_valleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
-		int start_valright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		Location start_valxleft = ((java_cup.runtime.ComplexSymbolFactory.ComplexSymbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).xleft;
+		Location start_valxright = ((java_cup.runtime.ComplexSymbolFactory.ComplexSymbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).xright;
 		Object start_val = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		RESULT = start_val;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("$START",0, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -731,14 +733,11 @@ class CUP$parser$actions {
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 20: // formal ::= ID TYPEID 
+          case 20: // formal ::= ID COLON TYPEID 
             {
               Object RESULT =null;
-		int COLONleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
-		int COLONright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object COLON = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("formal",11, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("formal",11, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
@@ -1242,7 +1241,7 @@ class CUP$parser$actions {
             {
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("empty",36, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("empty",36, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 

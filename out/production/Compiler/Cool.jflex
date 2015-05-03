@@ -117,7 +117,7 @@ import java_cup.runtime.ComplexSymbolFactory.Location;
 %xstate INCOMMENT
 %xstate STRING
 
-SPACE = [ \n\t\f\r\v]+
+SPACE = [ \n\t\f\r\b]+
 FILE = [.-_/a-zA-Z0-9]+
 LINECOMMENT = "--".*[\n]
 // FIXME:  You'll want to define a few more patterns here, to
@@ -197,8 +197,8 @@ LINECOMMENT = "--".*[\n]
 /* FIXME: There's a bunch more */ 
 
 
-"true"	                            { return mkSym( sym.TRUE ); }
-"false"             	            { return mkSym( sym.FALSE ); }
+t[rR][uU][eE]                       { return mkSym( sym.TRUE ); }
+f[aA][lL][sS][eE]      	            { return mkSym( sym.FALSE ); }
 [iI][nN][hH][eE][rR][iI][tT][sS]    { return mkSym( sym.INHERITS ); }
 [cC][aA][sS][eE]            	    { return mkSym( sym.CASE ); }
 [eE][sS][aA][cC]            	    { return mkSym( sym.ESAC ); }

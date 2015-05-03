@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="commons-cli-1.21">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/commons-cli-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/java-cup-11b-runtime.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/java-cup-11b.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/JFlex.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

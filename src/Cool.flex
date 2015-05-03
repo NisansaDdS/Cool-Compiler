@@ -117,7 +117,7 @@ import java_cup.runtime.ComplexSymbolFactory.Location;
 %xstate INCOMMENT
 %xstate STRING
 
-SPACE = [ \n\t\f\r\v]+
+SPACE = [ \n\t\f\r\b]+
 FILE = [.-_/a-zA-Z0-9]+
 LINECOMMENT = "--".*[\n]
 // FIXME:  You'll want to define a few more patterns here, to
