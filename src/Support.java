@@ -44,6 +44,8 @@ public class Support {
         object.addMethod(typeName);
         object.addMethod(copy);
 
+
+
         //Built in methods for IO (Page 14)
         CoolMethod outString = new CoolMethod("out_string", object); //Resolve Self_type
         outString.parametres.add(new CoolAttribute("x", string));
@@ -109,11 +111,15 @@ public class Support {
         public boolean basic=false;
         public HashMap<String, CoolAttribute> attributes = new HashMap<String, CoolAttribute>();
         public HashMap<String, CoolMethod> methodList = new HashMap<String, CoolMethod>();
+        private boolean methodsAndAttributesLoaded=false;
 
         public CoolClass(String name, CoolClass parent, boolean basic) {
             this.name = name;
             this.setParent(parent);
             this.basic = basic;
+            if(this.basic){
+                setMethodsAndAttributesLoaded(true);
+            }
         }
 
         public CoolClass(String name, CoolClass parent) {
@@ -129,7 +135,39 @@ public class Support {
                 throw(new Exception("Class '"+name+"' already has a method named '"+m.name+"' defined"));
             }
             else {
-                //Now climb up the tree to see if it is in a parent//////////////////////////////////////////////////////////////////////////////
+                //Now climb up the tree to see if it is in a parent
+                CoolClass parent = this.parent;
+                if(parent != null) {//The Object Class is the only class with parent NULL
+                    while (parent != Support.getClass("Object")) {
+
+                        if (parent.methodList.containsKey(m.name)) {
+                            CoolMethod m1 = parent.methodList.get(m.name);
+
+                            String exceptionHeader = "Mathod '" + m.name + "' of Class '" + name + "' cannot override the method from ancestor '" + parent.name + "' because of ";
+
+
+                            if (m.parametres.size() != m1.parametres.size()) {
+                                throw (new Exception(exceptionHeader + "parameter count mismatch"));
+                            }
+
+                            if (m.type != m1.type) {
+                                throw (new Exception(exceptionHeader + "return type mismatch"));
+                            }
+
+
+                            Iterator<CoolAttribute> itr = m.parametres.iterator();
+                            Iterator<CoolAttribute> itr1 = m1.parametres.iterator();
+                            while (itr.hasNext()) {
+                                CoolAttribute attr = itr.next();
+                                CoolAttribute attr1 = itr1.next();
+                                if (attr.type != attr1.type) {
+                                    throw (new Exception(exceptionHeader + " the type of the parameter '" + attr.name + "' do not match"));
+                                }
+                            }
+                        }
+                        parent = parent.getParent();
+                    }
+                }
 
                 m.setParent(this);
                 methodList.put(m.name,m);
@@ -169,6 +207,14 @@ public class Support {
 
         public void setParent(CoolClass parent) {
             this.parent = parent;
+        }
+
+        public boolean isMethodsAndAttributesLoaded() {
+            return methodsAndAttributesLoaded;
+        }
+
+        public void setMethodsAndAttributesLoaded(boolean methodsAndAttributesLoaded) {
+            this.methodsAndAttributesLoaded = methodsAndAttributesLoaded;
         }
     }
 

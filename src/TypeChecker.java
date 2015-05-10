@@ -46,18 +46,31 @@ public class TypeChecker {
         System.out.println("Check for inheritance cycles");
         checkCycles();
         System.out.println("Finished Checking for inheritance cycles");
-        System.out.println("Read and load Attributes....");
+        System.out.println("Read and load Attributes and Methods....");
         readMethodsAndAttributes();
+        System.out.println("Attributes and Methods loading successful!");
     }
 
     private void readMethodsAndAttributes() throws Exception {
         Iterator<Support.CoolClass> itr=Support.getClassesIterator();
         while(itr.hasNext()) {
             Support.CoolClass c = itr.next();
-            ASTnode n=c.getNode();
-            if(n!=null && n.rightChild!=null){ //Right child of a class is the set of features
-                readMethodsAndAttributes(c,n.rightChild);
+            if(!c.isMethodsAndAttributesLoaded()) { //This class might have already loaded its methods and attributes loaded because it is a super class of a previous class.
+                readMethodsAndAttributes(c); //If not load for this class
             }
+        }
+    }
+
+    private  void readMethodsAndAttributes(Support.CoolClass c) throws Exception {
+        Support.CoolClass p = c.getParent();
+        if (!p.isMethodsAndAttributesLoaded()) { //First check the parent and load
+            readMethodsAndAttributes(p);
+        }
+
+        //Now load the attributes and methods of own class
+        ASTnode n = c.getNode();
+        if (n != null && n.rightChild != null) { //Right child of a class is the set of features
+            readMethodsAndAttributes(c, n.rightChild);
         }
     }
 
@@ -73,7 +86,17 @@ public class TypeChecker {
             }
             else if(node.nodeSignature==AdditionalSym.METHOD_BLOCK){
                 String methName=(String)node.leftChild.leftChild.type; //Identifier
-                Support.CoolClass type=Support.getClass((String) node.leftChild.rightChild.type); //Type name (Return type)
+                String typeName="";
+
+                //Handle SELF_TYPE
+                if(((String)node.leftChild.rightChild.type).equalsIgnoreCase("SELF_TYPE")){
+                    typeName=(String)c.getNode().type;
+                }
+                else{
+                    typeName=(String) node.leftChild.rightChild.type;
+                }
+
+                Support.CoolClass type=Support.getClass(typeName); //Type name (Return type)
                 Support.CoolMethod meth=new Support.CoolMethod(methName,type);
                 meth.setNode(node);
                 if(node.middleChild!=null){
