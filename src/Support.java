@@ -91,6 +91,8 @@ public class Support {
         }
     }
 
+
+
     public static CoolClass getClass(String n) throws Exception {
         CoolClass result = classes.get(n);
         if (result == null) {
@@ -127,10 +129,29 @@ public class Support {
                 throw(new Exception("Class '"+name+"' already has a method named '"+m.name+"' defined"));
             }
             else {
-                //Now climb up the tree to see if it is in a parent
+                //Now climb up the tree to see if it is in a parent//////////////////////////////////////////////////////////////////////////////
 
                 m.setParent(this);
                 methodList.put(m.name,m);
+            }
+        }
+
+        public void addAttribute(CoolAttribute a) throws Exception {
+            if(attributes.containsKey(a.name)){
+                throw(new Exception("Class '"+name+"' already has an attribute named '"+a.name+"' defined"));
+            }
+            else{
+                //Now climb up the tree to see if it is in a parent
+                CoolClass parent = this.parent;
+                while (parent != Support.getClass("Object")) {
+                    if (parent.attributes.containsKey(a.name)) {
+                        throw(new Exception("Cannot define the attribute '"+a.name+"' in Class '"+name+"' becuse it is already inherited from '"+parent.name+"' Class"));
+                    }
+                    parent=parent.getParent();
+                }
+
+                a.setParent(this);
+                attributes.put(a.name,a);
             }
         }
 

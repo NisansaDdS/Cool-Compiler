@@ -47,6 +47,7 @@ public class TypeChecker {
         checkCycles();
         System.out.println("Finished Checking for inheritance cycles");
         System.out.println("Read and load Attributes....");
+        readMethodsAndAttributes();
     }
 
     private void readMethodsAndAttributes() throws Exception {
@@ -63,14 +64,54 @@ public class TypeChecker {
     private  void readMethodsAndAttributes(Support.CoolClass c,ASTnode node) throws Exception {
         if (node != null) {
             if(node.nodeSignature==AdditionalSym.ATTRIBUTE){
-
+                String atrName=(String)node.leftChild.leftChild.type; //Identifier
+                Support.CoolClass type=Support.getClass((String) node.leftChild.rightChild.type); //Type name
+                Support.CoolAttribute attrib=new Support.CoolAttribute(atrName,type);
+                attrib.setNode(node);
+                node.type=type; //Setting the type of the node!!!
+                c.addAttribute(attrib);
             }
             else if(node.nodeSignature==AdditionalSym.METHOD_BLOCK){
-
+                String methName=(String)node.leftChild.leftChild.type; //Identifier
+                Support.CoolClass type=Support.getClass((String) node.leftChild.rightChild.type); //Type name (Return type)
+                Support.CoolMethod meth=new Support.CoolMethod(methName,type);
+                meth.setNode(node);
+                if(node.middleChild!=null){
+                    readParameters(meth,node.middleChild);
+                }
+                node.type=type;  //Setting the type of the node!!!
+                c.addMethod(meth);
+            }
+            else if (node.nodeSignature==AdditionalSym.LIST) { //This is a list of methods and/or attributes
+                readMethodsAndAttributes(c,node.leftChild);
+                readMethodsAndAttributes(c,node.rightChild);
+            }
+            else{
+                throw(new Exception("AST is not correct. Expected "+Converter.getName(AdditionalSym.ATTRIBUTE)+" or "+Converter.getName(AdditionalSym.METHOD_BLOCK)+" or "+Converter.getName(AdditionalSym.LIST)+" but found "+Converter.getName(node.nodeSignature)));
             }
         }
         else{
-            throw(new Exception("Class root not detected"));
+            //Both attributes and methods are optional so them being NULL is not an error
+        }
+    }
+
+    private void readParameters(Support.CoolMethod meth, ASTnode node) throws Exception {
+        if (node != null) {
+            if(node.nodeSignature==AdditionalSym.ID_TYPE){
+                String name=(String)node.leftChild.type; //Identifier
+                Support.CoolClass type=Support.getClass((String) node.rightChild.type); //Type name
+                meth.parametres.add(new Support.CoolAttribute(name,type));
+            }
+            else if(node.nodeSignature==AdditionalSym.LIST){
+                readParameters(meth, node.leftChild);
+                readParameters(meth, node.rightChild);
+            }
+            else{
+                throw(new Exception("AST is not correct. Expected "+Converter.getName(AdditionalSym.ID_TYPE)+" or "+Converter.getName(AdditionalSym.LIST)+" but found "+Converter.getName(node.nodeSignature)));
+            }
+        }
+        else{
+            //Unreachable. This block is here just to be sure
         }
     }
 
