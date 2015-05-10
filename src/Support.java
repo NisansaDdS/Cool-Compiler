@@ -6,9 +6,14 @@ import java.util.HashMap;
  */
 public class Support {
 
-    public HashMap<String, CoolClass> classes = new HashMap<String, CoolClass>();
+    private static HashMap<String, CoolClass> classes = new HashMap<String, CoolClass>();
+    private static Support sup=new Support();
 
-    public Support() {
+    public static Support getSupport(){
+        return sup;
+    }
+
+    private Support() {
         System.out.println("Support started....");
 
         CoolClass object=new CoolClass("Object",null,true);
@@ -62,7 +67,7 @@ public class Support {
 
     }
 
-    public void addClass(CoolClass c)  {
+    public static void addClass(CoolClass c)  {
         if (classes.containsKey(c.name)) {
             System.out.println("Class '"+c.name+"' is already defined");
 
@@ -72,7 +77,13 @@ public class Support {
         }
     }
 
-
+    public static CoolClass getClass(String n)  {
+        CoolClass result = classes.get(n);
+        if (result == null) {
+            System.out.println("Class '"+n+"' is not defined");
+        }
+        return result;
+    }
 
 
     public static class CoolClass {
