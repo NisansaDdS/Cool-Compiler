@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by Nisansa on 15/05/09.
@@ -7,13 +8,16 @@ import java.util.HashMap;
 public class Support {
 
     private static HashMap<String, CoolClass> classes = new HashMap<String, CoolClass>();
-    private static Support sup=new Support();
+    private static Support sup=null;
 
-    public static Support getSupport(){
+    public static Support getSupport() throws Exception {
+        if(sup==null){
+            sup=new Support();
+        }
         return sup;
     }
 
-    private Support() {
+    private Support() throws Exception {
         System.out.println("Support started....");
 
         CoolClass object=new CoolClass("Object",null,true);
@@ -67,20 +71,30 @@ public class Support {
 
     }
 
-    public static void addClass(CoolClass c)  {
-        if (classes.containsKey(c.name)) {
-            System.out.println("Class '"+c.name+"' is already defined");
+    public static Iterator<CoolClass> getClassesIterator(){
+        return(classes.values().iterator());
+    }
 
+    public static CoolClass addClass(String name) throws Exception {
+        CoolClass c=new CoolClass( name);
+        addClass(c);
+        return c;
+    }
+
+
+    public static void addClass(CoolClass c) throws Exception {
+        if (classes.containsKey(c.name)) {
+            throw(new Exception("Class '"+c.name+"' is already defined"));
         }
         else {
             classes.put(c.name, c);
         }
     }
 
-    public static CoolClass getClass(String n)  {
+    public static CoolClass getClass(String n) throws Exception {
         CoolClass result = classes.get(n);
         if (result == null) {
-            System.out.println("Class '"+n+"' is not defined");
+            throw(new Exception("Class '"+n+"' is not defined"));
         }
         return result;
     }
@@ -88,15 +102,15 @@ public class Support {
 
     public static class CoolClass {
         public String name;
-        public CoolClass parent;
-        public ASTnode node;
+        private CoolClass parent;
+        private ASTnode node;
         public boolean basic=false;
         public HashMap<String, CoolAttribute> attributes = new HashMap<String, CoolAttribute>();
         public HashMap<String, CoolMethod> methodList = new HashMap<String, CoolMethod>();
 
         public CoolClass(String name, CoolClass parent, boolean basic) {
             this.name = name;
-            this.parent = parent;
+            this.setParent(parent);
             this.basic = basic;
         }
 
@@ -108,9 +122,9 @@ public class Support {
             this(name,null);
         }
 
-        public void addMethod(CoolMethod m){
+        public void addMethod(CoolMethod m) throws Exception {
             if(methodList.containsKey(m.name)){
-                System.out.println("Class '"+name+"' already has a method named '"+m.name+"' defined");
+                throw(new Exception("Class '"+name+"' already has a method named '"+m.name+"' defined"));
             }
             else {
                 //Now climb up the tree to see if it is in a parent
@@ -118,6 +132,22 @@ public class Support {
                 m.setParent(this);
                 methodList.put(m.name,m);
             }
+        }
+
+        public ASTnode getNode() {
+            return node;
+        }
+
+        public void setNode(ASTnode node) {
+            this.node = node;
+        }
+
+        public CoolClass getParent() {
+            return parent;
+        }
+
+        public void setParent(CoolClass parent) {
+            this.parent = parent;
         }
     }
 

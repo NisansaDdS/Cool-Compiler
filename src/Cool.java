@@ -69,8 +69,11 @@ public class Cool {
 	    Symbol result; 
 	    if (DebugMode) { result =  p.debug_parse(); }
 	    else { result = p.parse(); }
-            System.out.println(((ASTnode)result.value).toString());
+            ASTnode root=(ASTnode)result.value;
+           // System.out.println(root.toString());
             System.out.println("Done parsing");
+            TypeChecker TyCh=new TypeChecker(root);
+
         } catch (Exception e) {
             System.err.println("Yuck, blew up in parse/validate phase"); 
             e.printStackTrace(); 
