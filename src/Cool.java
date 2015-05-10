@@ -69,7 +69,8 @@ public class Cool {
 	    Symbol result; 
 	    if (DebugMode) { result =  p.debug_parse(); }
 	    else { result = p.parse(); }
-	    System.out.println("Done parsing"); 
+            System.out.println(((ASTnode)result.value).toString());
+            System.out.println("Done parsing");
         } catch (Exception e) {
             System.err.println("Yuck, blew up in parse/validate phase"); 
             e.printStackTrace(); 
