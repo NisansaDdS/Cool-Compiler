@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -71,14 +72,16 @@ public class TypeChecker {
                 while(itr1.hasNext()){
                     Support.CoolMethod m=c.methodList.get(itr1.next());
                     ASTnode thisNode=m.getNode();
-                    if(thisNode!=null){
+                    if(thisNode!=null) {
                         ASTnode exprNode = thisNode.rightChild;
                         if (exprNode != null) { //We are only going to bother about methods that have expressions in them. (Note: What about ones that have a return value but do not return?)
-                            m.addParamsToLocalStack();
-                            evaluateMethod(c, exprNode);
-                        if(!isTypesConsistant(m.getNode().type,exprNode.type)){ //Checking the return value
-                            throw(new Exception("Method '"+m.name+"' has value '"+m.getNode().type.name+"' but it is returning value '"+exprNode.type.name+"'"));
-                        }
+                            Support.addParamsToLocalStack(m);
+                            evaluate(c, exprNode);
+                            System.out.println(m.getNode().type.name+" "+exprNode.type);
+                            /*if (!isTypesConsistant(m.getNode().type, exprNode.type)) { //Checking the return value
+                                throw (new Exception("Method '" + m.name + "' has value '" + m.getNode().type.name + "' but it is returning value '" + exprNode.type.name + "'"));
+                            }*/
+
                         }
                     }
                     else{ //We should only let it pass if it is a un-overrriden basic method
@@ -91,12 +94,78 @@ public class TypeChecker {
         }
     }
 
-    private void evaluateMethod(Support.CoolClass c,ASTnode n) throws Exception {
+    private void evaluate(Support.CoolClass c, ASTnode n) throws Exception {
         if(n!=null){
-            if(n.nodeSignature==AdditionalSym.LIST) { //List of expressions
-                evaluateMethod(c,n.leftChild); //There has to be atleast one element
+            System.out.println("EvalM "+Converter.getName(n.nodeSignature));
+
+            //Attribute section
+            if(n.nodeSignature==sym.INTLIT){
+                SetNodeType(n, integer);
+            }
+            else if(n.nodeSignature==sym.STRINGLIT){
+                SetNodeType(n, string);
+            }
+            else if(n.nodeSignature==sym.TRUE || n.nodeSignature==sym.FALSE){
+                SetNodeType(n,bool);
+            }
+
+            //Method section
+            else if(n.nodeSignature==AdditionalSym.LIST) { //List of expressions
+                evaluate(c, n.leftChild); //There has to be atleast one element
                 Support.CoolClass listType=n.leftChild.type;
 
+                //Optionals
+                if(n.rightChild!=null){
+                    EvaluateList(c,n.rightChild);
+                }
+                SetNodeType(n, listType);
+            }
+            else if(n.nodeSignature==sym.LET){
+                letVarNames.clear();
+                addLocalVarsFromLet(c,n.leftChild);
+                evaluate(c, n.rightChild);
+                Support.removeParamsFromLocalStack(letVarNames);
+                SetNodeType(n, n.rightChild.type);
+            }
+            else if(n.nodeSignature==AdditionalSym.INVOKE){
+               // typeCheckMethodParams(c, n.rightChild);
+                Support.CoolClass mc=c; //Method owner class
+                if(n.leftChild!=null){ //Owner is not this class. A name of another class was given
+                    evaluate(c,n.leftChild);
+                    mc=n.leftChild.type;
+                }
+
+                if(n.middleChild!=null){ //Optional [@TYPE] was set
+                    Support.CoolClass tyC=Support.getClass((String)n.middleChild.value);
+                    if(tyC!=null) {
+                        if(!isTypesConsistant(tyC,mc)){
+                            throw(new Exception("Casted class '"+tyC.name+"' is not compatible with the class type '"+mc.name+"'."));
+                        }
+                    }
+                    mc=tyC;
+                }
+                Support.CoolMethod m= mc.methodList.get(n.value); //Get the relevant method
+                if(m==null){
+                    throw(new Exception("Class '"+mc.name+"' does not have a method named '"+n.value+"'."));
+                }
+
+                typeCheckMethodParams(c, n.rightChild);
+                ArrayList<Support.CoolClass> paramTypes=getParamTypes(n.rightChild);
+
+                //See if the count of params are correct
+                if(paramTypes.size()!=m.parametres.size()){
+                    throw(new Exception("Trying to call method '"+m.name+"' with wrong number of parameters."));
+                }
+
+                for (int i = 0; i <paramTypes.size() ; i++) {
+                    if(!isTypesConsistant(m.parametres.get(i).type,paramTypes.get(i))){
+                        throw(new Exception("Argument "+i+" was expected to be of type '"+m.parametres.get(i).type.name+"' but was given type '"+paramTypes.get(i).name+"'."));
+                    }
+                }
+                SetNodeType(n,m.type);
+            }
+            else if(n.nodeSignature==sym.NEW){
+                SetNodeType(n, Support.getClass((String)n.value));
             }
             else{
                 System.out.println(Converter.getName(n.nodeSignature));
@@ -104,6 +173,67 @@ public class TypeChecker {
         }
         else{
             throw(new Exception("AST is not correct. Invalid method node"));
+        }
+    }
+
+    private ArrayList<Support.CoolClass> getParamTypes(ASTnode n) {
+        ArrayList<Support.CoolClass> list=new ArrayList<Support.CoolClass>();
+        if(n!=null){
+            if(n.nodeSignature==AdditionalSym.ITEMS){
+                list.addAll(getParamTypes(n.leftChild));
+                list.addAll(getParamTypes(n.rightChild));
+            }
+            else{
+                list.add(n.type);
+            }
+        }
+        return list;
+    }
+
+    private void typeCheckMethodParams(Support.CoolClass c, ASTnode n) throws Exception {
+        if(n!=null){
+            if(n.nodeSignature==AdditionalSym.ITEMS){
+                typeCheckMethodParams(c,n.leftChild);
+                typeCheckMethodParams(c,n.rightChild);
+            }
+            else{
+                evaluate(c,n);
+            }
+        }
+    }
+
+    ArrayList<String> letVarNames=new ArrayList<String>();
+
+    private void addLocalVarsFromLet(Support.CoolClass c, ASTnode n) throws Exception {
+        if(n!=null){
+            if(n.nodeSignature==AdditionalSym.ITEMS){
+                addLocalVarsFromLet(c,n.leftChild);
+                addLocalVarsFromLet(c,n.rightChild);
+            }
+            else if (n.nodeSignature==sym.ASSIGN){
+                Support.CoolClass type=Support.getClass((String)n.leftChild.rightChild.value); //Value is the type
+                String name=(String)n.leftChild.leftChild.value;
+                if(n.rightChild!=null){ //If the optional initialization is used
+                    evaluate(c, n.rightChild);
+                    if(!isTypesConsistant(type,n.rightChild.type)){
+                        throw(new Exception("In the LET expression, attribute '"+name+"' has value '"+type.name+"' it cannot be set to value '"+n.rightChild.type.name+"'"));
+                    }
+                }
+                Support.addParamsToLocalStack(name,type);
+                letVarNames.add(name);
+            }
+        }
+    }
+
+    private void EvaluateList(Support.CoolClass c, ASTnode n) throws Exception {
+        if(n!=null){
+            if(n.nodeSignature==AdditionalSym.LIST){
+                EvaluateList(c,n.leftChild);
+                EvaluateList(c,n.leftChild);
+            }
+            else{
+                evaluate(c, n);
+            }
         }
     }
 
@@ -118,7 +248,7 @@ public class TypeChecker {
                     Support.CoolAttribute attrib=c.attributes.get(attribName);
                     ASTnode assignedVal=attrib.getNode().rightChild;
                     if(assignedVal!=null){ //Only need to check if the optional initialization is there
-                        evaluateAttribute(assignedVal);
+                        evaluate(c, assignedVal);
                         if(!isTypesConsistant(attrib.getNode().type,assignedVal.type)){
                             throw(new Exception("Attribute '"+attrib.name+"' has value '"+attrib.getNode().type.name+"' it cannot be set to value '"+assignedVal.type.name+"'"));
                         }
@@ -145,22 +275,7 @@ public class TypeChecker {
         }
     }
 
-    private void evaluateAttribute(ASTnode n) throws Exception {
-        if(n!=null){
-            if(n.nodeSignature==sym.INTLIT){
-                SetNodeType(n,integer);
-            }
-            else if(n.nodeSignature==sym.STRINGLIT){
-                SetNodeType(n,string);
-            }
-            else if(n.nodeSignature==sym.TRUE || n.nodeSignature==sym.FALSE){
-                SetNodeType(n,bool);
-            }
-        }
-        else{
-            throw(new Exception("AST is not correct. Invalid attribute node"));
-        }
-    }
+
 
     private void SetNodeType(ASTnode n, Support.CoolClass c) {
         n.type =c;

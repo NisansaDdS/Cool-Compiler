@@ -1,7 +1,7 @@
 (* This is a simple program that would raise one number to the power of another number *)
 class Main inherits IO {
     main() : SELF_TYPE {
-	(let c : Power <- (new Power).init() in
+	(let c : Power <- (new Power).test("Hasi") in
 	    {	       
 			out_string("\nFinished...\n");			
 	    }
@@ -14,8 +14,11 @@ class Power inherits IO {
 	b : Int;
     p : Int;
 	res : Int;
-	j : Int <- "Apple";
-	k : String <-3;	
+	j : Int;
+	
+	test(a:Int):Int{{
+		0;
+	}};
 
     init() : Power {
 	{
@@ -33,6 +36,7 @@ class Power inherits IO {
 		pool;
 		out_string("The answer is: ");
 		out_int(res);
+		test("Hasi");
 	    self;
 	}
     };

@@ -1,7 +1,7 @@
 (* This is a simple program that would raise one number to the power of another number *)
 class Main inherits IO {
     main() : SELF_TYPE {
-	(let c : Power <- (new Power).init() in
+	(let c : String <-0, d: Int <- "Hasi" in
 	    {	       
 			out_string("\nFinished...\n");			
 	    }
@@ -11,11 +11,11 @@ class Main inherits IO {
 
 class Power inherits IO {
 	
-	b : Int <- 1;
+	b : Int;
     p : Int;
 	res : Int;
 	j : Int;
-	k : String <- "Apple";	
+	
 
     init() : Power {
 	{

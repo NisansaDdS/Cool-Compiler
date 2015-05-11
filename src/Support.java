@@ -10,6 +10,8 @@ public class Support {
     private static HashMap<String, CoolClass> classes = new HashMap<String, CoolClass>();
     public static HashMap<String, CoolMethod> basicMethods = new HashMap<String, CoolMethod>();
     private static Support sup=null;
+    public static HashMap<String, ArrayList<CoolClass>> localTypeStack = new HashMap<String, ArrayList<CoolClass>>(); //The array list is for the cases where the variables get new definitions in local scope. The inner most definition is at the end of the list.
+
 
     public static Support getSupport() throws Exception {
         if(sup==null){
@@ -76,6 +78,36 @@ public class Support {
 
     }
 
+    public static void addParamsToLocalStack(CoolMethod m){
+        for (int i = 0; i <m.parametres.size() ; i++) {
+            CoolAttribute a=m.parametres.get(i);
+            addParamsToLocalStack(a.name, a.type);
+        }
+    }
+
+    public static void addParamsToLocalStack(String name, CoolClass type) {
+        ArrayList<CoolClass> definitions=localTypeStack.get(name);
+        if(definitions==null){
+            definitions=new ArrayList<CoolClass>();
+            definitions.add(type);
+        }
+        else{
+            definitions.add(type);
+            localTypeStack.remove(name);
+        }
+        localTypeStack.put(name,definitions);
+    }
+
+    public static void removeParamsFromLocalStack(ArrayList<String> names) {
+        for (int i = 0; i < names.size(); i++) {
+            String name=names.get(i);
+            ArrayList<CoolClass> definitions=localTypeStack.get(name);
+            definitions.remove(definitions.size()-1); //Remove the last (newest) one
+            localTypeStack.remove(name);
+            localTypeStack.put(name,definitions);
+        }
+    }
+
     private void updateBasicMethodMap(CoolClass basicClass) {
         Iterator<String> itr=basicClass.methodList.keySet().iterator();
         while(itr.hasNext()) {
@@ -115,6 +147,8 @@ public class Support {
         }
         return result;
     }
+
+
 
 
     public static class CoolClass {
@@ -319,7 +353,7 @@ public class Support {
         public String name;
         public CoolClass type;
         public ArrayList<CoolAttribute> parametres = new ArrayList<CoolAttribute>();
-        public HashMap<String, CoolAttribute> localStack = new HashMap<String, CoolAttribute>();
+
 
         private ASTnode node;
         private CoolClass parent;
@@ -329,12 +363,7 @@ public class Support {
             this.type = type;
         }
 
-        public void addParamsToLocalStack(){
-            for (int i = 0; i <parametres.size() ; i++) {
-                CoolAttribute a=parametres.get(i);
-                localStack.put(a.name,a);
-            }
-        }
+
 
 
         public ASTnode getNode() {
