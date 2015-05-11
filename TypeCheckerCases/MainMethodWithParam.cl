@@ -1,6 +1,6 @@
 (* This is a simple program that would raise one number to the power of another number *)
 class Main inherits IO {
-    main() : Object {
+    main(h:Int) : Object {
 	(let c : Power <- (new Power).init() in
 	    {	       
 			out_string("\nFinished...\n");			

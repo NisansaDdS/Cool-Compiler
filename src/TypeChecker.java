@@ -15,9 +15,12 @@ public class TypeChecker {
     Support.CoolClass integer;
     Support.CoolClass string;
     Support.CoolClass bool;
+    
+    boolean verbose=false;
 
-    public TypeChecker(ASTnode root) {
+    public TypeChecker(ASTnode root,boolean verbose) {
         this.root = root;
+        this.verbose=verbose;
 
         try {
             sup = Support.getSupport();
@@ -28,39 +31,58 @@ public class TypeChecker {
             bool=Support.getClass("Bool");
 
             typecheck();
+
         } catch (Exception e) {
             System.err.println("Typecheck Failed!");
             System.err.println(e.getMessage());
+           // System.err.println(e.getStackTrace());
         }
 
     }
+    
+    public void output(String s){
+        if(verbose){
+            System.err.println("# "+s);
+        }
+    }
 
     public void typecheck() throws Exception {
-        System.out.println("Read and load Classes....");
+        System.out.println("Type Checking Started ...");
+        output("Read and load Classes....");
         readClasses(root);
-        System.out.println("Class loading successful!");
-        System.out.println("Setting up inheritance");
+        output("Setting up inheritance");
         setUpInheritance(root);
-        System.out.println("Finished setting up inheritance");
-        System.out.println("Check for inheritance cycles");
+        output("Check for inheritance cycles");
         checkCycles();
-        System.out.println("Finished Checking for inheritance cycles");
-        System.out.println("Read and load Attributes and Methods....");
+        output("Read and load Attributes and Methods....");
         readMethodsAndAttributes();
-        System.out.println("Attributes and Methods loading successful!");
-        System.out.println("Start inheriting attributes....");
+        output("Start inheriting attributes....");
         inheritAttributes();
-        System.out.println("Attribute inheritance done!");
-        System.out.println("Start inheriting methods....");
+        output("Start inheriting methods....");
         inheritMethods();
-        System.out.println("Method inheritance done!");
-        System.out.println("Start Type checking attributes...");
+        output("Start Type checking attributes...");
         typecheckAttribues();
-        System.out.println("Type checking attributes done!");
-        System.out.println("Start Type checking methods...");
+        output("Start Type checking methods...");
         typecheckMethods();
-        System.out.println("Type checking methods done!");
+        output("Start checking the Main class...");
+        checkMainClass();
+        System.out.println("Type Checking done!");
        // printStatus();
+    }
+
+    private void checkMainClass() throws Exception {
+        Support.CoolClass main=Support.getClass("Main");
+        if(main!=null){
+            Support.CoolMethod m=main.methodList.get("main");
+            if(m==null){
+                throw(new Exception("No 'main' Method found in the 'Main' class."));
+            }
+            else{
+                if(m.parametres.size()!=0){
+                    throw(new Exception("The 'main' Method cannot have any parameters (arguments)."));
+                }
+            }
+        }
     }
 
     private void typecheckMethods() throws Exception {
@@ -77,7 +99,7 @@ public class TypeChecker {
                         if (exprNode != null) { //We are only going to bother about methods that have expressions in them. (Note: What about ones that have a return value but do not return?)
                             Support.addParamsToLocalStack(m);
                             evaluate(c, exprNode);
-                            //System.out.println("Method '" + m.name + "' has to return type " +m.getNode().type.name+" "+exprNode.type.name);
+                            //output("Method '" + m.name + "' has to return type " +m.getNode().type.name+" "+exprNode.type.name);
                             if (!isTypesConsistant(m.getNode().type, exprNode.type)) { //Checking the return value
                                 throw (new Exception("Method '" + m.name + "' has to return type '" + m.getNode().type.name + "' but it is returning value '" + exprNode.type.name + "'"));
                             }
@@ -96,7 +118,7 @@ public class TypeChecker {
 
     private Support.CoolClass evaluate(Support.CoolClass c, ASTnode n) throws Exception {
         if(n!=null){
-           // System.out.println("EvalM "+Converter.getName(n.nodeSignature));
+           // output("EvalM "+Converter.getName(n.nodeSignature));
 
             //Attribute section
             if(n.nodeSignature==sym.INTLIT){
@@ -246,14 +268,15 @@ public class TypeChecker {
             }
             else if(n.nodeSignature==sym.CASE) {
                 evaluate(c,n.leftChild); //Case condition
-                if(n.leftChild.nodeSignature==sym.ISVOID){
+                if(n.leftChild.nodeSignature==sym.ISVOID){ // Note: Is this how to check this?
                     throw(new Exception("Case condition cannot be void"));
                 }
                 ArrayList<Support.CoolClass> caseTypes=getCaseTypes(c,n.rightChild);
                 int min=Integer.MAX_VALUE;
                 Support.CoolClass select=null;
+
                 for (int i = 0; i <caseTypes.size() ; i++) {
-                    if(isTypesConsistant(n.leftChild.type, caseTypes.get(i))) {
+                   if(isTypesConsistant(n.leftChild.type, caseTypes.get(i))) {
                         Object[] result = GetMinimumCommonAncesstor(n.leftChild.type, caseTypes.get(i));
                         int val = (Integer) result[1];
                         if (min > val) {
@@ -265,20 +288,28 @@ public class TypeChecker {
                 if(select==null){
                     throw(new Exception("No valid case found"));
                 }
-                return SetNodeType(n,select); //dummy
+                return SetNodeType(n,select);
             }
-     /*       else if(n.nodeSignature==sym.ISVOID) {
-                return object; //dummy
+            else if(n.nodeSignature==sym.ISVOID) {
+                evaluate(c,n.leftChild);
+                return SetNodeType(n,bool);
             }
             else if(n.nodeSignature==sym.NOT) {
-                return object; //dummy
+                evaluate(c,n.leftChild);
+                if(n.leftChild.type!=bool){
+                    throw(new Exception("Only bools can be given to the NOT operator. But was given '"+n.leftChild.type.name+"'"));
+                }
+                return SetNodeType(n,bool);
             }
             else if(n.nodeSignature==sym.NEG) {
-                return object; //dummy
-            }*/
+                evaluate(c,n.leftChild);
+                if(n.leftChild.type!=integer){
+                    throw(new Exception("Only integers can be given to the ~ operator. But was given '"+n.leftChild.type.name+"'"));
+                }
+                return SetNodeType(n,integer);
+            }
             else{
-                System.out.println(Converter.getName(n.nodeSignature));
-                return object; //dummy
+                throw(new Exception("Node type with index "+n.nodeSignature+" is unhandled")); //Technically, this line is unreachable
             }
         }
         else{
@@ -299,7 +330,8 @@ public class TypeChecker {
                 Support.addParamsToLocalStack(name,type);
                 evaluate(c,n.rightChild);
                 Support.removeParamFromLocalStack(name);
-                list.add(n.rightChild.type);
+                //list.add(n.rightChild.type);
+                list.add(type);   //Note: Which one is correct?
             }
         }
         return list;
@@ -455,7 +487,7 @@ public class TypeChecker {
         Iterator<Support.CoolClass> itr=Support.getClassesIterator();
         while(itr.hasNext()) {
             Support.CoolClass c = itr.next();
-            System.out.println(c.toString());
+            output(c.toString());
         }
     }
 
@@ -673,7 +705,7 @@ public class TypeChecker {
                 else{ //No inherit option, so inherit from object class
                     thisClass.setParent(object);
                 }
-                System.out.println("    Parent of "+thisClass.name+" is "+thisClass.getParent().name);
+                output("    Parent of " + thisClass.name + " is " + thisClass.getParent().name);
             }
             else if(node.nodeSignature==AdditionalSym.LIST){ //This is a list of classes
                 setUpInheritance(node.leftChild);
@@ -691,7 +723,7 @@ public class TypeChecker {
     protected void addClass(String name, ASTnode node) throws Exception {
         Support.CoolClass c= Support.addClass(name);
         c.setNode(node);
-        System.out.println("    Class "+c.name+" added");
+        output("    Class " + c.name + " added");
     }
 
 

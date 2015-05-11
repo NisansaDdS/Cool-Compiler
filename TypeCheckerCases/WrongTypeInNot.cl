@@ -51,8 +51,8 @@ class Power inherits IO {
 	};
 	
 	test2():Int{
-		 if NOT(isvoid (b = ~0)) then 0
-            else 1 fi
+		 if NOT("Hasi") then 0
+            else 42 fi
 	};
 
 

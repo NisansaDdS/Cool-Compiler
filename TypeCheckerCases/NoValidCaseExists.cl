@@ -46,15 +46,8 @@ class Power inherits IO {
 	test1(h:Int,a:String,s:Int):Int{
 		case h of
 			a: String => out_string("Hasi");
-			s: Int => out_string("Abey");
+			s: Power => out_string("Abey");
 		esac
 	};
-	
-	test2():Int{
-		 if NOT(isvoid (b = ~0)) then 0
-            else 1 fi
-	};
-
-
     
 };

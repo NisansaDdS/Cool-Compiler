@@ -72,7 +72,7 @@ public class Cool {
             ASTnode root=(ASTnode)result.value;
            // System.out.println(root.toString());
             System.out.println("Done parsing");
-            TypeChecker TyCh=new TypeChecker(root);
+            TypeChecker TyCh=new TypeChecker(root,DebugMode);
 
         } catch (Exception e) {
             System.err.println("Yuck, blew up in parse/validate phase"); 

@@ -1,6 +1,6 @@
 (* This is a simple program that would raise one number to the power of another number *)
 class Main inherits IO {
-    main() : Object {
+    main1() : Object {
 	(let c : Power <- (new Power).init() in
 	    {	       
 			out_string("\nFinished...\n");			
@@ -15,7 +15,6 @@ class Power inherits IO {
     p : Int;
 	res : Int;
 	j : Int;
-	k : String;
 	
 
     init() : Power {
@@ -36,25 +35,7 @@ class Power inherits IO {
 		out_int(res);
 	    self;
 	}
-    };
-	
-	test():Int{
-		 if b = 0 then 0
-            else 1 fi
-	};
-
-	test1(h:Int,a:String,s:Int):Int{
-		case h of
-			a: String => out_string("Hasi");
-			s: Int => out_string("Abey");
-		esac
-	};
-	
-	test2():Int{
-		 if NOT(isvoid (b = ~0)) then 0
-            else 1 fi
-	};
-
+    };	
 
     
 };

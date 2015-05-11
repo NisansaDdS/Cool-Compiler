@@ -74,7 +74,7 @@ public class Support {
         string.addMethod(substr);
         updateBasicMethodMap(string);
 
-        System.out.println("Support ready....");
+        System.out.println("Support ready");
 
     }
 
