@@ -54,12 +54,12 @@ public class TypeChecker {
         System.out.println("Start inheriting methods....");
         inheritMethods();
         System.out.println("Method inheritance done!");
-        System.out.println("Start value checking attributes...");
+        System.out.println("Start Type checking attributes...");
         typecheckAttribues();
         System.out.println("Type checking attributes done!");
-        System.out.println("Start value checking methods...");
+        System.out.println("Start Type checking methods...");
         typecheckMethods();
-
+        System.out.println("Type checking methods done!");
        // printStatus();
     }
 
@@ -77,7 +77,7 @@ public class TypeChecker {
                         if (exprNode != null) { //We are only going to bother about methods that have expressions in them. (Note: What about ones that have a return value but do not return?)
                             Support.addParamsToLocalStack(m);
                             evaluate(c, exprNode);
-                            System.out.println("Method '" + m.name + "' has to return type " +m.getNode().type.name+" "+exprNode.type.name);
+                            //System.out.println("Method '" + m.name + "' has to return type " +m.getNode().type.name+" "+exprNode.type.name);
                             if (!isTypesConsistant(m.getNode().type, exprNode.type)) { //Checking the return value
                                 throw (new Exception("Method '" + m.name + "' has to return type '" + m.getNode().type.name + "' but it is returning value '" + exprNode.type.name + "'"));
                             }
@@ -210,7 +210,7 @@ public class TypeChecker {
                     throw(new Exception("Left side of comparison has to be Int; not '"+n.leftChild.type.name+"'"));
                 }
                 evaluate(c,n.rightChild);
-                if(n.leftChild.type!=integer){
+                if(n.rightChild.type!=integer){
                     throw(new Exception("Right side of comparison has to be Int; not '"+n.rightChild.type.name+"'"));
                 }
                 return SetNodeType(n,bool);
@@ -221,7 +221,7 @@ public class TypeChecker {
                     throw(new Exception("Left side of "+Converter.getName(n.nodeSignature)+" has to be Int; not '"+n.leftChild.type.name+"'"));
                 }
                 evaluate(c,n.rightChild);
-                if(n.leftChild.type!=integer){
+                if(n.rightChild.type!=integer){
                     throw(new Exception("Right side of "+Converter.getName(n.nodeSignature)+" has to be Int; not '"+n.rightChild.type.name+"'"));
                 }
                 return SetNodeType(n,integer);
