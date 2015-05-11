@@ -96,7 +96,7 @@ public class TypeChecker {
 
     private Support.CoolClass evaluate(Support.CoolClass c, ASTnode n) throws Exception {
         if(n!=null){
-            System.out.println("EvalM "+Converter.getName(n.nodeSignature));
+           // System.out.println("EvalM "+Converter.getName(n.nodeSignature));
 
             //Attribute section
             if(n.nodeSignature==sym.INTLIT){
@@ -195,6 +195,36 @@ public class TypeChecker {
                     }
                 }
                 return SetNodeType(n, cl);
+            }
+            else if(n.nodeSignature==sym.WHILE){
+                evaluate(c,n.leftChild); //Evaluate the condition
+                if(n.leftChild.type!=bool){
+                    throw(new Exception("Loop condition has to be Bool; not '"+n.leftChild.type.name+"'"));
+                }
+                evaluate(c,n.rightChild);
+                return SetNodeType(n,object); //While does not have a type!
+            }
+            else if(n.nodeSignature==sym.LT || n.nodeSignature==sym.LEQ){
+                evaluate(c,n.leftChild);
+                if(n.leftChild.type!=integer){
+                    throw(new Exception("Left side of comparison has to be Int; not '"+n.leftChild.type.name+"'"));
+                }
+                evaluate(c,n.rightChild);
+                if(n.leftChild.type!=integer){
+                    throw(new Exception("Right side of comparison has to be Int; not '"+n.rightChild.type.name+"'"));
+                }
+                return SetNodeType(n,bool);
+            }
+            else if(n.nodeSignature==sym.MINUS || n.nodeSignature==sym.PLUS|| n.nodeSignature==sym.TIMES|| n.nodeSignature==sym.DIV){
+                evaluate(c,n.leftChild);
+                if(n.leftChild.type!=integer){
+                    throw(new Exception("Left side of "+Converter.getName(n.nodeSignature)+" has to be Int; not '"+n.leftChild.type.name+"'"));
+                }
+                evaluate(c,n.rightChild);
+                if(n.leftChild.type!=integer){
+                    throw(new Exception("Right side of "+Converter.getName(n.nodeSignature)+" has to be Int; not '"+n.rightChild.type.name+"'"));
+                }
+                return SetNodeType(n,integer);
             }
             else{
                 System.out.println(Converter.getName(n.nodeSignature));
