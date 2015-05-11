@@ -119,11 +119,11 @@ public class TypeChecker {
                     ASTnode assignedVal=attrib.getNode().rightChild;
                     if(assignedVal!=null){ //Only need to check if the optional initialization is there
                         evaluateAttribute(assignedVal);
-                       
                         if(!isTypesConsistant(attrib.getNode().type,assignedVal.type)){
                             throw(new Exception("Attribute '"+attrib.name+"' has value '"+attrib.getNode().type.name+"' it cannot be set to value '"+assignedVal.type.name+"'"));
                         }
                     }
+
                 }
             }
         }
@@ -256,7 +256,7 @@ public class TypeChecker {
                 Support.CoolClass type=Support.getClass((String) node.leftChild.rightChild.value); //Type name
                 Support.CoolAttribute attrib=new Support.CoolAttribute(atrName,type);
                 attrib.setNode(node);
-                node.value =type; //Setting the value of the node!!!
+                node.type =type; //Setting the value of the node!!!
                 c.addAttribute(attrib);
             }
             else if(node.nodeSignature==AdditionalSym.METHOD_BLOCK){
@@ -265,7 +265,7 @@ public class TypeChecker {
 
                 //Handle SELF_TYPE
                 if(((String)node.leftChild.rightChild.value).equalsIgnoreCase("SELF_TYPE")){
-                    typeName=(String)c.getNode().value;
+                    typeName=c.name;
                 }
                 else{
                     typeName=(String) node.leftChild.rightChild.value;
@@ -277,7 +277,7 @@ public class TypeChecker {
                 if(node.middleChild!=null){
                     readParameters(meth,node.middleChild);
                 }
-                node.value =type;  //Setting the value of the node!!!
+                node.type =type;  //Setting the value of the node!!!
                 c.addMethod(meth);
             }
             else if (node.nodeSignature==AdditionalSym.LIST) { //This is a list of methods and/or attributes
