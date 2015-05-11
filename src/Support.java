@@ -78,6 +78,16 @@ public class Support {
 
     }
 
+    public static CoolClass getFromLocalStack(String name){
+        ArrayList<CoolClass> definitions=localTypeStack.get(name);
+        if(definitions==null||definitions.isEmpty()){
+            return null;
+        }
+        else{
+            return definitions.get(definitions.size()-1);
+        }
+    }
+
     public static void addParamsToLocalStack(CoolMethod m){
         for (int i = 0; i <m.parametres.size() ; i++) {
             CoolAttribute a=m.parametres.get(i);
@@ -98,14 +108,25 @@ public class Support {
         localTypeStack.put(name,definitions);
     }
 
+
+    public static void removeParamsFromLocalStack(CoolMethod m) {
+        for (int i = 0; i <m.parametres.size() ; i++) {
+            removeParamFromLocalStack(m.parametres.get(i).name);
+        }
+    }
+
     public static void removeParamsFromLocalStack(ArrayList<String> names) {
         for (int i = 0; i < names.size(); i++) {
             String name=names.get(i);
-            ArrayList<CoolClass> definitions=localTypeStack.get(name);
-            definitions.remove(definitions.size()-1); //Remove the last (newest) one
-            localTypeStack.remove(name);
-            localTypeStack.put(name,definitions);
+            removeParamFromLocalStack(name);
         }
+    }
+
+    private static void removeParamFromLocalStack(String name) {
+        ArrayList<CoolClass> definitions=localTypeStack.get(name);
+        definitions.remove(definitions.size()-1); //Remove the last (newest) one
+        localTypeStack.remove(name);
+        localTypeStack.put(name,definitions);
     }
 
     private void updateBasicMethodMap(CoolClass basicClass) {
@@ -147,7 +168,6 @@ public class Support {
         }
         return result;
     }
-
 
 
 

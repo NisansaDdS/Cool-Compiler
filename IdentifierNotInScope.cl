@@ -25,6 +25,7 @@ class Power inherits IO {
 		p <- in_int();
 		res <- b;	
 		j <- p;
+		h <- "Hasi";
 		while 0 < (j-1) loop 
 		{
 			res <- res * b;

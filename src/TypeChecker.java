@@ -77,11 +77,11 @@ public class TypeChecker {
                         if (exprNode != null) { //We are only going to bother about methods that have expressions in them. (Note: What about ones that have a return value but do not return?)
                             Support.addParamsToLocalStack(m);
                             evaluate(c, exprNode);
-                            System.out.println(m.getNode().type.name+" "+exprNode.type);
-                            /*if (!isTypesConsistant(m.getNode().type, exprNode.type)) { //Checking the return value
-                                throw (new Exception("Method '" + m.name + "' has value '" + m.getNode().type.name + "' but it is returning value '" + exprNode.type.name + "'"));
-                            }*/
-
+                            System.out.println("Method '" + m.name + "' has to return type " +m.getNode().type.name+" "+exprNode.type.name);
+                            if (!isTypesConsistant(m.getNode().type, exprNode.type)) { //Checking the return value
+                                throw (new Exception("Method '" + m.name + "' has to return type '" + m.getNode().type.name + "' but it is returning value '" + exprNode.type.name + "'"));
+                            }
+                            Support.removeParamsFromLocalStack(m);
                         }
                     }
                     else{ //We should only let it pass if it is a un-overrriden basic method
@@ -94,19 +94,19 @@ public class TypeChecker {
         }
     }
 
-    private void evaluate(Support.CoolClass c, ASTnode n) throws Exception {
+    private Support.CoolClass evaluate(Support.CoolClass c, ASTnode n) throws Exception {
         if(n!=null){
             System.out.println("EvalM "+Converter.getName(n.nodeSignature));
 
             //Attribute section
             if(n.nodeSignature==sym.INTLIT){
-                SetNodeType(n, integer);
+                return SetNodeType(n, integer);
             }
             else if(n.nodeSignature==sym.STRINGLIT){
-                SetNodeType(n, string);
+                return SetNodeType(n, string);
             }
             else if(n.nodeSignature==sym.TRUE || n.nodeSignature==sym.FALSE){
-                SetNodeType(n,bool);
+                return SetNodeType(n,bool);
             }
 
             //Method section
@@ -116,16 +116,16 @@ public class TypeChecker {
 
                 //Optionals
                 if(n.rightChild!=null){
-                    EvaluateList(c,n.rightChild);
+                    listType=EvaluateList(c,n.rightChild);
                 }
-                SetNodeType(n, listType);
+                return SetNodeType(n, listType);
             }
             else if(n.nodeSignature==sym.LET){
                 letVarNames.clear();
                 addLocalVarsFromLet(c,n.leftChild);
                 evaluate(c, n.rightChild);
                 Support.removeParamsFromLocalStack(letVarNames);
-                SetNodeType(n, n.rightChild.type);
+                return SetNodeType(n, n.rightChild.type);
             }
             else if(n.nodeSignature==AdditionalSym.INVOKE){
                // typeCheckMethodParams(c, n.rightChild);
@@ -162,13 +162,43 @@ public class TypeChecker {
                         throw(new Exception("Argument "+i+" was expected to be of type '"+m.parametres.get(i).type.name+"' but was given type '"+paramTypes.get(i).name+"'."));
                     }
                 }
-                SetNodeType(n,m.type);
+                return SetNodeType(n,m.type);
             }
             else if(n.nodeSignature==sym.NEW){
-                SetNodeType(n, Support.getClass((String)n.value));
+                return SetNodeType(n, Support.getClass((String)n.value));
+            }
+            else if(n.nodeSignature==sym.ASSIGN){
+                Support.CoolClass lhs=evaluate(c,n.leftChild);
+                Support.CoolClass rhs=evaluate(c,n.rightChild);
+                if(!isTypesConsistant(lhs,rhs)){
+                    throw(new Exception("Expression of type '"+rhs.name+"' cannot be assigned to variables of type '"+lhs.name+"'"));
+                }
+                return SetNodeType(n, n.rightChild.type);
+            }
+            else if(n.nodeSignature==sym.ID){
+                String id=(String)n.value;
+                Support.CoolClass cl=object;
+                if(id.equalsIgnoreCase("self")){
+                    cl=c;
+                }
+                else{
+                    cl=Support.getFromLocalStack(id);
+                }
+
+                if(cl==null){ //Not found in local scope. Now try class scope
+                    Support.CoolAttribute ca=c.attributes.get(id);
+                    if(ca==null){
+                        throw(new Exception("Identifier '"+id+"' was not found in current scope"));
+                    }
+                    else {
+                        cl = ca.type;
+                    }
+                }
+                return SetNodeType(n, cl);
             }
             else{
                 System.out.println(Converter.getName(n.nodeSignature));
+                return object; //dummy
             }
         }
         else{
@@ -225,16 +255,24 @@ public class TypeChecker {
         }
     }
 
-    private void EvaluateList(Support.CoolClass c, ASTnode n) throws Exception {
+    private Support.CoolClass EvaluateList(Support.CoolClass c, ASTnode n) throws Exception {
         if(n!=null){
             if(n.nodeSignature==AdditionalSym.LIST){
-                EvaluateList(c,n.leftChild);
-                EvaluateList(c,n.leftChild);
+                Support.CoolClass lhs=EvaluateList(c, n.leftChild);
+                Support.CoolClass rhs=EvaluateList(c, n.rightChild);
+                if(rhs!=null){
+                    return rhs;
+                }
+                else{
+                    return  lhs;
+                }
             }
             else{
                 evaluate(c, n);
+                return n.type;
             }
         }
+        return null;
     }
 
     private void typecheckAttribues() throws Exception {
@@ -277,8 +315,9 @@ public class TypeChecker {
 
 
 
-    private void SetNodeType(ASTnode n, Support.CoolClass c) {
+    private Support.CoolClass SetNodeType(ASTnode n, Support.CoolClass c) {
         n.type =c;
+        return c;
     }
 
     private void printStatus() {
