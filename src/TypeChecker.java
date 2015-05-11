@@ -67,7 +67,7 @@ public class TypeChecker {
         output("Start checking the Main class...");
         checkMainClass();
         System.out.println("Type Checking done!");
-       // printStatus();
+        //printStatus();
     }
 
     private void checkMainClass() throws Exception {
@@ -99,7 +99,7 @@ public class TypeChecker {
                         if (exprNode != null) { //We are only going to bother about methods that have expressions in them. (Note: What about ones that have a return value but do not return?)
                             Support.addParamsToLocalStack(m);
                             evaluate(c, exprNode);
-                            //output("Method '" + m.name + "' has to return type " +m.getNode().type.name+" "+exprNode.type.name);
+                           // output("Method '" + m.name + "' has to return type " +m.getNode().type.name+" "+exprNode.type.name+" "+Converter.getName(exprNode.nodeSignature));
                             if (!isTypesConsistant(m.getNode().type, exprNode.type)) { //Checking the return value
                                 throw (new Exception("Method '" + m.name + "' has to return type '" + m.getNode().type.name + "' but it is returning value '" + exprNode.type.name + "'"));
                             }
@@ -288,7 +288,8 @@ public class TypeChecker {
                 if(select==null){
                     throw(new Exception("No valid case found"));
                 }
-                return SetNodeType(n,select);
+                //return SetNodeType(n,select);
+                return SetNodeType(n,object); //Case does not have a type!
             }
             else if(n.nodeSignature==sym.ISVOID) {
                 evaluate(c,n.leftChild);

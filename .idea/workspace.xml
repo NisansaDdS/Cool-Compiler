@@ -114,17 +114,17 @@
       <file leaf-file-name="TypeChecker.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/TypeChecker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.43582886" vertical-offset="466" max-vertical-offset="12512">
-              <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.43188405" vertical-offset="582" max-vertical-offset="12529">
+              <caret line="43" column="20" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#14330#14349#0" expanded="true" />
-                <element signature="e#15344#15363#0" expanded="true" />
-                <element signature="e#16200#16219#0" expanded="true" />
-                <element signature="e#16946#16954#0" expanded="true" />
-                <element signature="e#26644#26663#0" expanded="true" />
-                <element signature="e#26761#26780#0" expanded="true" />
-                <element signature="e#27091#27110#0" expanded="true" />
+                <element signature="e#14453#14472#0" expanded="true" />
+                <element signature="e#15467#15486#0" expanded="true" />
+                <element signature="e#16323#16342#0" expanded="true" />
+                <element signature="e#17069#17077#0" expanded="true" />
+                <element signature="e#26767#26786#0" expanded="true" />
+                <element signature="e#26884#26903#0" expanded="true" />
+                <element signature="e#27214#27233#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -272,7 +272,7 @@
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="Cool" />
       <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="Powr.cl" />
+      <option name="PROGRAM_PARAMETERS" value="Powr.cl -d " />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
@@ -642,13 +642,13 @@
           <caret line="69" column="58" selection-start-line="69" selection-start-column="58" selection-end-line="69" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#14330#14349#0" expanded="true" />
-            <element signature="e#15344#15363#0" expanded="true" />
-            <element signature="e#16200#16219#0" expanded="true" />
-            <element signature="e#16946#16954#0" expanded="true" />
-            <element signature="e#26644#26663#0" expanded="true" />
-            <element signature="e#26761#26780#0" expanded="true" />
-            <element signature="e#27091#27110#0" expanded="true" />
+            <element signature="e#14453#14472#0" expanded="true" />
+            <element signature="e#15467#15486#0" expanded="true" />
+            <element signature="e#16323#16342#0" expanded="true" />
+            <element signature="e#17069#17077#0" expanded="true" />
+            <element signature="e#26767#26786#0" expanded="true" />
+            <element signature="e#26884#26903#0" expanded="true" />
+            <element signature="e#27214#27233#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1055,17 +1055,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TypeChecker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43582886" vertical-offset="466" max-vertical-offset="12512">
-          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.43188405" vertical-offset="582" max-vertical-offset="12529">
+          <caret line="43" column="20" selection-start-line="43" selection-start-column="20" selection-end-line="43" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#14330#14349#0" expanded="true" />
-            <element signature="e#15344#15363#0" expanded="true" />
-            <element signature="e#16200#16219#0" expanded="true" />
-            <element signature="e#16946#16954#0" expanded="true" />
-            <element signature="e#26644#26663#0" expanded="true" />
-            <element signature="e#26761#26780#0" expanded="true" />
-            <element signature="e#27091#27110#0" expanded="true" />
+            <element signature="e#14453#14472#0" expanded="true" />
+            <element signature="e#15467#15486#0" expanded="true" />
+            <element signature="e#16323#16342#0" expanded="true" />
+            <element signature="e#17069#17077#0" expanded="true" />
+            <element signature="e#26767#26786#0" expanded="true" />
+            <element signature="e#26884#26903#0" expanded="true" />
+            <element signature="e#27214#27233#0" expanded="true" />
           </folding>
         </state>
       </provider>

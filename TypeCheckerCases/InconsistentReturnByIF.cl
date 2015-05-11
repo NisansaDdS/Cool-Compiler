@@ -40,7 +40,7 @@ class Power inherits IO {
 	
 	test():Int{
 		 if b = 0 then 0
-            else 1 fi
+            else "Hasi" fi
 	};
 
 	test1(h:Int,a:String,s:Int):Int{{
