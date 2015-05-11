@@ -8,6 +8,7 @@ import java.util.Iterator;
 public class Support {
 
     private static HashMap<String, CoolClass> classes = new HashMap<String, CoolClass>();
+    public static HashMap<String, CoolMethod> basicMethods = new HashMap<String, CoolMethod>();
     private static Support sup=null;
 
     public static Support getSupport() throws Exception {
@@ -43,7 +44,7 @@ public class Support {
         object.addMethod(abort);
         object.addMethod(typeName);
         object.addMethod(copy);
-
+        updateBasicMethodMap(object);
 
 
         //Built in methods for IO (Page 14)
@@ -57,6 +58,7 @@ public class Support {
         io.addMethod(outInt);
         io.addMethod(inString);
         io.addMethod(inInt);
+        updateBasicMethodMap(io);
 
         //Built in methods for String (Page 14)
         CoolMethod length = new CoolMethod("length", integer);
@@ -68,9 +70,20 @@ public class Support {
         string.addMethod(length);
         string.addMethod(concat);
         string.addMethod(substr);
+        updateBasicMethodMap(string);
 
         System.out.println("Support ready....");
 
+    }
+
+    private void updateBasicMethodMap(CoolClass basicClass) {
+        Iterator<String> itr=basicClass.methodList.keySet().iterator();
+        while(itr.hasNext()) {
+            String key=itr.next();
+            if(!basicMethods.containsKey(key)) {
+                basicMethods.put(key, basicClass.methodList.get(key));
+            }
+        }
     }
 
     public static Iterator<CoolClass> getClassesIterator(){
@@ -112,6 +125,8 @@ public class Support {
         public HashMap<String, CoolAttribute> attributes = new HashMap<String, CoolAttribute>();
         public HashMap<String, CoolMethod> methodList = new HashMap<String, CoolMethod>();
         private boolean methodsAndAttributesLoaded=false;
+        private boolean attributesInherited=false;
+        private boolean methodsInherited=false;
 
         public CoolClass(String name, CoolClass parent, boolean basic) {
             this.name = name;
@@ -129,6 +144,8 @@ public class Support {
         public CoolClass(String name) {
             this(name,null);
         }
+
+
 
         public void addMethod(CoolMethod m) throws Exception {
             if(methodList.containsKey(m.name)){
@@ -151,7 +168,7 @@ public class Support {
                             }
 
                             if (m.type != m1.type) {
-                                throw (new Exception(exceptionHeader + "return type mismatch"));
+                                throw (new Exception(exceptionHeader + "return value mismatch"));
                             }
 
 
@@ -161,7 +178,7 @@ public class Support {
                                 CoolAttribute attr = itr.next();
                                 CoolAttribute attr1 = itr1.next();
                                 if (attr.type != attr1.type) {
-                                    throw (new Exception(exceptionHeader + " the type of the parameter '" + attr.name + "' do not match"));
+                                    throw (new Exception(exceptionHeader + " the value of the parameter '" + attr.name + "' do not match"));
                                 }
                             }
                         }
@@ -216,6 +233,54 @@ public class Support {
         public void setMethodsAndAttributesLoaded(boolean methodsAndAttributesLoaded) {
             this.methodsAndAttributesLoaded = methodsAndAttributesLoaded;
         }
+
+        public boolean isAttributesInherited() {
+            return attributesInherited;
+        }
+
+        public void setAttributesInherited(boolean attributesInherited) {
+            this.attributesInherited = attributesInherited;
+        }
+
+        public boolean isMethodsInherited() {
+            return methodsInherited;
+        }
+
+        public void setMethodsInherited(boolean methodsInherited) {
+            this.methodsInherited = methodsInherited;
+        }
+
+        public String toString(){
+            StringBuilder sb=new StringBuilder();
+            sb.append("*************************************************");
+            sb.append(System.lineSeparator());
+            sb.append("Class name: ");
+            sb.append(name);
+            sb.append(System.lineSeparator());
+            if(parent!=null){
+                sb.append("Parent name: ");
+                sb.append(parent.name);
+                sb.append(System.lineSeparator());
+            }
+            Iterator<String> itr;
+            if(attributes.size()>0) {
+                sb.append("Attributes:\n");
+                itr=attributes.keySet().iterator();
+                while(itr.hasNext()){
+                    sb.append(" "+attributes.get(itr.next()));
+                    sb.append(System.lineSeparator());
+                }
+            }
+            if(methodList.size()>0) {
+                sb.append("Methods:\n");
+                itr=methodList.keySet().iterator();
+                while(itr.hasNext()){
+                    sb.append(" "+methodList.get(itr.next()));
+                    sb.append(System.lineSeparator());
+                }
+            }
+            return sb.toString();
+        }
     }
 
     public static class CoolAttribute {
@@ -254,6 +319,8 @@ public class Support {
         public String name;
         public CoolClass type;
         public ArrayList<CoolAttribute> parametres = new ArrayList<CoolAttribute>();
+        public HashMap<String, CoolAttribute> localStack = new HashMap<String, CoolAttribute>();
+
         private ASTnode node;
         private CoolClass parent;
 
@@ -261,6 +328,14 @@ public class Support {
             this.name = name;
             this.type = type;
         }
+
+        public void addParamsToLocalStack(){
+            for (int i = 0; i <parametres.size() ; i++) {
+                CoolAttribute a=parametres.get(i);
+                localStack.put(a.name,a);
+            }
+        }
+
 
         public ASTnode getNode() {
             return node;
@@ -279,7 +354,16 @@ public class Support {
         }
 
         public String toString(){
-            return type.name+" "+name;
+            StringBuilder sb=new StringBuilder();
+            sb.append(type.name+" "+name);
+            if(parametres.size()>0) {
+                sb.append(System.lineSeparator());
+                sb.append("  Parameters:");
+                for (int i = 0; i < parametres.size(); i++) {
+                    sb.append("   " + parametres.get(i));
+                }
+            }
+            return sb.toString();
         }
     }
 }
