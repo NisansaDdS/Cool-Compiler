@@ -227,7 +227,7 @@ public class TypeChecker {
                 evaluateCondition(c, n.leftChild);
                 evaluate(c,n.middleChild);
                 evaluate(c,n.rightChild);
-                Support.CoolClass minComAn=GetMinimumCommonAncesstor(n.middleChild.type,n.rightChild.type);
+                Support.CoolClass minComAn=(Support.CoolClass)(GetMinimumCommonAncesstor(n.middleChild.type,n.rightChild.type)[0]);
                 return SetNodeType(n,minComAn);
             }
             else if(n.nodeSignature==sym.EQ){
@@ -245,9 +245,29 @@ public class TypeChecker {
                 return SetNodeType(n,bool);
             }
             else if(n.nodeSignature==sym.CASE) {
-                return object; //dummy
+                evaluate(c,n.leftChild); //Case condition
+                if(n.leftChild.nodeSignature==sym.ISVOID){
+                    throw(new Exception("Case condition cannot be void"));
+                }
+                ArrayList<Support.CoolClass> caseTypes=getCaseTypes(c,n.rightChild);
+                int min=Integer.MAX_VALUE;
+                Support.CoolClass select=null;
+                for (int i = 0; i <caseTypes.size() ; i++) {
+                    if(isTypesConsistant(n.leftChild.type, caseTypes.get(i))) {
+                        Object[] result = GetMinimumCommonAncesstor(n.leftChild.type, caseTypes.get(i));
+                        int val = (Integer) result[1];
+                        if (min > val) {
+                            min = val;
+                            select = (Support.CoolClass) result[0];
+                        }
+                    }
+                }
+                if(select==null){
+                    throw(new Exception("No valid case found"));
+                }
+                return SetNodeType(n,select); //dummy
             }
-            else if(n.nodeSignature==sym.ISVOID) {
+     /*       else if(n.nodeSignature==sym.ISVOID) {
                 return object; //dummy
             }
             else if(n.nodeSignature==sym.NOT) {
@@ -255,7 +275,7 @@ public class TypeChecker {
             }
             else if(n.nodeSignature==sym.NEG) {
                 return object; //dummy
-            }
+            }*/
             else{
                 System.out.println(Converter.getName(n.nodeSignature));
                 return object; //dummy
@@ -266,30 +286,49 @@ public class TypeChecker {
         }
     }
 
-    private Support.CoolClass GetMinimumCommonAncesstor(Support.CoolClass a, Support.CoolClass b) {
+    private ArrayList<Support.CoolClass> getCaseTypes(Support.CoolClass c, ASTnode n) throws Exception {
+        ArrayList<Support.CoolClass> list=new ArrayList<Support.CoolClass>();
+        if(n!=null){
+            if(n.nodeSignature==AdditionalSym.LIST){
+                list.addAll(getCaseTypes(c,n.leftChild));
+                list.addAll(getCaseTypes(c, n.rightChild));
+            }
+            else if(n.nodeSignature==sym.RIGHTARROW){
+                String name = (String) n.leftChild.leftChild.value; //id
+                Support.CoolClass type=Support.getClass((String)n.leftChild.rightChild.value);
+                Support.addParamsToLocalStack(name,type);
+                evaluate(c,n.rightChild);
+                Support.removeParamFromLocalStack(name);
+                list.add(n.rightChild.type);
+            }
+        }
+        return list;
+    }
+
+    private Object[] GetMinimumCommonAncesstor(Support.CoolClass a, Support.CoolClass b) {
+        int height=0;
         if(a==b){
-            return a;
+            return new Object[]{a,height};
         }
 
         HashSet<Support.CoolClass> encountered=new HashSet<Support.CoolClass>();
         encountered.add(a);
         encountered.add(b);
         while(true){
-
+            height++;
             a=a.getParent();
             if(encountered.contains(a)){
-                return a;
+                return new Object[]{a,height};
             }
             encountered.add(a);
 
             b=b.getParent();
             if(encountered.contains(b)){
-                return b;
+                return new Object[]{b,height};
             }
             encountered.add(b);
         }
     }
-
 
     private void evaluateCondition(Support.CoolClass c, ASTnode n) throws Exception {
         evaluate(c,n); //Evaluate the condition

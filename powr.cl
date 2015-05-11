@@ -44,7 +44,10 @@ class Power inherits IO {
 	};
 
 	test1(h:Int,a:String,s:Int):Int{
-		0			
+		case h of
+			a: String => out_string("Hasi");
+			s: Int => out_string("Abey");
+		esac
 	};
     
 };

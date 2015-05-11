@@ -28,34 +28,34 @@
       <file leaf-file-name="Support.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Support.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1865" max-vertical-offset="3774">
-              <caret line="83" column="24" selection-start-line="83" selection-start-column="19" selection-end-line="83" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1814" max-vertical-offset="3774">
+              <caret line="121" column="9" selection-start-line="121" selection-start-column="9" selection-end-line="121" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#216#235#0" expanded="true" />
                 <element signature="e#311#331#0" expanded="true" />
                 <element signature="e#456#486#0" expanded="true" />
-                <element signature="e#5072#5073#0" expanded="true" />
-                <element signature="e#5123#5124#0" expanded="true" />
+                <element signature="e#5071#5072#0" expanded="true" />
+                <element signature="e#5122#5123#0" expanded="true" />
                 <element signature="class#CoolClass#0;class#Support#0" expanded="false" />
-                <element signature="e#6027#6050#0" expanded="true" />
-                <element signature="e#6121#6141#0" expanded="true" />
-                <element signature="e#6727#6728#0" expanded="true" />
-                <element signature="e#6766#6767#0" expanded="true" />
-                <element signature="e#10001#10002#0" expanded="true" />
-                <element signature="e#10045#10046#0" expanded="true" />
-                <element signature="e#10102#10103#0" expanded="true" />
-                <element signature="e#10159#10160#0" expanded="true" />
-                <element signature="e#10382#10383#0" expanded="true" />
-                <element signature="e#10432#10433#0" expanded="true" />
-                <element signature="e#10624#10625#0" expanded="true" />
-                <element signature="e#10671#10672#0" expanded="true" />
-                <element signature="e#10740#10741#0" expanded="true" />
-                <element signature="e#10804#10805#0" expanded="true" />
+                <element signature="e#6026#6049#0" expanded="true" />
+                <element signature="e#6120#6140#0" expanded="true" />
+                <element signature="e#6726#6727#0" expanded="true" />
+                <element signature="e#6765#6766#0" expanded="true" />
+                <element signature="e#10000#10001#0" expanded="true" />
+                <element signature="e#10044#10045#0" expanded="true" />
+                <element signature="e#10101#10102#0" expanded="true" />
+                <element signature="e#10158#10159#0" expanded="true" />
+                <element signature="e#10381#10382#0" expanded="true" />
+                <element signature="e#10431#10432#0" expanded="true" />
+                <element signature="e#10623#10624#0" expanded="true" />
+                <element signature="e#10670#10671#0" expanded="true" />
+                <element signature="e#10739#10740#0" expanded="true" />
+                <element signature="e#10803#10804#0" expanded="true" />
                 <element signature="class#CoolAttribute#0;class#Support#0" expanded="false" />
-                <element signature="e#12689#12690#0" expanded="true" />
-                <element signature="e#12738#12739#0" expanded="true" />
-                <element signature="e#12909#12924#0" expanded="true" />
+                <element signature="e#12688#12689#0" expanded="true" />
+                <element signature="e#12737#12738#0" expanded="true" />
+                <element signature="e#12908#12923#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -104,16 +104,18 @@
       <file leaf-file-name="TypeChecker.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/TypeChecker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.43188405" vertical-offset="9167" max-vertical-offset="11305">
-              <caret line="548" column="59" selection-start-line="548" selection-start-column="59" selection-end-line="548" selection-end-column="59" />
+            <state vertical-scroll-proportion="0.5565217" vertical-offset="4313" max-vertical-offset="11883">
+              <caret line="265" column="46" selection-start-line="265" selection-start-column="46" selection-end-line="265" selection-end-column="46" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#12392#12411#0" expanded="true" />
-                <element signature="e#13186#13205#0" expanded="true" />
-                <element signature="e#13932#13940#0" expanded="true" />
-                <element signature="e#23642#23661#0" expanded="true" />
-                <element signature="e#23759#23778#0" expanded="true" />
-                <element signature="e#24089#24108#0" expanded="true" />
+                <element signature="e#13403#13422#0" expanded="true" />
+                <element signature="e#14351#14370#0" expanded="true" />
+                <element signature="method#evaluateCondition#0;class#TypeChecker#0" expanded="false" />
+                <element signature="e#15207#15226#0" expanded="true" />
+                <element signature="e#15953#15961#0" expanded="true" />
+                <element signature="e#25663#25682#0" expanded="true" />
+                <element signature="e#25780#25799#0" expanded="true" />
+                <element signature="e#26110#26129#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -600,27 +602,27 @@
             <element signature="e#216#235#0" expanded="true" />
             <element signature="e#311#331#0" expanded="true" />
             <element signature="e#456#486#0" expanded="true" />
-            <element signature="e#5072#5073#0" expanded="true" />
-            <element signature="e#5123#5124#0" expanded="true" />
+            <element signature="e#5071#5072#0" expanded="true" />
+            <element signature="e#5122#5123#0" expanded="true" />
             <element signature="class#CoolClass#0;class#Support#0" expanded="false" />
-            <element signature="e#6027#6050#0" expanded="true" />
-            <element signature="e#6121#6141#0" expanded="true" />
-            <element signature="e#6727#6728#0" expanded="true" />
-            <element signature="e#6766#6767#0" expanded="true" />
-            <element signature="e#10001#10002#0" expanded="true" />
-            <element signature="e#10045#10046#0" expanded="true" />
-            <element signature="e#10102#10103#0" expanded="true" />
-            <element signature="e#10159#10160#0" expanded="true" />
-            <element signature="e#10382#10383#0" expanded="true" />
-            <element signature="e#10432#10433#0" expanded="true" />
-            <element signature="e#10624#10625#0" expanded="true" />
-            <element signature="e#10671#10672#0" expanded="true" />
-            <element signature="e#10740#10741#0" expanded="true" />
-            <element signature="e#10804#10805#0" expanded="true" />
+            <element signature="e#6026#6049#0" expanded="true" />
+            <element signature="e#6120#6140#0" expanded="true" />
+            <element signature="e#6726#6727#0" expanded="true" />
+            <element signature="e#6765#6766#0" expanded="true" />
+            <element signature="e#10000#10001#0" expanded="true" />
+            <element signature="e#10044#10045#0" expanded="true" />
+            <element signature="e#10101#10102#0" expanded="true" />
+            <element signature="e#10158#10159#0" expanded="true" />
+            <element signature="e#10381#10382#0" expanded="true" />
+            <element signature="e#10431#10432#0" expanded="true" />
+            <element signature="e#10623#10624#0" expanded="true" />
+            <element signature="e#10670#10671#0" expanded="true" />
+            <element signature="e#10739#10740#0" expanded="true" />
+            <element signature="e#10803#10804#0" expanded="true" />
             <element signature="class#CoolAttribute#0;class#Support#0" expanded="false" />
-            <element signature="e#12689#12690#0" expanded="true" />
-            <element signature="e#12738#12739#0" expanded="true" />
-            <element signature="e#12909#12924#0" expanded="true" />
+            <element signature="e#12688#12689#0" expanded="true" />
+            <element signature="e#12737#12738#0" expanded="true" />
+            <element signature="e#12908#12923#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -631,12 +633,14 @@
           <caret line="69" column="58" selection-start-line="69" selection-start-column="58" selection-end-line="69" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#12392#12411#0" expanded="true" />
-            <element signature="e#13186#13205#0" expanded="true" />
-            <element signature="e#13932#13940#0" expanded="true" />
-            <element signature="e#23642#23661#0" expanded="true" />
-            <element signature="e#23759#23778#0" expanded="true" />
-            <element signature="e#24089#24108#0" expanded="true" />
+            <element signature="e#13403#13422#0" expanded="true" />
+            <element signature="e#14351#14370#0" expanded="true" />
+            <element signature="method#evaluateCondition#0;class#TypeChecker#0" expanded="false" />
+            <element signature="e#15207#15226#0" expanded="true" />
+            <element signature="e#15953#15961#0" expanded="true" />
+            <element signature="e#25663#25682#0" expanded="true" />
+            <element signature="e#25780#25799#0" expanded="true" />
+            <element signature="e#26110#26129#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1001,50 +1005,52 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Support.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1202" max-vertical-offset="3774">
-          <caret line="83" column="24" selection-start-line="83" selection-start-column="19" selection-end-line="83" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1814" max-vertical-offset="3774">
+          <caret line="121" column="9" selection-start-line="121" selection-start-column="9" selection-end-line="121" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#216#235#0" expanded="true" />
             <element signature="e#311#331#0" expanded="true" />
             <element signature="e#456#486#0" expanded="true" />
-            <element signature="e#5072#5073#0" expanded="true" />
-            <element signature="e#5123#5124#0" expanded="true" />
+            <element signature="e#5071#5072#0" expanded="true" />
+            <element signature="e#5122#5123#0" expanded="true" />
             <element signature="class#CoolClass#0;class#Support#0" expanded="false" />
-            <element signature="e#6027#6050#0" expanded="true" />
-            <element signature="e#6121#6141#0" expanded="true" />
-            <element signature="e#6727#6728#0" expanded="true" />
-            <element signature="e#6766#6767#0" expanded="true" />
-            <element signature="e#10001#10002#0" expanded="true" />
-            <element signature="e#10045#10046#0" expanded="true" />
-            <element signature="e#10102#10103#0" expanded="true" />
-            <element signature="e#10159#10160#0" expanded="true" />
-            <element signature="e#10382#10383#0" expanded="true" />
-            <element signature="e#10432#10433#0" expanded="true" />
-            <element signature="e#10624#10625#0" expanded="true" />
-            <element signature="e#10671#10672#0" expanded="true" />
-            <element signature="e#10740#10741#0" expanded="true" />
-            <element signature="e#10804#10805#0" expanded="true" />
+            <element signature="e#6026#6049#0" expanded="true" />
+            <element signature="e#6120#6140#0" expanded="true" />
+            <element signature="e#6726#6727#0" expanded="true" />
+            <element signature="e#6765#6766#0" expanded="true" />
+            <element signature="e#10000#10001#0" expanded="true" />
+            <element signature="e#10044#10045#0" expanded="true" />
+            <element signature="e#10101#10102#0" expanded="true" />
+            <element signature="e#10158#10159#0" expanded="true" />
+            <element signature="e#10381#10382#0" expanded="true" />
+            <element signature="e#10431#10432#0" expanded="true" />
+            <element signature="e#10623#10624#0" expanded="true" />
+            <element signature="e#10670#10671#0" expanded="true" />
+            <element signature="e#10739#10740#0" expanded="true" />
+            <element signature="e#10803#10804#0" expanded="true" />
             <element signature="class#CoolAttribute#0;class#Support#0" expanded="false" />
-            <element signature="e#12689#12690#0" expanded="true" />
-            <element signature="e#12738#12739#0" expanded="true" />
-            <element signature="e#12909#12924#0" expanded="true" />
+            <element signature="e#12688#12689#0" expanded="true" />
+            <element signature="e#12737#12738#0" expanded="true" />
+            <element signature="e#12908#12923#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TypeChecker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43188405" vertical-offset="9167" max-vertical-offset="11305">
-          <caret line="548" column="59" selection-start-line="548" selection-start-column="59" selection-end-line="548" selection-end-column="59" />
+        <state vertical-scroll-proportion="0.5565217" vertical-offset="4313" max-vertical-offset="11883">
+          <caret line="265" column="46" selection-start-line="265" selection-start-column="46" selection-end-line="265" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#12392#12411#0" expanded="true" />
-            <element signature="e#13186#13205#0" expanded="true" />
-            <element signature="e#13932#13940#0" expanded="true" />
-            <element signature="e#23642#23661#0" expanded="true" />
-            <element signature="e#23759#23778#0" expanded="true" />
-            <element signature="e#24089#24108#0" expanded="true" />
+            <element signature="e#13403#13422#0" expanded="true" />
+            <element signature="e#14351#14370#0" expanded="true" />
+            <element signature="method#evaluateCondition#0;class#TypeChecker#0" expanded="false" />
+            <element signature="e#15207#15226#0" expanded="true" />
+            <element signature="e#15953#15961#0" expanded="true" />
+            <element signature="e#25663#25682#0" expanded="true" />
+            <element signature="e#25780#25799#0" expanded="true" />
+            <element signature="e#26110#26129#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -122,7 +122,7 @@ public class Support {
         }
     }
 
-    private static void removeParamFromLocalStack(String name) {
+    public static void removeParamFromLocalStack(String name) {
         ArrayList<CoolClass> definitions=localTypeStack.get(name);
         definitions.remove(definitions.size()-1); //Remove the last (newest) one
         localTypeStack.remove(name);
