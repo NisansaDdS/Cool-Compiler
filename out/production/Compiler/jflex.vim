@@ -47,7 +47,7 @@ syn match jflexOption "^%cupdebug" contained
 syn match jflexOption "^%eofclose" contained
 syn match jflexOption "^%class" contained
 syn match jflexOption "^%function" contained
-syn match jflexOption "^%value" contained
+syn match jflexOption "^%type" contained
 syn match jflexOption "^%integer" contained
 syn match jflexOption "^%int" contained
 syn match jflexOption "^%intwrap" contained

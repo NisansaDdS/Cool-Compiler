@@ -71,7 +71,7 @@
      "^%eofclose"    
      "^%class"
      "^%function"
-     "^%value"
+     "^%type"
      "^%integer"
      "^%intwrap"         
      "^%int"
@@ -102,7 +102,7 @@
      ("%[%{}0-9a-zA-Z]+" . font-lock-warning-face) ; errors
      ("{[ \t]*[a-zA-Z][0-9a-zA-Z_]+[ \t]*}" . font-lock-variable-name-face) ; macro uses
      "<<EOF>>" ; special <<EOF>> symbol
-     ("<[ \t]*[a-zA-Z][0-9a-zA-Z_]+[ \t]*\\(,[ \t]*[a-zA-Z][0-9a-zA-Z_]+[ \t]*\\)*>" . font-lock-value-face) ; lex state list
+     ("<[ \t]*[a-zA-Z][0-9a-zA-Z_]+[ \t]*\\(,[ \t]*[a-zA-Z][0-9a-zA-Z_]+[ \t]*\\)*>" . font-lock-type-face) ; lex state list
      )
    java-font-lock-keywords-2)
   "JFlex keywords for font-lock mode")

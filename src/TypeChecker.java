@@ -119,6 +119,7 @@ public class TypeChecker {
                     ASTnode assignedVal=attrib.getNode().rightChild;
                     if(assignedVal!=null){ //Only need to check if the optional initialization is there
                         evaluateAttribute(assignedVal);
+                       
                         if(!isTypesConsistant(attrib.getNode().type,assignedVal.type)){
                             throw(new Exception("Attribute '"+attrib.name+"' has value '"+attrib.getNode().type.name+"' it cannot be set to value '"+assignedVal.type.name+"'"));
                         }

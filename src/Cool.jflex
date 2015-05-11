@@ -11,7 +11,7 @@ import java_cup.runtime.ComplexSymbolFactory.Location;
 %class Scanner
 %line
 %column
-%value ComplexSymbolFactory.ComplexSymbol
+%type ComplexSymbolFactory.ComplexSymbol
 
 %{  // Code to be included in the Scanner class goes here
 
@@ -232,7 +232,7 @@ f[aA][lL][sS][eE]      	            { return mkSym( sym.FALSE ); }
  * FIXME:  There are integer literals and string literals.  
  * Integer literals are easy; one regular expression will do. 
  * String literals are tricky:  You'll need to use explicit states. 
- * You can decide whether to convert integer literals to value Integer
+ * You can decide whether to convert integer literals to type Integer
  * here (in which case the parser will have to cast them from Object)
  * or in the parser (in which case the parser will have to do the 
  * conversion). 
@@ -273,4 +273,3 @@ f[aA][lL][sS][eE]      	            { return mkSym( sym.FALSE ); }
       	              yytext() +
 		      "' "); 
     }
-

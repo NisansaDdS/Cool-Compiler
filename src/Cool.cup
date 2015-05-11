@@ -120,8 +120,8 @@ classes ::= classes:cls clazz:c SEMI {: RESULT=new ASTnode(AdditionalSym.LIST,cl
 
 // Cool manual:   class ::= class TYPE [inherits TYPE] { feature;* }
 // 
-clazz	  ::=	CLASS TYPEID:value optParent:parent LBRACE features:fea RBRACE {: RESULT = new ASTnode(sym.CLASS, parent, null, fea, value); :};
-optParent ::=   INHERITS TYPEID:value {: RESULT = new ASTnode(sym.INHERITS, value); :}
+clazz	  ::=	CLASS TYPEID:type optParent:parent LBRACE features:fea RBRACE {: RESULT = new ASTnode(sym.CLASS, parent, null, fea, type); :}; 
+optParent ::=   INHERITS TYPEID:type {: RESULT = new ASTnode(sym.INHERITS, type); :}
 			|	empty ; 
 features  ::=  features:feas feature:fea SEMI {: RESULT = new ASTnode(AdditionalSym.LIST, feas, null, fea, null); :}
 			| empty ; 
@@ -136,8 +136,8 @@ feature	 ::=  methodBlock:mBlock {: RESULT = mBlock; :}
 			; 
 
 //ID( [formal[,formal]*] ): TYPE { expr }
-methodBlock   ::=  ID:id LPAREN formals:forms RPAREN COLON TYPEID:value LBRACE expr:exps RBRACE
-						{: RESULT = new ASTnode(AdditionalSym.METHOD_BLOCK, new ASTnode(AdditionalSym.ID_TYPE, new ASTnode(sym.ID, id), null, new ASTnode(sym.TYPEID, value), null), forms, exps, null); :}
+methodBlock   ::=  ID:id LPAREN formals:forms RPAREN COLON TYPEID:type LBRACE expr:exps RBRACE 
+						{: RESULT = new ASTnode(AdditionalSym.METHOD_BLOCK, new ASTnode(AdditionalSym.ID_TYPE, new ASTnode(sym.ID, id), null, new ASTnode(sym.TYPEID, type), null), forms, exps, null); :} 
 					;  
 
 // [formal[,formal]*]
@@ -150,7 +150,7 @@ nonEmptyFormals ::=  formal:formal  {: RESULT = formal; :}
 				  ; 
 
 //ID: TYPE [ <-  expr ]
-attributeDeclaration ::= ID:id COLON TYPEID:value optianalAssignment:optAs   {: RESULT = new ASTnode(AdditionalSym.ATTRIBUTE, new ASTnode(AdditionalSym.ID_TYPE, new ASTnode(sym.ID, id), null, new ASTnode(sym.TYPEID, value), null), null, optAs, null); :}
+attributeDeclaration ::= ID:id COLON TYPEID:type optianalAssignment:optAs   {: RESULT = new ASTnode(AdditionalSym.ATTRIBUTE, new ASTnode(AdditionalSym.ID_TYPE, new ASTnode(sym.ID, id), null, new ASTnode(sym.TYPEID, type), null), null, optAs, null); :}
 						;
 
 //[ <-  expr ]
@@ -158,7 +158,7 @@ optianalAssignment ::= ASSIGN expr:expr {: RESULT = expr; :}
 				 | empty ;
 
 // Cool manual: formal ::= ID : TYPE 
-formal ::= ID:id COLON TYPEID:value {: RESULT = new ASTnode(AdditionalSym.ID_TYPE, new ASTnode(sym.ID, id), null, new ASTnode(sym.TYPEID, value), null); :}
+formal ::= ID:id COLON TYPEID:type {: RESULT = new ASTnode(AdditionalSym.ID_TYPE, new ASTnode(sym.ID, id), null, new ASTnode(sym.TYPEID, type), null); :}
 			;
 
 // Cool manual gives precedence (left associative except as noted)
@@ -178,7 +178,7 @@ formal ::= ID:id COLON TYPEID:value {: RESULT = new ASTnode(AdditionalSym.ID_TYP
 exp0    ::= ID:id {: RESULT = new ASTnode(sym.ID, id); :} 
 		  | literalOrBoolExp:LorB {: RESULT = LorB; :}
 		  | LPAREN expr:expr RPAREN {: RESULT = expr; :}
-		  | NEW TYPEID:value {: RESULT = new ASTnode(sym.NEW, value); :}
+		  | NEW TYPEID:type {: RESULT = new ASTnode(sym.NEW, type); :}
 		  ; 
 
 //integer | string | true | false 		  
@@ -200,7 +200,7 @@ exp1   ::=  objInvoke:oi {: RESULT = oi; :}
 objInvoke ::= exp1:obj DOT ID:id LPAREN arguments:arg RPAREN {: RESULT = new ASTnode(AdditionalSym.INVOKE, obj, null, arg, id); :};
 
 //Class Invoke :  expr[@TYPE].ID(expr[,expr]*)
-classInvoke ::= exp1:classN AT TYPEID:value DOT ID:id LPAREN arguments:arg RPAREN {: RESULT = new ASTnode(AdditionalSym.INVOKE, classN, new ASTnode(sym.TYPEID, value), arg, id); :};
+classInvoke ::= exp1:classN AT TYPEID:type DOT ID:id LPAREN arguments:arg RPAREN {: RESULT = new ASTnode(AdditionalSym.INVOKE, classN, new ASTnode(sym.TYPEID, type), arg, id); :};
 
 //Local method Invoke : ID(expr[,expr]*)
 localInvoke ::= ID:id LPAREN arguments:arg RPAREN {: RESULT = new ASTnode(AdditionalSym.INVOKE, null, null, arg, id); :};
@@ -279,7 +279,7 @@ initializations ::= initializations:inits COMMA initialization:init {: RESULT = 
 					|   initialization:init {: RESULT = init; :}; 
 
 //ID: TYPE [ <- expr ] 
-initialization ::= ID:id COLON TYPEID:value optianalAssignment:optInit {: RESULT = new ASTnode(sym.ASSIGN, new ASTnode(AdditionalSym.ID_TYPE, new ASTnode(sym.ID, id), null, new ASTnode(sym.TYPEID, value), null), null, optInit, null); :}
+initialization ::= ID:id COLON TYPEID:type optianalAssignment:optInit {: RESULT = new ASTnode(sym.ASSIGN, new ASTnode(AdditionalSym.ID_TYPE, new ASTnode(sym.ID, id), null, new ASTnode(sym.TYPEID, type), null), null, optInit, null); :}
 				;
 
 
@@ -288,6 +288,6 @@ cases ::= cases:cs caseBlock:cb {: RESULT = new ASTnode(AdditionalSym.LIST, cs, 
 	    	| caseBlock:cb {: RESULT = cb; :} ; 
 
 //ID: TYPE => expr;			
-caseBlock  ::= ID:id COLON TYPEID:value RIGHTARROW expr:exp SEMI {: RESULT = new ASTnode(sym.RIGHTARROW, new ASTnode(AdditionalSym.ID_TYPE, new ASTnode(sym.ID, id), null, new ASTnode(sym.TYPEID, value), null), null, exp, null); :} ;
+caseBlock  ::= ID:id COLON TYPEID:type RIGHTARROW expr:exp SEMI {: RESULT = new ASTnode(sym.RIGHTARROW, new ASTnode(AdditionalSym.ID_TYPE, new ASTnode(sym.ID, id), null, new ASTnode(sym.TYPEID, type), null), null, exp, null); :} ; 
 
  empty ::=  ; 
