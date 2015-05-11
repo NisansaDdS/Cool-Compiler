@@ -197,10 +197,7 @@ public class TypeChecker {
                 return SetNodeType(n, cl);
             }
             else if(n.nodeSignature==sym.WHILE){
-                evaluate(c,n.leftChild); //Evaluate the condition
-                if(n.leftChild.type!=bool){
-                    throw(new Exception("Loop condition has to be Bool; not '"+n.leftChild.type.name+"'"));
-                }
+                evaluateCondition(c, n.leftChild);
                 evaluate(c,n.rightChild);
                 return SetNodeType(n,object); //While does not have a type!
             }
@@ -226,6 +223,39 @@ public class TypeChecker {
                 }
                 return SetNodeType(n,integer);
             }
+            else if(n.nodeSignature==sym.IF){
+                evaluateCondition(c, n.leftChild);
+                evaluate(c,n.middleChild);
+                evaluate(c,n.rightChild);
+                Support.CoolClass minComAn=GetMinimumCommonAncesstor(n.middleChild.type,n.rightChild.type);
+                return SetNodeType(n,minComAn);
+            }
+            else if(n.nodeSignature==sym.EQ){
+                evaluate(c,n.leftChild);
+                evaluate(c,n.rightChild);
+                if((n.leftChild.type==integer && n.rightChild.type!=integer)||(n.leftChild.type!=integer && n.rightChild.type==integer)){
+                    throw(new Exception("Integers can only be compared to Integers"));
+                }
+                else if((n.leftChild.type==string && n.rightChild.type!=string)||(n.leftChild.type!=string && n.rightChild.type==string)){
+                    throw(new Exception("Strings can only be compared to Strings"));
+                }
+                else if((n.leftChild.type==bool && n.rightChild.type!=bool)||(n.leftChild.type!=bool && n.rightChild.type==bool)){
+                    throw(new Exception("Bools can only be compared to Bools"));
+                }
+                return SetNodeType(n,bool);
+            }
+            else if(n.nodeSignature==sym.CASE) {
+                return object; //dummy
+            }
+            else if(n.nodeSignature==sym.ISVOID) {
+                return object; //dummy
+            }
+            else if(n.nodeSignature==sym.NOT) {
+                return object; //dummy
+            }
+            else if(n.nodeSignature==sym.NEG) {
+                return object; //dummy
+            }
             else{
                 System.out.println(Converter.getName(n.nodeSignature));
                 return object; //dummy
@@ -233,6 +263,38 @@ public class TypeChecker {
         }
         else{
             throw(new Exception("AST is not correct. Invalid method node"));
+        }
+    }
+
+    private Support.CoolClass GetMinimumCommonAncesstor(Support.CoolClass a, Support.CoolClass b) {
+        if(a==b){
+            return a;
+        }
+
+        HashSet<Support.CoolClass> encountered=new HashSet<Support.CoolClass>();
+        encountered.add(a);
+        encountered.add(b);
+        while(true){
+
+            a=a.getParent();
+            if(encountered.contains(a)){
+                return a;
+            }
+            encountered.add(a);
+
+            b=b.getParent();
+            if(encountered.contains(b)){
+                return b;
+            }
+            encountered.add(b);
+        }
+    }
+
+
+    private void evaluateCondition(Support.CoolClass c, ASTnode n) throws Exception {
+        evaluate(c,n); //Evaluate the condition
+        if(n.type!=bool){
+            throw(new Exception("Loop condition has to be Bool; not '"+n.type.name+"'"));
         }
     }
 
@@ -484,7 +546,7 @@ public class TypeChecker {
                 Support.CoolClass type=Support.getClass((String) node.rightChild.value); //Type name
                 meth.parametres.add(new Support.CoolAttribute(name,type));
             }
-            else if(node.nodeSignature==AdditionalSym.LIST){
+            else if(node.nodeSignature==AdditionalSym.ITEMS){
                 readParameters(meth, node.leftChild);
                 readParameters(meth, node.rightChild);
             }

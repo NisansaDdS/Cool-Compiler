@@ -15,6 +15,7 @@ class Power inherits IO {
     p : Int;
 	res : Int;
 	j : Int;
+	k : String;
 	
 
     init() : Power {
@@ -35,7 +36,15 @@ class Power inherits IO {
 		out_int(res);
 	    self;
 	}
-    };	
+    };
+	
+	test():Int{
+		 if b = 0 then 0
+            else 1 fi
+	};
 
+	test1(h:Int,a:String,s:Int):Int{
+		0			
+	};
     
 };
