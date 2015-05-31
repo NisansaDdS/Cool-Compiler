@@ -43,11 +43,12 @@ class Power inherits IO {
             else 1 fi
 	};
 
-	test1(h:Int,a:String,s:Int):SELF_TYPE{{
+	test1(h:Int,a:String,s:Int):Int{{
 		case h of
-			a: String =>out_string("Hasi");
-			s: Int => out_string("Abey");
+			a: String =>0;
+			s: Int => 1;
 		esac;
+		0;
 	}};
 	
 	test2():Int{

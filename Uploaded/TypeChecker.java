@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -25,13 +24,6 @@ public class TypeChecker {
 
         try {
             sup = Support.getSupport();
-        } catch (Exception e) {
-            System.err.println("Could not initialize support");
-            System.err.println(e.getMessage());
-        }
-
-
-        try {
             object = Support.getClass("Object");
             io = Support.getClass("IO");
             integer=Support.getClass("Int");
@@ -43,7 +35,7 @@ public class TypeChecker {
         } catch (Exception e) {
             System.err.println("Typecheck Failed!");
             System.err.println(e.getMessage());
-            e.printStackTrace();
+           // System.err.println(e.getStackTrace());
         }
 
     }
@@ -75,8 +67,7 @@ public class TypeChecker {
         output("Start checking the Main class...");
         checkMainClass();
         System.out.println("Type Checking done!");
-
-        printStatus();
+        //printStatus();
     }
 
     private void checkMainClass() throws Exception {
@@ -532,40 +523,9 @@ public class TypeChecker {
             while(itr.hasNext()){
                 String candidateMethodName=itr.next();
                 if(!c.methodList.containsKey(candidateMethodName)){ //If it is not overridden
-                    Support.CoolMethod cm=new Support.CoolMethod(p.methodList.get(candidateMethodName)); //clone it
-                    cm.setParent(c);                //set this to patent
-                    c.methodList.put(candidateMethodName,cm); //Add it   p.methodList.get(candidateMethodName)
-                }
-                else{ //update the vtable position of the overridenmethod
-                    Support.CoolMethod childCM=c.methodList.get(candidateMethodName); //This is the child class method
-                    Support.CoolMethod parentCM=p.methodList.get(candidateMethodName); //This is the parent calss method;
-                    childCM.vtable_position=parentCM.vtable_position;
+                    c.methodList.put(candidateMethodName,p.methodList.get(candidateMethodName)); //Add it
                 }
             }
-        }
-        //Now get the max vtable_position from parents
-        int index=Integer.MIN_VALUE;
-        Iterator<String> itr=c.methodList.keySet().iterator();
-        while(itr.hasNext()) {
-            String methodName = itr.next();
-            index=Math.max(index,c.methodList.get(methodName).vtable_position);
-        }
-
-        index++;
-
-        //Now set vtable_position for the methods that are new to this class
-        itr = c.methodList.keySet().iterator();
-        while(itr.hasNext()) {
-            String methodName = itr.next();
-            Support.CoolMethod cm = c.methodList.get(methodName);
-            if (cm.vtable_position < 0) {
-                cm.vtable_position = index;
-                index++;
-            }
-
-            // if(p==null){
-            //    System.out.println("AAAAAA "+cm.name+" "+cm.vtable_position);
-            //}
         }
 
     }
@@ -582,29 +542,14 @@ public class TypeChecker {
 
     private void inheritAttributes(Support.CoolClass c) {
         Support.CoolClass p = c.getParent();
-        HashMap<String,Support.CoolAttribute> inheritedAttr=new HashMap<String,Support.CoolAttribute>();
 
         if(p!=null) { //Object class has no parent
             if (!p.isAttributesInherited()) { //First check the parent and load
                 inheritAttributes(p);
             }
-
-            inheritedAttr.putAll(p.attributes);
+            //Now put all the attributes of the parent into this class
+            c.attributes.putAll(p.attributes);
         }
-
-        //Arrtibutes that are unique to this class are given vtable values that are AFTER the ones that were inherited
-        int index=inheritedAttr.size();
-        Iterator<String> itr=c.attributes.keySet().iterator();
-        while(itr.hasNext()){
-            String key=itr.next();
-            Support.CoolAttribute ca=c.attributes.get(key);
-            ca.vtable_position=index;
-            index++;
-        }
-
-        //Now put all the attributes of the parent into this class
-        c.attributes.putAll(inheritedAttr);
-
     }
 
 

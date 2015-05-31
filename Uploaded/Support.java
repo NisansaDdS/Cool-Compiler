@@ -9,7 +9,6 @@ public class Support {
 
     private static HashMap<String, CoolClass> classes = new HashMap<String, CoolClass>();
     public static HashMap<String, CoolMethod> basicMethods = new HashMap<String, CoolMethod>();
-    public static ArrayList<String> basicClassList=new ArrayList<String>();
     private static Support sup=null;
     public static HashMap<String, ArrayList<CoolClass>> localTypeStack = new HashMap<String, ArrayList<CoolClass>>(); //The array list is for the cases where the variables get new definitions in local scope. The inner most definition is at the end of the list.
     public static CoolClass selftype=null;
@@ -41,10 +40,6 @@ public class Support {
         CoolClass bool = new CoolClass("Bool", object,true);
         addClass(bool);
 
-        Iterator<String> itr=classes.keySet().iterator();
-        while(itr.hasNext()){
-            basicClassList.add(itr.next());
-        }
 
         //Built in methods for Object (Page 13)
         CoolMethod abort = new CoolMethod("abort", object);
@@ -176,13 +171,6 @@ public class Support {
         return result;
     }
 
-    public void buildIndices(){
-        Iterator<String> itr=classes.keySet().iterator();
-        while(itr.hasNext()){
-            classes.get(itr.next()).buildIndices();
-        }
-    }
-
 
 
     public static class CoolClass {
@@ -191,15 +179,12 @@ public class Support {
         private ASTnode node;
         public boolean basic=false;
         public HashMap<String, CoolAttribute> attributes = new HashMap<String, CoolAttribute>();
-        public HashMap<Integer,String> attributeIndex = new HashMap<Integer,String>();
         public HashMap<String, CoolMethod> methodList = new HashMap<String, CoolMethod>();
-        public HashMap<Integer,String> methodIndex = new HashMap<Integer,String>();
         private boolean methodsAndAttributesLoaded=false;
         private boolean attributesInherited=false;
         private boolean methodsInherited=false;
 
-
-        public CoolClass(String name, CoolClass parent, boolean basic) throws Exception {
+        public CoolClass(String name, CoolClass parent, boolean basic) {
             this.name = name;
             this.setParent(parent);
             this.basic = basic;
@@ -208,37 +193,15 @@ public class Support {
             }
         }
 
-        public void buildIndices(){
-            Iterator<String> itr=attributes.keySet().iterator();
-            while(itr.hasNext()){
-                String name=itr.next();
-                CoolAttribute ca=attributes.get(name);
-                attributeIndex.put(ca.vtable_position,name);
-            }
-
-            itr=methodList.keySet().iterator();
-            while(itr.hasNext()){
-                String name=itr.next();
-                CoolMethod cm=methodList.get(name);
-                methodIndex.put(cm.vtable_position,name);
-            }
-        }
-
-        public CoolAttribute attributeAt(int i){
-            return attributes.get(attributeIndex.get(i));
-        }
-
-        public CoolMethod methodAt(int i){
-            return methodList.get(methodIndex.get(i));
-        }
-
-        public CoolClass(String name, CoolClass parent) throws Exception {
+        public CoolClass(String name, CoolClass parent) {
             this(name,  parent, false);
         }
 
-        public CoolClass(String name) throws Exception {
+        public CoolClass(String name) {
             this(name,null);
         }
+
+
 
         public void addMethod(CoolMethod m) throws Exception {
             if(methodList.containsKey(m.name)){
@@ -374,97 +337,6 @@ public class Support {
             }
             return sb.toString();
         }
-
-        public String gen_obj_skel() {
-            StringBuilder sb=new StringBuilder();
-
-            //Object structure begins with class pointer
-            sb.append("%struct.obj_"+name+" = type { %struct.class_"+name+"*");
-
-            // Then it has fields for each value
-            for (int i = 0; i <attributes.size() ; i++) {
-                sb.append(", " + Support.type_struct(this,attributeAt(i).type.name));
-            }
-            sb.append("}");
-           return sb.toString();
-        }
-
-        public String gen_class_skel() {
-            StringBuilder sb=new StringBuilder();
-            String parentName=name; //For object
-            if(parent!=null){
-                parentName=parent.name;
-            }
-
-            sb.append("%struct.class_"+name+" = type { %struct.class_"+parentName+"*");
-            for (int i = 0; i <methodList.size() ; i++) {
-                sb.append(", ");
-                sb.append(methodAt(i).signature());
-                sb.append("*");
-            }
-            sb.append("}");
-            return sb.toString();
-        }
-
-        public String gen_class_object() {
-            StringBuilder sb=new StringBuilder();
-            sb.append("@the_class_"+name+" = global %struct.class_"+name+" {");
-
-            //Superclass pointer
-            String parentName=name; //For object
-            if(parent!=null){
-                parentName=parent.name;
-            }
-            sb.append("%struct.class_"+parentName+"* @the_class_"+parentName);
-
-
-            //All other methods
-            for (int i = 0; i <methodList.size() ; i++) {
-                CoolMethod m=methodAt(i);
-                sb.append(", "+m.signature());
-                sb.append(" @"+m.getParent().name+"_"+m.name);
-            }
-            sb.append(" }, align 8");
-
-            return sb.toString();
-        }
-
-        //At what offset (in number of fields) does field with field_name reside?
-        //We want the offset and the type of the field found there (as a tuple)
-  /*      public field_ref(String attribName) throws Exception {
-           CoolAttribute ca =attributes.get(attribName);
-            if(ca==null){
-                throw(new Exception("Attribute '"+attribName+"' is not defined"));
-            }
-            else{
-                int index=ca.vtable_position;
-                return;(index++); //Add one for class pointer
-            }
-        }
-        */
-
-
-    }
-
-
-
-    /**
-     * llvm reference for either a Cool class or a primitive (unboxed) type
-     * @return
-     */
-    public static String type_struct(CoolClass c,String name){
-        if (name.equalsIgnoreCase("Int")){
-            return "%struct.obj_Integer*"; //Fix later. Differnce in Prof's C file and my basic class
-        }
-        else if(classes.keySet().contains(name)){
-            return "%struct.obj_"+name+"*";
-        }
-        else if (name.equalsIgnoreCase("SELF_TYPE")){
-            return type_struct(c,c.name);
-        }
-        else{
-            return name;
-        }
     }
 
     public static class CoolAttribute {
@@ -472,20 +344,10 @@ public class Support {
         public CoolClass type;
         private ASTnode node;
         private CoolClass parent;
-        public int vtable_position=-1;
 
         public CoolAttribute(String name, CoolClass type) {
             this.name = name;
             this.type = type;
-        }
-
-        //clone
-        public CoolAttribute(CoolAttribute ca) {
-            this.name = ca.name;
-            this.type = ca.type;
-            this.node = ca.node;
-            this.parent = ca.parent;
-            this.vtable_position = ca.vtable_position;
         }
 
         public ASTnode getNode() {
@@ -505,7 +367,7 @@ public class Support {
         }
 
         public String toString(){
-            return type.name+" "+name+" "+vtable_position;
+            return type.name+" "+name;
         }
     }
 
@@ -517,25 +379,13 @@ public class Support {
 
         private ASTnode node;
         private CoolClass parent;
-        public int vtable_position=-1;
 
-
-        public CoolMethod(String name, CoolClass type)  {
+        public CoolMethod(String name, CoolClass type) {
             this.name = name;
             this.type = type;
         }
 
-        //clone
-        public CoolMethod(CoolMethod cm)  {
-            this.name = cm.name;
-            this.type = cm.type;
-            this.node = cm.node;
-            this.parent = cm.parent;
-            this.vtable_position = cm.vtable_position;
-            for (int i = 0; i < cm.parametres.size(); i++) {
-                parametres.add(new CoolAttribute(cm.parametres.get(i)));
-            }
-        }
+
 
 
         public ASTnode getNode() {
@@ -556,7 +406,7 @@ public class Support {
 
         public String toString(){
             StringBuilder sb=new StringBuilder();
-            sb.append(type.name+" "+name+" "+vtable_position);
+            sb.append(type.name+" "+name);
             if(parametres.size()>0) {
                 sb.append(System.lineSeparator());
                 sb.append("  Parameters:");
@@ -564,20 +414,6 @@ public class Support {
                     sb.append("   " + parametres.get(i));
                 }
             }
-            return sb.toString();
-        }
-
-        //Signature of this method in llvm notation
-        public String signature() {
-            StringBuilder sb=new StringBuilder();
-            sb.append(" " +Support.type_struct(parent,type.name)+" ");
-            sb.append("("+Support.type_struct(parent,parent.name));
-            String arg_sep = ", ";
-            for (int i = 0; i < parametres.size(); i++) {
-                sb.append(arg_sep + " " + Support.type_struct(parent,parametres.get(i).type.name));
-                arg_sep=", ";
-            }
-            sb.append(" )");
             return sb.toString();
         }
     }
