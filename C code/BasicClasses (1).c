@@ -1,5 +1,5 @@
 /*
- * C implementatIOns for basic Cool Object classes.
+ * C implementations for basic Cool Object classes.
  * 
  * Initially: 
  *    Integer class, partial implementatIOn (from IntObj.c)
@@ -8,13 +8,9 @@
 #include <stdIO.h>   
 #include <stdlib.h>  /* Malloc lives here */
 #include <String.h>  /* For strcpy */ 
-#include <stdarg.h>
-
 
 #include "BasicClasses.h"
 
-int asprintf( char **, char *, ... );
-int vasprintf( char **, char *, va_list );
 
 /*
  *  Convenience functIOns for constructing constant literals of 
@@ -51,27 +47,6 @@ struct obj_String* Object_to_String(struct obj_Object* self) {
   return str_const(rep);
 }
 
-struct obj_String* Object_type_name(struct obj_Object* self) { //Dummy implimentation
-  int the_address = (int) self;
-  char *rep;
-  asprintf(&rep, "<Object at %d>", the_address);
-  return str_const(rep);
-}
-
-struct obj_Object* Object_copy(struct obj_Object* self) { //Dummy implimentation
-  char *rep;
-  asprintf(&rep, "Dummy Copy");
-  return self;
-}
-
-struct obj_Object* Object_abort(struct obj_Object* self) { //Dummy implimentation
-  char *rep;
-  asprintf(&rep, "Dummy abort");
-  return self;
-}
-
-
-
 /* =================================
  *    Integer
  * =================================
@@ -99,7 +74,7 @@ struct obj_String* Integer_to_String(struct obj_Integer* self) {
   return s;
 }
  
-/* AdditIOn
+/* Addition
  * a+b is implemented as a method call a.add(b), which 
  *   is implemented by Integer_add.
  */
@@ -174,32 +149,9 @@ struct obj_IO* IO_out(struct obj_IO *self, struct obj_Object *thing) {
    return self;
 }
 
-struct obj_IO* IO_out_string(struct obj_IO *self, struct obj_String *thing) {
-   struct obj_String *rep = thing->clazz->to_String(thing);
-   printf("%s", rep->text);
-   return self;
-}
-
-struct obj_IO* IO_out_int(struct obj_IO *self, struct obj_Integer *thing) { 
-   struct obj_String *rep = thing->clazz->to_String(thing);
-   printf("%s", rep->text);
-   return self;
-}
-
-struct obj_String* IO_in_string(struct obj_IO *self) {
-  struct obj_String *rep = String_new("Dummy in_string");
-  printf("%s", rep->text);  
-  return rep;
-}
-
-struct obj_Integer* IO_in_int(struct obj_IO *self) { 
-  struct obj_Integer *rep = Integer_new(42);
-  printf("Dummy in_int gives %d", rep->value);
-  return rep;
-}
 
 /* 
- * An example of what a user-defined class "point" 
+ * An example of what a user-defined class "Point" 
  * might look like. This will be a model for generating
  * similar LLVM code
  */
@@ -263,19 +215,27 @@ struct obj_String* Point_to_String(struct obj_Point* self) {
   return rep;
 }
 
-struct obj_Point* Point_fake(struct obj_Point* self, 
-			     struct obj_Integer* xcoord,
-			     struct obj_Integer* ycoord) {
-  self->x = xcoord;
-  return self;
-}
+/* *** We made this function to pick out the relevant instructions ***/
+/* struct obj_Point* Point_fake(struct obj_Point* self,  */
+/* 			     struct obj_Integer* xcoord, */
+/* 			     struct obj_Integer* ycoord) { */
+/*   self->x = xcoord; */
+/*   return self; */
+/* } */
 
-struct obj_Point* Point_init(struct obj_Point* self, 
+/* *** 
+ * Replace this method with llgen.py-generated code 
+ * ***
+
+struct obj_Point* Point_init(struct obj_Point* self,
 			     struct obj_Integer* xcoord,
 			     struct obj_Integer* ycoord) {
   self->x = xcoord;
   self->y = ycoord;
   return self;
+}
+*/
+
   /* Let's see what that should be in AST-like representation
    * and what the resulting LLVM code should be. 
    * 
@@ -321,7 +281,7 @@ struct obj_Point* Point_init(struct obj_Point* self,
   */
 
 
-}
+
 
 struct obj_Point* Point_translate(struct obj_Point* self, 
 				  struct obj_Point* delta) {
@@ -354,57 +314,26 @@ struct obj_Integer* silly() {
   return sum;
 }
 
-
 /* 
  * With IO
  */
 int main(int argc, char **argv) {
    struct obj_IO* io = the_class_IO.constructor();
-  // struct obj_String* cr = the_class_String.constructor("\n");
- //  struct obj_Integer* num = silly();
- //  io->clazz->out(io, (struct obj_Object *) num);
- //  io->clazz->out(io, (struct obj_Object *) cr);
+   struct obj_String* cr = the_class_String.constructor("\n");
+   struct obj_Integer* num = silly();
+   io->clazz->out(io, (struct obj_Object *) num);
+   io->clazz->out(io, (struct obj_Object *) cr);
    /* Let's check out the default inherited to_String on class Object */
- //  io->clazz->out(io, (struct obj_Object *) io);
- //  io->clazz->out(io, (struct obj_Object *) cr); 
+   io->clazz->out(io, (struct obj_Object *) io);
+   io->clazz->out(io, (struct obj_Object *) cr); 
    
-//   io->clazz->out(io, (struct obj_Object*) str_const("Now let's try a point object (15,25)\n"));
- //  struct obj_Point* pt = the_class_Point.constructor();
-//   pt->clazz->init(pt, int_const(15), int_const(25));
-  // io->clazz->out(io, (struct obj_Object *) pt);
-//   io->clazz->out(io, (struct obj_Object *) cr);
+   io->clazz->out(io, (struct obj_Object*) str_const("Now let's try a point object (15,25)\n"));
+   struct obj_Point* pt = the_class_Point.constructor();
+   pt->clazz->init(pt, int_const(15), int_const(25));
+   io->clazz->out(io, (struct obj_Object *) pt);
+   io->clazz->out(io, (struct obj_Object *) cr);
 
-   struct obj_String* la = the_class_String.constructor("Baaaa");
-   io->clazz->IO_out(io, (struct obj_Object *) la);
-   
-   //struct obj_Point* new_Main = (struct obj_Point *) malloc(sizeof(struct obj_Point));
-   //struct obj_Main* new_Main = (struct obj_Main *) malloc(sizeof(struct obj_Main));
-   //new_Main->clazz->main(); 
-   
-   
    return 0;
 }
 
 
-
-//As.c
-
-
-int vasprintf( char **sptr, char *fmt, va_list argv )
-{
-int wanted = vsnprintf( *sptr = NULL, 0, fmt, argv );
-if( (wanted < 0) || ((*sptr = malloc( 1 + wanted )) == NULL) )
-return -1;
-
-return vsprintf( *sptr, fmt, argv );
-}
-
-int asprintf( char **sptr, char *fmt, ... )
-{
-int retval;
-va_list argv;
-va_start( argv, fmt );
-retval = vasprintf( sptr, fmt, argv );
-va_end( argv );
-return retval;
-}

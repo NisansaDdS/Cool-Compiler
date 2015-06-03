@@ -532,9 +532,12 @@ public class TypeChecker {
             while(itr.hasNext()){
                 String candidateMethodName=itr.next();
                 if(!c.methodList.containsKey(candidateMethodName)){ //If it is not overridden
-                    Support.CoolMethod cm=new Support.CoolMethod(p.methodList.get(candidateMethodName)); //clone it
-                    cm.setParent(c);                //set this to patent
+                   /* Support.CoolMethod cm=new Support.CoolMethod(p.methodList.get(candidateMethodName)); //clone it
+                    cm.setParent(c); //set this to patent (For the use of SELF_TYPE)
+                    cm.setImplimetedIn(p.methodList.get(candidateMethodName).getImplimetedIn()); //Where the implimetation is from
                     c.methodList.put(candidateMethodName,cm); //Add it   p.methodList.get(candidateMethodName)
+                    */
+                    c.methodList.put(candidateMethodName,p.methodList.get(candidateMethodName));
                 }
                 else{ //update the vtable position of the overridenmethod
                     Support.CoolMethod childCM=c.methodList.get(candidateMethodName); //This is the child class method

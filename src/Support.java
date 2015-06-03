@@ -46,10 +46,16 @@ public class Support {
             basicClassList.add(itr.next());
         }
 
+       //Methods coming from BasicClasses.C
+       // CoolMethod construct = new CoolMethod("constructor", object);
+        CoolMethod toString = new CoolMethod("to_String", string);
+
         //Built in methods for Object (Page 13)
         CoolMethod abort = new CoolMethod("abort", object);
         CoolMethod typeName = new CoolMethod("type_name", string);
         CoolMethod copy = new CoolMethod("copy", selftype);
+       // object.addMethod(construct);
+        object.addMethod(toString);
         object.addMethod(abort);
         object.addMethod(typeName);
         object.addMethod(copy);
@@ -396,7 +402,12 @@ public class Support {
                 parentName=parent.name;
             }
 
+            //Parent
             sb.append("%struct.class_"+name+" = type { %struct.class_"+parentName+"*");
+
+            //Constructor
+    //        sb.append(", {}*");
+
             for (int i = 0; i <methodList.size() ; i++) {
                 sb.append(", ");
                 sb.append(methodAt(i).signature());
@@ -418,16 +429,21 @@ public class Support {
             sb.append("%struct.class_"+parentName+"* @the_class_"+parentName);
 
 
+            //Constructor
+    //        sb.append(", %struct.obj_"+name+"* (...)* bitcast (%struct.obj_"+name+"* ()* @"+name+"_new to %struct.obj_"+name+"* (...)*)");
+
             //All other methods
             for (int i = 0; i <methodList.size() ; i++) {
                 CoolMethod m=methodAt(i);
-                sb.append(", "+m.signature());
-                sb.append(" @"+m.getParent().name+"_"+m.name);
+                sb.append(", "+m.signature()+"*");
+                sb.append(m.getMethodHeader());
             }
             sb.append(" }, align 8");
 
             return sb.toString();
         }
+
+
 
         //At what offset (in number of fields) does field with field_name reside?
         //We want the offset and the type of the field found there (as a tuple)
@@ -518,7 +534,9 @@ public class Support {
         private ASTnode node;
         private CoolClass parent;
         public int vtable_position=-1;
-
+        private CoolClass implimetedIn;
+        int id=1; //Local regs
+        int callId=0;
 
         public CoolMethod(String name, CoolClass type)  {
             this.name = name;
@@ -537,6 +555,112 @@ public class Support {
             }
         }
 
+        private String getMethodHeader() {
+            String callName=name;
+         /*   if(getImplimetedIn().name.equalsIgnoreCase("Object") && name.equalsIgnoreCase("abort")){
+                callName=callName+1;
+            }*/
+            return " @"+getImplimetedIn().name+"_"+callName;
+        }
+
+        //Emit llvm code for method definition beginning line
+        public String defineMathod(){
+            StringBuilder sb=new StringBuilder();
+            sb.append("define " +Support.type_struct(parent,type.name)+" ");
+            sb.append(getMethodHeader());
+            sb.append("(");
+
+            //Self
+            sb.append(Support.type_struct(parent,parent.name));
+            sb.append(" %Self");
+
+            String arg_sep = ", ";
+            for (int i = 0; i < parametres.size(); i++) {
+                sb.append(arg_sep + " " + Support.type_struct(parent,parametres.get(i).type.name));
+                sb.append(" %"+parametres.get(i).name);
+            }
+            sb.append(" ) #0 {");
+            return sb.toString();
+        }
+
+        /**
+         * llvm code to allocate and store one argument in activation record
+         arg is a (name type) pair, where type is a Cool object reference.
+         Returns an llvm register name.
+         We'll use standard names for arguments in the stack, so they are
+         easy to refer to in the code.
+         * @return
+         */
+        public String saveArguments(){
+            StringBuilder sb=new StringBuilder();
+
+            //Self
+            String argName="Self";
+            String ll_reg_name="%local_"+argName;
+            String argStruct=type_struct(parent, parent.name);
+            sb.append(getArgText(argName, ll_reg_name, argStruct));
+
+
+            for (int i = 0; i < parametres.size(); i++) {
+                CoolAttribute p=parametres.get(i);
+                p.vtable_position=i;
+                argName=p.name;
+                ll_reg_name="%local_"+argName;
+                argStruct=type_struct(parent, p.type.name);
+                sb.append(getArgText(argName, ll_reg_name, argStruct));
+            }
+            return sb.toString();
+        }
+
+        private String getArgText(String argName, String ll_reg_name, String argStruct) {
+            StringBuilder sb=new StringBuilder();
+            sb.append("    "+ll_reg_name+" = alloca "+argStruct+", align 8");
+            sb.append(System.lineSeparator());
+            sb.append("    store "+argStruct+" %"+argName+", "+argStruct+"* "+ll_reg_name+", align 8");
+            sb.append(System.lineSeparator());
+            return sb.toString();
+        }
+
+        //Create a local variable with name vname and type vtype
+        public String createLocalVar(String vname, String vtype){
+            StringBuilder sb=new StringBuilder();
+            String ll_reg_name="%local_"+vname;
+            String argStruct=type_struct(parent, vtype);
+            sb.append("    "+ll_reg_name+" = alloca "+argStruct+", align 8");
+            return sb.toString();
+        }
+
+        public String createReturn() throws Exception {
+            return(createReturnOfType(type.name)); //Later handle problem with Int
+        }
+
+        private String createReturnOfType(String typeName) throws Exception { //Object
+            //%1 = load %struct.obj_Object* (...)** getelementptr inbounds (%struct.class_Object* @the_class_Object, i32 0, i32 1), align 4
+            //%callee.knr.cast = bitcast %struct.obj_Object* (...)* %1 to %struct.obj_Object* ()*
+            //%call = call %struct.obj_Object* %callee.knr.cast()
+            //ret %struct.obj_Object* %call
+            StringBuilder sb=new StringBuilder();
+            Support.Register r1=nextRegister("%struct.obj_"+typeName+"*");
+            sb.append("    "+r1.getName()+" = load "+r1.derefrencedType()+"* (...)** getelementptr inbounds (%struct.class_"+typeName+"* @the_class_"+typeName+", i32 0, i32 1), align 4");
+            sb.append(System.lineSeparator());
+            sb.append("    %callee.knr.cast = bitcast %struct.obj_"+typeName+"* (...)* "+r1.getName()+" to %struct.obj_"+typeName+"* ()*");
+            sb.append(System.lineSeparator());
+            sb.append("    %call_"+callId+" = call %struct.obj_"+typeName+"* %callee.knr.cast()");
+            sb.append(System.lineSeparator());
+            sb.append("    ret %struct.obj_"+typeName+"* %call_"+callId);
+            callId++;
+            return sb.toString();
+        }
+
+
+        public String nextRegID() {
+            return "%local_" + id++;
+        }
+
+        public Support.Register nextRegister(String type) throws Exception {
+            return new Support.Register(nextRegID(), type);
+        }
+
 
         public ASTnode getNode() {
             return node;
@@ -552,6 +676,7 @@ public class Support {
 
         public void setParent(CoolClass parent) {
             this.parent = parent;
+            this.setImplimetedIn(parent);
         }
 
         public String toString(){
@@ -579,6 +704,45 @@ public class Support {
             }
             sb.append(" )");
             return sb.toString();
+        }
+
+        public CoolClass getImplimetedIn() {
+            return implimetedIn;
+        }
+
+        public void setImplimetedIn(CoolClass implimetedIn) {
+            this.implimetedIn = implimetedIn;
+        }
+    }
+
+
+    public static class Register {
+        public String name;
+        public String type;
+
+        public Register(final String name, final String type) throws Exception {
+            this.name = name;
+            this.type = type;
+            if (!type.endsWith("*")) {
+                throw(new Exception("Invalid type it has to be a pointer"));
+            }
+        }
+
+        public String getType() {
+            return type + "*";
+        }
+
+        public String derefrencedType() throws Exception {
+            return type.substring(0, type.length() - 1);
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return type + " " + name;
         }
     }
 }

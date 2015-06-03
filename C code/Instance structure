@@ -1,0 +1,7 @@
+%call30 = call noalias i8* @malloc(i32 4) #2
+%48 = bitcast i8* %call30 to %struct.obj_Object*
+store %struct.obj_Object* %48, %struct.obj_Object** %new_Main, align 4
+
+%call30 = call noalias i8* @malloc(i32 12) #2
+%48 = bitcast i8* %call30 to %struct.obj_Point*
+store %struct.obj_Point* %48, %struct.obj_Point** %new_Main, align 4

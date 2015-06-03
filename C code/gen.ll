@@ -1,36 +1,35 @@
-%struct.obj_Main = type { %struct.class_Main*}
-%struct.class_Main = type { %struct.class_IO*,  %struct.obj_String* (%struct.obj_Main* )*,  %struct.obj_Main* (%struct.obj_Main* )*,  %struct.obj_Object* (%struct.obj_Main* )*,  %struct.obj_Integer* (%struct.obj_Main* )*,  %struct.obj_Main* (%struct.obj_Main*,  %struct.obj_Integer* )*,  %struct.obj_String* (%struct.obj_Main* )*,  %struct.obj_Main* (%struct.obj_Main*,  %struct.obj_String* )*,  %struct.obj_Object* (%struct.obj_Main* )*}
-;@the_class_Main = global %struct.class_Main {%struct.class_IO* @the_class_IO,  %struct.obj_String* (%struct.obj_Main* ) @Main_type_name,  %struct.obj_Main* (%struct.obj_Main* ) @Main_copy,  %struct.obj_Object* (%struct.obj_Main* ) @Main_abort,  %struct.obj_Integer* (%struct.obj_Main* ) @Main_in_int,  %struct.obj_Main* (%struct.obj_Main*,  %struct.obj_Integer* ) @Main_out_int,  %struct.obj_String* (%struct.obj_Main* ) @Main_in_string,  %struct.obj_Main* (%struct.obj_Main*,  %struct.obj_String* ) @Main_out_string,  %struct.obj_Object* (%struct.obj_Main* ) @Main_main }, align 8
-
 ; ModuleID = 'BasicClasses.c'
 target datalayout = "e-m:w-p:32:32-i64:64-f80:32-n8:16:32-S32"
 target triple = "i686-pc-windows-gnu"
 
-%struct.class_Object = type { %struct.class_Object*, %struct.obj_Object* (...)*, %struct.obj_String* (%struct.obj_Object*)* }
+%struct.class_Object = type { %struct.class_Object*, %struct.obj_Object* (...)*, %struct.obj_String* (%struct.obj_Object*)*, %struct.obj_String* (%struct.obj_Object*)*, %struct.obj_Object* (%struct.obj_Object*)*, %struct.obj_Object* (%struct.obj_Object*)* }
 %struct.obj_Object = type { %struct.class_Object* }
 %struct.obj_String = type { %struct.class_String*, [1024 x i8] }
 %struct.class_String = type { %struct.class_Object*, %struct.obj_String* (...)*, %struct.obj_String* (%struct.obj_String*)*, %struct.obj_String* (%struct.obj_String*)*, %struct.obj_String* (%struct.obj_String*, %struct.obj_String*)* }
 %struct.class_Integer = type { %struct.class_Object*, %struct.obj_Integer* (i32)*, %struct.obj_String* (%struct.obj_Integer*)*, %struct.obj_Integer* (%struct.obj_Integer*, %struct.obj_Integer*)* }
 %struct.obj_Integer = type { %struct.class_Integer*, i32 }
+%struct.class_IO = type { %struct.class_Object*, %struct.obj_IO* (...)*, %struct.obj_String* (%struct.obj_Object*)*, %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)*, %struct.obj_IO* (%struct.obj_IO*, %struct.obj_String*)*, %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Integer*)*, %struct.obj_String* (%struct.obj_IO*)*, %struct.obj_Integer* (%struct.obj_IO*)* }
 %struct.obj_IO = type { %struct.class_IO* }
-%struct.class_IO = type { %struct.class_Object*, {}*, %struct.obj_String* (%struct.obj_Object*)*, %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)* }
 %struct.obj_Point = type { %struct.class_Point*, %struct.obj_Integer*, %struct.obj_Integer* }
 %struct.class_Point = type { %struct.class_Object*, {}*, %struct.obj_String* (%struct.obj_Point*)*, %struct.obj_Point* (%struct.obj_Point*, %struct.obj_Integer*, %struct.obj_Integer*)*, %struct.obj_Point* (%struct.obj_Point*, %struct.obj_Point*)* }
 
-@the_class_Object = global %struct.class_Object { %struct.class_Object* @the_class_Object, %struct.obj_Object* (...)* bitcast (%struct.obj_Object* ()* @Object_new to %struct.obj_Object* (...)*), %struct.obj_String* (%struct.obj_Object*)* @Object_to_String }, align 4
+@the_class_Object = global %struct.class_Object { %struct.class_Object* @the_class_Object, %struct.obj_Object* (...)* bitcast (%struct.obj_Object* ()* @Object_new to %struct.obj_Object* (...)*), %struct.obj_String* (%struct.obj_Object*)* @Object_to_String, %struct.obj_String* (%struct.obj_Object*)* @Object_type_name, %struct.obj_Object* (%struct.obj_Object*)* @Object_abort, %struct.obj_Object* (%struct.obj_Object*)* @Object_copy }, align 4
 @the_class_Integer = global %struct.class_Integer { %struct.class_Object* @the_class_Object, %struct.obj_Integer* (i32)* @Integer_new, %struct.obj_String* (%struct.obj_Integer*)* @Integer_to_String, %struct.obj_Integer* (%struct.obj_Integer*, %struct.obj_Integer*)* @Integer_add }, align 4
 @the_class_String = global %struct.class_String { %struct.class_Object* @the_class_Object, %struct.obj_String* (...)* bitcast (%struct.obj_String* (i8*)* @String_new to %struct.obj_String* (...)*), %struct.obj_String* (%struct.obj_String*)* @String_to_String, %struct.obj_String* (%struct.obj_String*)* @String_copy, %struct.obj_String* (%struct.obj_String*, %struct.obj_String*)* @String_concat }, align 4
-@the_class_IO = global { %struct.class_Object*, %struct.obj_IO* (...)*, %struct.obj_String* (%struct.obj_Object*)*, %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)* } { %struct.class_Object* @the_class_Object, %struct.obj_IO* (...)* bitcast (%struct.obj_IO* ()* @IO_new to %struct.obj_IO* (...)*), %struct.obj_String* (%struct.obj_Object*)* @Object_to_String, %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)* @IO_out }, align 4
+@the_class_IO = global %struct.class_IO { %struct.class_Object* @the_class_Object, %struct.obj_IO* (...)* bitcast (%struct.obj_IO* ()* @IO_new to %struct.obj_IO* (...)*), %struct.obj_String* (%struct.obj_Object*)* @Object_to_String, %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)* @IO_out, %struct.obj_IO* (%struct.obj_IO*, %struct.obj_String*)* @IO_out_string, %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Integer*)* @IO_out_int, %struct.obj_String* (%struct.obj_IO*)* @IO_in_string, %struct.obj_Integer* (%struct.obj_IO*)* @IO_in_int }, align 4
 @.str = private unnamed_addr constant [15 x i8] c"<Object at %d>\00", align 1
-@.str1 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
-@.str2 = private unnamed_addr constant [3 x i8] c"%d\00", align 1
-@.str3 = private unnamed_addr constant [3 x i8] c"%s\00", align 1
+@.str1 = private unnamed_addr constant [11 x i8] c"Dummy Copy\00", align 1
+@.str2 = private unnamed_addr constant [12 x i8] c"Dummy abort\00", align 1
+@.str3 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
+@.str4 = private unnamed_addr constant [3 x i8] c"%d\00", align 1
+@.str5 = private unnamed_addr constant [3 x i8] c"%s\00", align 1
+@.str6 = private unnamed_addr constant [16 x i8] c"Dummy in_string\00", align 1
+@.str7 = private unnamed_addr constant [22 x i8] c"Dummy in_int gives %d\00", align 1
 @the_class_Point = global { %struct.class_Object*, %struct.obj_Point* (...)*, %struct.obj_String* (%struct.obj_Point*)*, %struct.obj_Point* (%struct.obj_Point*, %struct.obj_Integer*, %struct.obj_Integer*)*, %struct.obj_Point* (%struct.obj_Point*, %struct.obj_Point*)* } { %struct.class_Object* @the_class_Object, %struct.obj_Point* (...)* bitcast (%struct.obj_Point* ()* @Point_new to %struct.obj_Point* (...)*), %struct.obj_String* (%struct.obj_Point*)* @Point_to_String, %struct.obj_Point* (%struct.obj_Point*, %struct.obj_Integer*, %struct.obj_Integer*)* @Point_init, %struct.obj_Point* (%struct.obj_Point*, %struct.obj_Point*)* @Point_translate }, align 4
-@.str4 = private unnamed_addr constant [2 x i8] c"(\00", align 1
-@.str5 = private unnamed_addr constant [2 x i8] c",\00", align 1
-@.str6 = private unnamed_addr constant [2 x i8] c")\00", align 1
-@.str7 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
-@.str8 = private unnamed_addr constant [38 x i8] c"Now let's try a point object (15,25)\0A\00", align 1
+@.str8 = private unnamed_addr constant [2 x i8] c"(\00", align 1
+@.str9 = private unnamed_addr constant [2 x i8] c",\00", align 1
+@.str10 = private unnamed_addr constant [2 x i8] c")\00", align 1
+@.str11 = private unnamed_addr constant [6 x i8] c"Baaaa\00", align 1
 
 ; Function Attrs: nounwind
 define %struct.obj_String* @Object_to_String(%struct.obj_Object* %self) #0 {
@@ -47,6 +46,45 @@ entry:
   %3 = load i8** %rep, align 4
   %call1 = call %struct.obj_String* @str_const(i8* %3)
   ret %struct.obj_String* %call1
+}
+
+; Function Attrs: nounwind
+define %struct.obj_String* @Object_type_name(%struct.obj_Object* %self) #0 {
+entry:
+  %self.addr = alloca %struct.obj_Object*, align 4
+  %the_address = alloca i32, align 4
+  %rep = alloca i8*, align 4
+  store %struct.obj_Object* %self, %struct.obj_Object** %self.addr, align 4
+  %0 = load %struct.obj_Object** %self.addr, align 4
+  %1 = ptrtoint %struct.obj_Object* %0 to i32
+  store i32 %1, i32* %the_address, align 4
+  %2 = load i32* %the_address, align 4
+  %call = call i32 (i8**, i8*, ...)* @asprintf(i8** %rep, i8* getelementptr inbounds ([15 x i8]* @.str, i32 0, i32 0), i32 %2)
+  %3 = load i8** %rep, align 4
+  %call1 = call %struct.obj_String* @str_const(i8* %3)
+  ret %struct.obj_String* %call1
+}
+
+; Function Attrs: nounwind
+define %struct.obj_Object* @Object_abort(%struct.obj_Object* %self) #0 {
+entry:
+  %self.addr = alloca %struct.obj_Object*, align 4
+  %rep = alloca i8*, align 4
+  store %struct.obj_Object* %self, %struct.obj_Object** %self.addr, align 4
+  %call = call i32 (i8**, i8*, ...)* @asprintf(i8** %rep, i8* getelementptr inbounds ([12 x i8]* @.str2, i32 0, i32 0))
+  %0 = load %struct.obj_Object** %self.addr, align 4
+  ret %struct.obj_Object* %0
+}
+
+; Function Attrs: nounwind
+define %struct.obj_Object* @Object_copy(%struct.obj_Object* %self) #0 {
+entry:
+  %self.addr = alloca %struct.obj_Object*, align 4
+  %rep = alloca i8*, align 4
+  store %struct.obj_Object* %self, %struct.obj_Object** %self.addr, align 4
+  %call = call i32 (i8**, i8*, ...)* @asprintf(i8** %rep, i8* getelementptr inbounds ([11 x i8]* @.str1, i32 0, i32 0))
+  %0 = load %struct.obj_Object** %self.addr, align 4
+  ret %struct.obj_Object* %0
 }
 
 ; Function Attrs: nounwind
@@ -75,7 +113,7 @@ entry:
   %self.addr = alloca %struct.obj_Integer*, align 4
   %s = alloca %struct.obj_String*, align 4
   store %struct.obj_Integer* %self, %struct.obj_Integer** %self.addr, align 4
-  %call = call %struct.obj_String* @String_new(i8* getelementptr inbounds ([1 x i8]* @.str1, i32 0, i32 0))
+  %call = call %struct.obj_String* @String_new(i8* getelementptr inbounds ([1 x i8]* @.str3, i32 0, i32 0))
   store %struct.obj_String* %call, %struct.obj_String** %s, align 4
   %0 = load %struct.obj_String** %s, align 4
   %text = getelementptr inbounds %struct.obj_String* %0, i32 0, i32 1
@@ -83,7 +121,7 @@ entry:
   %1 = load %struct.obj_Integer** %self.addr, align 4
   %value = getelementptr inbounds %struct.obj_Integer* %1, i32 0, i32 1
   %2 = load i32* %value, align 4
-  %call1 = call i32 (i8*, i8*, ...)* @sprintf(i8* %arraydecay, i8* getelementptr inbounds ([3 x i8]* @.str2, i32 0, i32 0), i32 %2) #2
+  %call1 = call i32 (i8*, i8*, ...)* @sprintf(i8* %arraydecay, i8* getelementptr inbounds ([3 x i8]* @.str4, i32 0, i32 0), i32 %2) #2
   %3 = load %struct.obj_String** %s, align 4
   ret %struct.obj_String* %3
 }
@@ -210,9 +248,89 @@ entry:
   %4 = load %struct.obj_String** %rep, align 4
   %text = getelementptr inbounds %struct.obj_String* %4, i32 0, i32 1
   %arraydecay = getelementptr inbounds [1024 x i8]* %text, i32 0, i32 0
-  %call1 = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([3 x i8]* @.str3, i32 0, i32 0), i8* %arraydecay) #2
+  %call1 = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([3 x i8]* @.str5, i32 0, i32 0), i8* %arraydecay) #2
   %5 = load %struct.obj_IO** %self.addr, align 4
   ret %struct.obj_IO* %5
+}
+
+; Function Attrs: nounwind
+define %struct.obj_IO* @IO_out_string(%struct.obj_IO* %self, %struct.obj_String* %thing) #0 {
+entry:
+  %self.addr = alloca %struct.obj_IO*, align 4
+  %thing.addr = alloca %struct.obj_String*, align 4
+  %rep = alloca %struct.obj_String*, align 4
+  store %struct.obj_IO* %self, %struct.obj_IO** %self.addr, align 4
+  store %struct.obj_String* %thing, %struct.obj_String** %thing.addr, align 4
+  %0 = load %struct.obj_String** %thing.addr, align 4
+  %clazz = getelementptr inbounds %struct.obj_String* %0, i32 0, i32 0
+  %1 = load %struct.class_String** %clazz, align 4
+  %to_String = getelementptr inbounds %struct.class_String* %1, i32 0, i32 2
+  %2 = load %struct.obj_String* (%struct.obj_String*)** %to_String, align 4
+  %3 = load %struct.obj_String** %thing.addr, align 4
+  %call = call %struct.obj_String* %2(%struct.obj_String* %3)
+  store %struct.obj_String* %call, %struct.obj_String** %rep, align 4
+  %4 = load %struct.obj_String** %rep, align 4
+  %text = getelementptr inbounds %struct.obj_String* %4, i32 0, i32 1
+  %arraydecay = getelementptr inbounds [1024 x i8]* %text, i32 0, i32 0
+  %call1 = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([3 x i8]* @.str5, i32 0, i32 0), i8* %arraydecay) #2
+  %5 = load %struct.obj_IO** %self.addr, align 4
+  ret %struct.obj_IO* %5
+}
+
+; Function Attrs: nounwind
+define %struct.obj_IO* @IO_out_int(%struct.obj_IO* %self, %struct.obj_Integer* %thing) #0 {
+entry:
+  %self.addr = alloca %struct.obj_IO*, align 4
+  %thing.addr = alloca %struct.obj_Integer*, align 4
+  %rep = alloca %struct.obj_String*, align 4
+  store %struct.obj_IO* %self, %struct.obj_IO** %self.addr, align 4
+  store %struct.obj_Integer* %thing, %struct.obj_Integer** %thing.addr, align 4
+  %0 = load %struct.obj_Integer** %thing.addr, align 4
+  %clazz = getelementptr inbounds %struct.obj_Integer* %0, i32 0, i32 0
+  %1 = load %struct.class_Integer** %clazz, align 4
+  %to_String = getelementptr inbounds %struct.class_Integer* %1, i32 0, i32 2
+  %2 = load %struct.obj_String* (%struct.obj_Integer*)** %to_String, align 4
+  %3 = load %struct.obj_Integer** %thing.addr, align 4
+  %call = call %struct.obj_String* %2(%struct.obj_Integer* %3)
+  store %struct.obj_String* %call, %struct.obj_String** %rep, align 4
+  %4 = load %struct.obj_String** %rep, align 4
+  %text = getelementptr inbounds %struct.obj_String* %4, i32 0, i32 1
+  %arraydecay = getelementptr inbounds [1024 x i8]* %text, i32 0, i32 0
+  %call1 = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([3 x i8]* @.str5, i32 0, i32 0), i8* %arraydecay) #2
+  %5 = load %struct.obj_IO** %self.addr, align 4
+  ret %struct.obj_IO* %5
+}
+
+; Function Attrs: nounwind
+define %struct.obj_String* @IO_in_string(%struct.obj_IO* %self) #0 {
+entry:
+  %self.addr = alloca %struct.obj_IO*, align 4
+  %rep = alloca %struct.obj_String*, align 4
+  store %struct.obj_IO* %self, %struct.obj_IO** %self.addr, align 4
+  %call = call %struct.obj_String* @String_new(i8* getelementptr inbounds ([16 x i8]* @.str6, i32 0, i32 0))
+  store %struct.obj_String* %call, %struct.obj_String** %rep, align 4
+  %0 = load %struct.obj_String** %rep, align 4
+  %text = getelementptr inbounds %struct.obj_String* %0, i32 0, i32 1
+  %arraydecay = getelementptr inbounds [1024 x i8]* %text, i32 0, i32 0
+  %call1 = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([3 x i8]* @.str5, i32 0, i32 0), i8* %arraydecay) #2
+  %1 = load %struct.obj_String** %rep, align 4
+  ret %struct.obj_String* %1
+}
+
+; Function Attrs: nounwind
+define %struct.obj_Integer* @IO_in_int(%struct.obj_IO* %self) #0 {
+entry:
+  %self.addr = alloca %struct.obj_IO*, align 4
+  %rep = alloca %struct.obj_Integer*, align 4
+  store %struct.obj_IO* %self, %struct.obj_IO** %self.addr, align 4
+  %call = call %struct.obj_Integer* @Integer_new(i32 42)
+  store %struct.obj_Integer* %call, %struct.obj_Integer** %rep, align 4
+  %0 = load %struct.obj_Integer** %rep, align 4
+  %value = getelementptr inbounds %struct.obj_Integer* %0, i32 0, i32 1
+  %1 = load i32* %value, align 4
+  %call1 = call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([22 x i8]* @.str7, i32 0, i32 0), i32 %1) #2
+  %2 = load %struct.obj_Integer** %rep, align 4
+  ret %struct.obj_Integer* %2
 }
 
 ; Function Attrs: nounwind
@@ -298,7 +416,7 @@ entry:
   store %struct.obj_IO* %0, %struct.obj_IO** %new_obj, align 4
   %1 = load %struct.obj_IO** %new_obj, align 4
   %clazz = getelementptr inbounds %struct.obj_IO* %1, i32 0, i32 0
-  store %struct.class_IO* bitcast ({ %struct.class_Object*, %struct.obj_IO* (...)*, %struct.obj_String* (%struct.obj_Object*)*, %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)* }* @the_class_IO to %struct.class_IO*), %struct.class_IO** %clazz, align 4
+  store %struct.class_IO* @the_class_IO, %struct.class_IO** %clazz, align 4
   %2 = load %struct.obj_IO** %new_obj, align 4
   ret %struct.obj_IO* %2
 }
@@ -312,7 +430,7 @@ entry:
   %self.addr = alloca %struct.obj_Point*, align 4
   %rep = alloca %struct.obj_String*, align 4
   store %struct.obj_Point* %self, %struct.obj_Point** %self.addr, align 4
-  %call = call %struct.obj_String* @str_const(i8* getelementptr inbounds ([2 x i8]* @.str4, i32 0, i32 0))
+  %call = call %struct.obj_String* @str_const(i8* getelementptr inbounds ([2 x i8]* @.str8, i32 0, i32 0))
   store %struct.obj_String* %call, %struct.obj_String** %rep, align 4
   %0 = load %struct.obj_String** %rep, align 4
   %clazz = getelementptr inbounds %struct.obj_String* %0, i32 0, i32 0
@@ -338,7 +456,7 @@ entry:
   %concat6 = getelementptr inbounds %struct.class_String* %11, i32 0, i32 4
   %12 = load %struct.obj_String* (%struct.obj_String*, %struct.obj_String*)** %concat6, align 4
   %13 = load %struct.obj_String** %rep, align 4
-  %call7 = call %struct.obj_String* @str_const(i8* getelementptr inbounds ([2 x i8]* @.str5, i32 0, i32 0))
+  %call7 = call %struct.obj_String* @str_const(i8* getelementptr inbounds ([2 x i8]* @.str9, i32 0, i32 0))
   %call8 = call %struct.obj_String* %12(%struct.obj_String* %13, %struct.obj_String* %call7)
   %14 = load %struct.obj_String** %rep, align 4
   %clazz9 = getelementptr inbounds %struct.obj_String* %14, i32 0, i32 0
@@ -364,7 +482,7 @@ entry:
   %concat17 = getelementptr inbounds %struct.class_String* %25, i32 0, i32 4
   %26 = load %struct.obj_String* (%struct.obj_String*, %struct.obj_String*)** %concat17, align 4
   %27 = load %struct.obj_String** %rep, align 4
-  %call18 = call %struct.obj_String* @str_const(i8* getelementptr inbounds ([2 x i8]* @.str6, i32 0, i32 0))
+  %call18 = call %struct.obj_String* @str_const(i8* getelementptr inbounds ([2 x i8]* @.str10, i32 0, i32 0))
   %call19 = call %struct.obj_String* %26(%struct.obj_String* %27, %struct.obj_String* %call18)
   %28 = load %struct.obj_String** %rep, align 4
   ret %struct.obj_String* %28
@@ -529,100 +647,67 @@ entry:
   %retval = alloca i32, align 4
   %argc.addr = alloca i32, align 4
   %argv.addr = alloca i8**, align 4
+  
   %io = alloca %struct.obj_IO*, align 4
-  %cr = alloca %struct.obj_String*, align 4
-  %num = alloca %struct.obj_Integer*, align 4
-  %pt = alloca %struct.obj_Point*, align 4
+  %la = alloca %struct.obj_String*, align 4
+  
   store i32 0, i32* %retval
   store i32 %argc, i32* %argc.addr, align 4
   store i8** %argv, i8*** %argv.addr, align 4
-  %0 = load %struct.obj_IO* (...)** bitcast ({}** getelementptr inbounds (%struct.class_IO* bitcast ({ %struct.class_Object*, %struct.obj_IO* (...)*, %struct.obj_String* (%struct.obj_Object*)*, %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)* }* @the_class_IO to %struct.class_IO*), i32 0, i32 1) to %struct.obj_IO* (...)**), align 4
+  
+  %0 = load %struct.obj_IO* (...)** getelementptr inbounds (%struct.class_IO* @the_class_IO, i32 0, i32 1), align 4
   %callee.knr.cast = bitcast %struct.obj_IO* (...)* %0 to %struct.obj_IO* ()*
   %call = call %struct.obj_IO* %callee.knr.cast()
   store %struct.obj_IO* %call, %struct.obj_IO** %io, align 4
+  
   %1 = load %struct.obj_String* (...)** getelementptr inbounds (%struct.class_String* @the_class_String, i32 0, i32 1), align 4
   %callee.knr.cast1 = bitcast %struct.obj_String* (...)* %1 to %struct.obj_String* (i8*)*
-  %call2 = call %struct.obj_String* %callee.knr.cast1(i8* getelementptr inbounds ([2 x i8]* @.str7, i32 0, i32 0))
-  store %struct.obj_String* %call2, %struct.obj_String** %cr, align 4
-  %call3 = call %struct.obj_Integer* @silly()
-  store %struct.obj_Integer* %call3, %struct.obj_Integer** %num, align 4
+  %call2 = call %struct.obj_String* %callee.knr.cast1(i8* getelementptr inbounds ([6 x i8]* @.str11, i32 0, i32 0))
+  store %struct.obj_String* %call2, %struct.obj_String** %la, align 4
+  
   %2 = load %struct.obj_IO** %io, align 4
   %clazz = getelementptr inbounds %struct.obj_IO* %2, i32 0, i32 0
-  %3 = load %struct.class_IO** %clazz, align 4
-  %out = getelementptr inbounds %struct.class_IO* %3, i32 0, i32 3
-  %4 = load %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)** %out, align 4
+  %3 = load %struct.class_IO** %clazz, align 4  
+  %IO_out = getelementptr inbounds %struct.class_IO* %3, i32 0, i32 3
+  %4 = load %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)** %IO_out, align 4
   %5 = load %struct.obj_IO** %io, align 4
-  %6 = load %struct.obj_Integer** %num, align 4
-  %7 = bitcast %struct.obj_Integer* %6 to %struct.obj_Object*
-  %call4 = call %struct.obj_IO* %4(%struct.obj_IO* %5, %struct.obj_Object* %7)
-  %8 = load %struct.obj_IO** %io, align 4
-  %clazz5 = getelementptr inbounds %struct.obj_IO* %8, i32 0, i32 0
-  %9 = load %struct.class_IO** %clazz5, align 4
-  %out6 = getelementptr inbounds %struct.class_IO* %9, i32 0, i32 3
-  %10 = load %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)** %out6, align 4
-  %11 = load %struct.obj_IO** %io, align 4
-  %12 = load %struct.obj_String** %cr, align 4
-  %13 = bitcast %struct.obj_String* %12 to %struct.obj_Object*
-  %call7 = call %struct.obj_IO* %10(%struct.obj_IO* %11, %struct.obj_Object* %13)
-  %14 = load %struct.obj_IO** %io, align 4
-  %clazz8 = getelementptr inbounds %struct.obj_IO* %14, i32 0, i32 0
-  %15 = load %struct.class_IO** %clazz8, align 4
-  %out9 = getelementptr inbounds %struct.class_IO* %15, i32 0, i32 3
-  %16 = load %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)** %out9, align 4
-  %17 = load %struct.obj_IO** %io, align 4
-  %18 = load %struct.obj_IO** %io, align 4
-  %19 = bitcast %struct.obj_IO* %18 to %struct.obj_Object*
-  %call10 = call %struct.obj_IO* %16(%struct.obj_IO* %17, %struct.obj_Object* %19)
-  %20 = load %struct.obj_IO** %io, align 4
-  %clazz11 = getelementptr inbounds %struct.obj_IO* %20, i32 0, i32 0
-  %21 = load %struct.class_IO** %clazz11, align 4
-  %out12 = getelementptr inbounds %struct.class_IO* %21, i32 0, i32 3
-  %22 = load %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)** %out12, align 4
-  %23 = load %struct.obj_IO** %io, align 4
-  %24 = load %struct.obj_String** %cr, align 4
-  %25 = bitcast %struct.obj_String* %24 to %struct.obj_Object*
-  %call13 = call %struct.obj_IO* %22(%struct.obj_IO* %23, %struct.obj_Object* %25)
-  %26 = load %struct.obj_IO** %io, align 4
-  %clazz14 = getelementptr inbounds %struct.obj_IO* %26, i32 0, i32 0
-  %27 = load %struct.class_IO** %clazz14, align 4
-  %out15 = getelementptr inbounds %struct.class_IO* %27, i32 0, i32 3
-  %28 = load %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)** %out15, align 4
-  %29 = load %struct.obj_IO** %io, align 4
-  %call16 = call %struct.obj_String* @str_const(i8* getelementptr inbounds ([38 x i8]* @.str8, i32 0, i32 0))
-  %30 = bitcast %struct.obj_String* %call16 to %struct.obj_Object*
-  %call17 = call %struct.obj_IO* %28(%struct.obj_IO* %29, %struct.obj_Object* %30)
-  %31 = load %struct.obj_Point* (...)** bitcast ({}** getelementptr inbounds (%struct.class_Point* bitcast ({ %struct.class_Object*, %struct.obj_Point* (...)*, %struct.obj_String* (%struct.obj_Point*)*, %struct.obj_Point* (%struct.obj_Point*, %struct.obj_Integer*, %struct.obj_Integer*)*, %struct.obj_Point* (%struct.obj_Point*, %struct.obj_Point*)* }* @the_class_Point to %struct.class_Point*), i32 0, i32 1) to %struct.obj_Point* (...)**), align 4
-  %callee.knr.cast18 = bitcast %struct.obj_Point* (...)* %31 to %struct.obj_Point* ()*
-  %call19 = call %struct.obj_Point* %callee.knr.cast18()
-  store %struct.obj_Point* %call19, %struct.obj_Point** %pt, align 4
-  %32 = load %struct.obj_Point** %pt, align 4
-  %clazz20 = getelementptr inbounds %struct.obj_Point* %32, i32 0, i32 0
-  %33 = load %struct.class_Point** %clazz20, align 4
-  %init = getelementptr inbounds %struct.class_Point* %33, i32 0, i32 3
-  %34 = load %struct.obj_Point* (%struct.obj_Point*, %struct.obj_Integer*, %struct.obj_Integer*)** %init, align 4
-  %35 = load %struct.obj_Point** %pt, align 4
-  %call21 = call %struct.obj_Integer* @int_const(i32 15)
-  %call22 = call %struct.obj_Integer* @int_const(i32 25)
-  %call23 = call %struct.obj_Point* %34(%struct.obj_Point* %35, %struct.obj_Integer* %call21, %struct.obj_Integer* %call22)
-  %36 = load %struct.obj_IO** %io, align 4
-  %clazz24 = getelementptr inbounds %struct.obj_IO* %36, i32 0, i32 0
-  %37 = load %struct.class_IO** %clazz24, align 4
-  %out25 = getelementptr inbounds %struct.class_IO* %37, i32 0, i32 3
-  %38 = load %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)** %out25, align 4
-  %39 = load %struct.obj_IO** %io, align 4
-  %40 = load %struct.obj_Point** %pt, align 4
-  %41 = bitcast %struct.obj_Point* %40 to %struct.obj_Object*
-  %call26 = call %struct.obj_IO* %38(%struct.obj_IO* %39, %struct.obj_Object* %41)
-  %42 = load %struct.obj_IO** %io, align 4
-  %clazz27 = getelementptr inbounds %struct.obj_IO* %42, i32 0, i32 0
-  %43 = load %struct.class_IO** %clazz27, align 4
-  %out28 = getelementptr inbounds %struct.class_IO* %43, i32 0, i32 3
-  %44 = load %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)** %out28, align 4
-  %45 = load %struct.obj_IO** %io, align 4
-  %46 = load %struct.obj_String** %cr, align 4
-  %47 = bitcast %struct.obj_String* %46 to %struct.obj_Object*
-  %call29 = call %struct.obj_IO* %44(%struct.obj_IO* %45, %struct.obj_Object* %47)
+  %6 = load %struct.obj_String** %la, align 4
+  %7 = bitcast %struct.obj_String* %6 to %struct.obj_Object*
+  %call3 = call %struct.obj_IO* %4(%struct.obj_IO* %5, %struct.obj_Object* %7)
+  
+  ;%local_1 = load %struct.obj_Main* (...)** getelementptr inbounds (%struct.class_Main* @the_class_Main, i32 0, i32 1), align 4
+  ;%callee.knr.cast2 = bitcast %struct.obj_Main* (...)* %local_1 to %struct.obj_Main* ()*
+  ;%call_0 = call %struct.obj_Main* %callee.knr.cast2()
+  
+ 
+  
+  
+  
+  
+
+  
   ret i32 0
+}
+
+
+; Function Attrs: nounwind
+define %struct.obj_Main* @Main_new() #0 {
+entry:
+  %new_obj = alloca %struct.obj_Main*, align 4
+  %call = call noalias i8* @malloc(i32 4) #2
+  %0 = bitcast i8* %call to %struct.obj_Main*
+  store %struct.obj_Main* %0, %struct.obj_Main** %new_obj, align 4
+  %1 = load %struct.obj_Main** %new_obj, align 4
+  %clazz = getelementptr inbounds %struct.obj_Main* %1, i32 0, i32 0
+  store %struct.class_Main* @the_class_Main, %struct.class_Main** %clazz, align 4
+  %2 = load %struct.obj_Main** %new_obj, align 4
+  ret %struct.obj_Main* %2
+  
+  
+  ;%local_1 = load %struct.obj_Main* (...)** getelementptr inbounds (%struct.class_Main* @the_class_Main, i32 0, i32 1), align 4
+  ;%callee.knr.cast = bitcast %struct.obj_Object* (...)* %local_1 to %struct.obj_Object* ()*
+  ;%call_0 = call %struct.obj_Object* %callee.knr.cast()
+  ;ret %struct.obj_Object* %call_0
 }
 
 ; Function Attrs: nounwind
@@ -693,3 +778,17 @@ attributes #3 = { nounwind readonly }
 !llvm.ident = !{!0}
 
 !0 = !{!"clang version 3.6.0 (tags/RELEASE_360/final)"}
+
+
+%struct.obj_Main = type { %struct.class_Main*}
+%struct.class_Main = type { %struct.class_IO*,  %struct.obj_String* (%struct.obj_Object* )*,  %struct.obj_String* (%struct.obj_Object* )*,  %struct.obj_Object* (%struct.obj_Object* )*,  %struct.obj_Object* (%struct.obj_Object* )*,  %struct.obj_Integer* (%struct.obj_IO* )*,  %struct.obj_IO* (%struct.obj_IO*,  %struct.obj_Integer* )*,  %struct.obj_String* (%struct.obj_IO* )*,  %struct.obj_IO* (%struct.obj_IO*,  %struct.obj_String* )*,  %struct.obj_Object* (%struct.obj_Main* )*}
+@the_class_Main = global %struct.class_Main {%struct.class_IO* @the_class_IO,  %struct.obj_String* (%struct.obj_Object* )* @Object_to_String,  %struct.obj_String* (%struct.obj_Object* )* @Object_type_name,  %struct.obj_Object* (%struct.obj_Object* )* @Object_copy,  %struct.obj_Object* (%struct.obj_Object* )* @Object_abort,  %struct.obj_Integer* (%struct.obj_IO* )* @IO_in_int,  %struct.obj_IO* (%struct.obj_IO*,  %struct.obj_Integer* )* @IO_out_int,  %struct.obj_String* (%struct.obj_IO* )* @IO_in_string,  %struct.obj_IO* (%struct.obj_IO*,  %struct.obj_String* )* @IO_out_string,  %struct.obj_Object* (%struct.obj_Main* )* @Main_main }, align 8
+define %struct.obj_Object*  @Main_main(%struct.obj_Main* %Self ) #0 {
+    %local_Self = alloca %struct.obj_Main*, align 8
+    store %struct.obj_Main* %Self, %struct.obj_Main** %local_Self, align 8
+
+    %local_1 = load %struct.obj_Object* (...)** getelementptr inbounds (%struct.class_Object* @the_class_Object, i32 0, i32 1), align 4
+    %callee.knr.cast = bitcast %struct.obj_Object* (...)* %local_1 to %struct.obj_Object* ()*
+    %call_0 = call %struct.obj_Object* %callee.knr.cast()
+    ret %struct.obj_Object* %call_0
+}

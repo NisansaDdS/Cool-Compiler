@@ -32,26 +32,17 @@ struct class_Object {
   /* vtable */
   struct obj_Object* (*constructor) ();     
   struct obj_String* (*to_String) (struct obj_Object* self);
-  struct obj_String* (*type_name) (struct obj_Object* self);
-  struct obj_Object* (*abort) (struct obj_Object* self);
-  struct obj_Object* (*copy) (struct obj_Object* self);
 };
 
 /* Method signatures */ 
 struct obj_Object* Object_new();
 struct obj_String* Object_to_String(struct obj_Object* self);
-struct obj_String* Object_type_name(struct obj_Object* self);
-struct obj_Object* Object_abort(struct obj_Object* self);
-struct obj_Object* Object_copy(struct obj_Object* self);
 
 struct class_Object the_class_Object = {
   &the_class_Object, 
   /* vtable */ 
   Object_new, 
-  Object_to_String,
-  Object_type_name,
-  Object_abort,
-  Object_copy
+  Object_to_String
 };
     
   
@@ -62,20 +53,21 @@ struct class_Object the_class_Object = {
 struct class_Integer;
 struct obj_Integer;
 
-
 /* 
- * Method signatures for Integer methods, including a special constructor that takes
+ * Method signatures for Integer methods, 
+ * including a special constructor that takes
  * a 32-bit unboxed Integer (returning the "boxed" Integer Object).
  */
-struct obj_Integer* Integer_new(int value);                       /* constructor */
-struct obj_String*  Integer_to_String(struct obj_Integer* self);  /* override to_String */ 
-/* additIOn */ 
-struct obj_Integer* Integer_add(struct obj_Integer* self, struct obj_Integer* other);  
 
+/* constructor */
+struct obj_Integer* Integer_new(int value);          
+/* override to_String */
+struct obj_String*  Integer_to_String(struct obj_Integer* self);
+/* addition */ 
+struct obj_Integer* Integer_add(struct obj_Integer* self,
+				struct obj_Integer* other);  
 
-/* 
- * The Integer class structure
- */
+/* The 'class' object structure: superclass + vtable */ 
 struct class_Integer {
   struct class_Object* super;
   /* This is the vtable: */ 
@@ -94,8 +86,6 @@ struct class_Integer the_class_Integer = {
   Integer_to_String,  /* Override to_String method of Object class  */ 
   Integer_add   /* implementatIOn of a+b as a.add(b) */
 };
-
-/* static struct class_Integer* the_class_Integer = &class_Integer_rep; */
 
 /* 
  * The Integer Object structure. Being a built-in, it can have
@@ -161,41 +151,29 @@ struct obj_IO;
 /* Method signatures */ 
 struct obj_IO* IO_new();
 struct obj_IO* IO_out(struct obj_IO *self, struct obj_Object *thing);
-struct obj_IO* IO_out_string(struct obj_IO *self, struct obj_String *x);
-struct obj_IO* IO_out_int(struct obj_IO *self, struct obj_Integer *x);
-struct obj_String* IO_in_string(struct obj_IO *self);
-struct obj_Integer* IO_in_int(struct obj_IO *self);
 
+/* Class object structure */ 
 struct class_IO {
   struct class_Object* super;
   /* vtable */
   struct obj_IO* (*constructor) ();     
   struct obj_String* (*to_String) (struct obj_Object* self); /* Inherited */
-  struct obj_IO* (*IO_out) (struct obj_IO *self, struct obj_Object *thing);
-  struct obj_IO* (*IO_out_string) (struct obj_IO *self, struct obj_String *thing);
-  struct obj_IO* (*IO_out_int) (struct obj_IO *self, struct obj_Integer *thing);
-  struct obj_String* (*IO_in_string) (struct obj_IO *self);
-  struct obj_Integer* (*IO_in_int) (struct obj_IO *self);
+  struct obj_IO* (*out) (struct obj_IO *self, struct obj_Object *thing);
 };
 
+
+/* Singleton IO class object initialized with vtable */ 
 struct class_IO the_class_IO = {
   &the_class_Object, 
   /* vtable */ 
-  IO_new,   
-  Object_to_String,  /* Inherit the obj_to_String method as String_to_String */
-  IO_out,
-  IO_out_string,
-  IO_out_int,
-  IO_in_string,
-  IO_in_int
+  IO_new, 
+  /* Inherit the obj_to_String method as String_to_String */ 
+  Object_to_String, 
+  IO_out
 };
 
+/* Instance objects */ 
 struct obj_IO {
   struct class_IO* clazz;
 };
-
-
-
-
-
 
