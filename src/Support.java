@@ -406,7 +406,7 @@ public class Support {
             sb.append("%struct.class_"+name+" = type { %struct.class_"+parentName+"*");
 
             //Constructor
-    //        sb.append(", {}*");
+            sb.append(", %struct.obj_"+name+"* (...)*");
 
             for (int i = 0; i <methodList.size() ; i++) {
                 sb.append(", ");
@@ -430,7 +430,7 @@ public class Support {
 
 
             //Constructor
-    //        sb.append(", %struct.obj_"+name+"* (...)* bitcast (%struct.obj_"+name+"* ()* @"+name+"_new to %struct.obj_"+name+"* (...)*)");
+            sb.append(", %struct.obj_"+name+"* (...)* bitcast (%struct.obj_"+name+"* ()* @"+name+"_new to %struct.obj_"+name+"* (...)*)");
 
             //All other methods
             for (int i = 0; i <methodList.size() ; i++) {
@@ -440,6 +440,48 @@ public class Support {
             }
             sb.append(" }, align 8");
 
+            return sb.toString();
+        }
+
+        /*
+        define %struct.obj_Main* @Main_new() #0 {
+            entry:
+              %new_obj = alloca %struct.obj_Main*, align 4
+              %call = call noalias i8* @malloc(i32 4) #2
+              %0 = bitcast i8* %call to %struct.obj_Main*
+              store %struct.obj_Main* %0, %struct.obj_Main** %new_obj, align 4
+              %1 = load %struct.obj_Main** %new_obj, align 4
+              %clazz = getelementptr inbounds %struct.obj_Main* %1, i32 0, i32 0
+              store %struct.class_Main* @the_class_Main, %struct.class_Main** %clazz, align 4
+              %2 = load %struct.obj_Main** %new_obj, align 4
+              ret %struct.obj_Main* %2
+            }
+         */
+        public String gen_class_constructor() {
+            StringBuilder sb=new StringBuilder();
+            sb.append("define %struct.obj_"+name+"* @"+name+"_new() #0 {");
+            sb.append(System.lineSeparator());
+            sb.append("entry:");
+            sb.append(System.lineSeparator());
+            sb.append("     %new_obj = alloca %struct.obj_"+name+"*, align 4");
+            sb.append(System.lineSeparator());
+            sb.append("     %call = call noalias i8* @malloc(i32 "+(4*(attributes.size()+1))+") #2");
+            sb.append(System.lineSeparator());
+            sb.append("     %0 = bitcast i8* %call to %struct.obj_"+name+"*");
+            sb.append(System.lineSeparator());
+            sb.append("     store %struct.obj_"+name+"* %0, %struct.obj_"+name+"** %new_obj, align 4");
+            sb.append(System.lineSeparator());
+            sb.append("     %1 = load %struct.obj_"+name+"** %new_obj, align 4");
+            sb.append(System.lineSeparator());
+            sb.append("     %clazz = getelementptr inbounds %struct.obj_"+name+"* %1, i32 0, i32 0");
+            sb.append(System.lineSeparator());
+            sb.append("     store %struct.class_"+name+"* @the_class_"+name+", %struct.class_"+name+"** %clazz, align 4");
+            sb.append(System.lineSeparator());
+            sb.append("     %2 = load %struct.obj_"+name+"** %new_obj, align 4");
+            sb.append(System.lineSeparator());
+            sb.append("     ret %struct.obj_"+name+"* %2");
+            sb.append(System.lineSeparator());
+            sb.append("}");
             return sb.toString();
         }
 
@@ -537,6 +579,7 @@ public class Support {
         private CoolClass implimetedIn;
         int id=1; //Local regs
         int callId=0;
+        int callerID=0;
 
         public CoolMethod(String name, CoolClass type)  {
             this.name = name;
@@ -555,7 +598,7 @@ public class Support {
             }
         }
 
-        private String getMethodHeader() {
+        public String getMethodHeader() {
             String callName=name;
          /*   if(getImplimetedIn().name.equalsIgnoreCase("Object") && name.equalsIgnoreCase("abort")){
                 callName=callName+1;
@@ -580,6 +623,8 @@ public class Support {
                 sb.append(" %"+parametres.get(i).name);
             }
             sb.append(" ) #0 {");
+            sb.append(System.lineSeparator());
+            sb.append("entry:");
             return sb.toString();
         }
 
@@ -643,12 +688,13 @@ public class Support {
             Support.Register r1=nextRegister("%struct.obj_"+typeName+"*");
             sb.append("    "+r1.getName()+" = load "+r1.derefrencedType()+"* (...)** getelementptr inbounds (%struct.class_"+typeName+"* @the_class_"+typeName+", i32 0, i32 1), align 4");
             sb.append(System.lineSeparator());
-            sb.append("    %callee.knr.cast = bitcast %struct.obj_"+typeName+"* (...)* "+r1.getName()+" to %struct.obj_"+typeName+"* ()*");
+            sb.append("    %callee.knr.cast"+callerID+" = bitcast %struct.obj_"+typeName+"* (...)* "+r1.getName()+" to %struct.obj_"+typeName+"* ()*");
             sb.append(System.lineSeparator());
-            sb.append("    %call_"+callId+" = call %struct.obj_"+typeName+"* %callee.knr.cast()");
+            sb.append("    %call_"+callId+" = call %struct.obj_"+typeName+"* %callee.knr.cast"+callerID+"()");
             sb.append(System.lineSeparator());
             sb.append("    ret %struct.obj_"+typeName+"* %call_"+callId);
             callId++;
+            callerID++;
             return sb.toString();
         }
 

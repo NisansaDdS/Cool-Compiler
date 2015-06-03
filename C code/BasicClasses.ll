@@ -29,7 +29,6 @@ target triple = "i686-pc-windows-gnu"
 @.str8 = private unnamed_addr constant [2 x i8] c"(\00", align 1
 @.str9 = private unnamed_addr constant [2 x i8] c",\00", align 1
 @.str10 = private unnamed_addr constant [2 x i8] c")\00", align 1
-@.str11 = private unnamed_addr constant [6 x i8] c"Baaaa\00", align 1
 
 ; Function Attrs: nounwind
 define %struct.obj_String* @Object_to_String(%struct.obj_Object* %self) #0 {
@@ -639,43 +638,6 @@ entry:
   store %struct.obj_Integer* %call2, %struct.obj_Integer** %sum, align 4
   %8 = load %struct.obj_Integer** %sum, align 4
   ret %struct.obj_Integer* %8
-}
-
-; Function Attrs: nounwind
-define i32 @main(i32 %argc, i8** %argv) #0 {
-entry:
-  %retval = alloca i32, align 4
-  %argc.addr = alloca i32, align 4
-  %argv.addr = alloca i8**, align 4
-  
-  %io = alloca %struct.obj_IO*, align 4
-  %la = alloca %struct.obj_String*, align 4
-  
-  store i32 0, i32* %retval
-  store i32 %argc, i32* %argc.addr, align 4
-  store i8** %argv, i8*** %argv.addr, align 4
-  
-  %0 = load %struct.obj_IO* (...)** getelementptr inbounds (%struct.class_IO* @the_class_IO, i32 0, i32 1), align 4
-  %callee.knr.cast = bitcast %struct.obj_IO* (...)* %0 to %struct.obj_IO* ()*
-  %call = call %struct.obj_IO* %callee.knr.cast()
-  store %struct.obj_IO* %call, %struct.obj_IO** %io, align 4
-  
-  %1 = load %struct.obj_String* (...)** getelementptr inbounds (%struct.class_String* @the_class_String, i32 0, i32 1), align 4
-  %callee.knr.cast1 = bitcast %struct.obj_String* (...)* %1 to %struct.obj_String* (i8*)*
-  %call2 = call %struct.obj_String* %callee.knr.cast1(i8* getelementptr inbounds ([6 x i8]* @.str11, i32 0, i32 0))
-  store %struct.obj_String* %call2, %struct.obj_String** %la, align 4
-  
-  %2 = load %struct.obj_IO** %io, align 4
-  %clazz = getelementptr inbounds %struct.obj_IO* %2, i32 0, i32 0
-  %3 = load %struct.class_IO** %clazz, align 4  
-  %IO_out = getelementptr inbounds %struct.class_IO* %3, i32 0, i32 3
-  %4 = load %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)** %IO_out, align 4
-  %5 = load %struct.obj_IO** %io, align 4
-  %6 = load %struct.obj_String** %la, align 4
-  %7 = bitcast %struct.obj_String* %6 to %struct.obj_Object*
-  %call3 = call %struct.obj_IO* %4(%struct.obj_IO* %5, %struct.obj_Object* %7)
-  
-  ret i32 0
 }
 
 ; Function Attrs: nounwind

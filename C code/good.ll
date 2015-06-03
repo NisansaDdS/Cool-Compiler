@@ -829,3 +829,17 @@ define %struct.obj_Object* @Main_main(%struct.obj_Main* %Self) #0 {
   %call = call %struct.obj_Object* %callee.knr.cast()
   ret %struct.obj_Object* %call
 }
+
+; Function Attrs: nounwind
+define %struct.obj_Main* @Main_new() #0 {
+entry:
+  %new_obj = alloca %struct.obj_Main*, align 4
+  %call = call noalias i8* @malloc(i32 4) #2
+  %0 = bitcast i8* %call to %struct.obj_Main*
+  store %struct.obj_Main* %0, %struct.obj_Main** %new_obj, align 4
+  %1 = load %struct.obj_Main** %new_obj, align 4
+  %clazz = getelementptr inbounds %struct.obj_Main* %1, i32 0, i32 0
+  store %struct.class_Main* @the_class_Main, %struct.class_Main** %clazz, align 4
+  %2 = load %struct.obj_Main** %new_obj, align 4
+  ret %struct.obj_Main* %2
+}

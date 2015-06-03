@@ -5,6 +5,6 @@ Here is an innocent *  and a *(
 *)
 class Main inherits IO {
   main() : Object { 
-    out_string("Hello, world.\n") -- This is a a line comment 
+    out_string("Hello, world.") -- This is a a line comment 
   } ;
 } ; 

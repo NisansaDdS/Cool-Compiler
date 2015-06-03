@@ -358,14 +358,15 @@ struct obj_Integer* silly() {
 /* 
  * With IO
  */
+ /*
 int main(int argc, char **argv) {
-   struct obj_IO* io = the_class_IO.constructor();
+  // struct obj_IO* io = the_class_IO.constructor();
   // struct obj_String* cr = the_class_String.constructor("\n");
  //  struct obj_Integer* num = silly();
  //  io->clazz->out(io, (struct obj_Object *) num);
  //  io->clazz->out(io, (struct obj_Object *) cr);
-   /* Let's check out the default inherited to_String on class Object */
- //  io->clazz->out(io, (struct obj_Object *) io);
+   
+ //  io->clazz->out(io, (struct obj_Object *) io);   Let's check out the default inherited to_String on class Object 
  //  io->clazz->out(io, (struct obj_Object *) cr); 
    
 //   io->clazz->out(io, (struct obj_Object*) str_const("Now let's try a point object (15,25)\n"));
@@ -374,17 +375,17 @@ int main(int argc, char **argv) {
   // io->clazz->out(io, (struct obj_Object *) pt);
 //   io->clazz->out(io, (struct obj_Object *) cr);
 
-   struct obj_String* la = the_class_String.constructor("Baaaa");
-   io->clazz->IO_out(io, (struct obj_Object *) la);
+  // struct obj_String* la = the_class_String.constructor("Baaaa");
+  // io->clazz->IO_out(io, (struct obj_Object *) la);
    
    //struct obj_Point* new_Main = (struct obj_Point *) malloc(sizeof(struct obj_Point));
    //struct obj_Main* new_Main = (struct obj_Main *) malloc(sizeof(struct obj_Main));
    //new_Main->clazz->main(); 
-   
+   silly();
    
    return 0;
 }
-
+*/
 
 
 //As.c
