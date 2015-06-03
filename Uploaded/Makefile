@@ -22,17 +22,23 @@ Converter: AdditionalSym.java sym.java NodeNameGen.java
 	java -classpath . NodeNameGen
 	rm NodeNameGen.class
 
-Cool.class: Converter TypeChecker.java sym.java Support.java Scanner.java parser.java ErrorReport.java Cool.java ASTnode.java AdditionalSym.java Support.java 
+Cool.class: Converter CodeGenerator.java TypeChecker.java sym.java Support.java Scanner.java parser.java ErrorReport.java Cool.java ASTnode.java AdditionalSym.java Support.java 
 	javac -classpath .:$(LIBS) Cool.java
 
 run:
-	java -classpath .:$(LIBS) Cool powr.cl
+	java -classpath .:$(LIBS) Cool hello-world.cl
+	clang -S -emit-llvm BasicClasses.c
+	cat BasicClasses.ll gen.ll > fin.ll
+	clang fin.ll
+	./a.out
 
 
 #=================
 
 clean: 
 	rm *.class
+	rm *.ll
+
 
 
 

@@ -73,6 +73,7 @@ public class Cool {
            // System.out.println(root.toString());
             System.out.println("Done parsing");
             TypeChecker TyCh=new TypeChecker(root,DebugMode);
+            CodeGenerator cg=new CodeGenerator(root,DebugMode);
 
         } catch (Exception e) {
             System.err.println("Yuck, blew up in parse/validate phase"); 
