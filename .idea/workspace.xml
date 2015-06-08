@@ -30,7 +30,10 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="1156" max-vertical-offset="1428">
               <caret line="75" column="6" selection-start-line="75" selection-start-column="6" selection-end-line="75" selection-end-column="6" />
-              <folding />
+              <folding>
+                <element signature="e#0#2427#0" expanded="false" />
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -38,23 +41,14 @@
       <file leaf-file-name="Support.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Support.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.689655" vertical-offset="9669" max-vertical-offset="11543">
-              <caret line="696" column="23" selection-start-line="696" selection-start-column="23" selection-end-line="696" selection-end-column="23" />
+            <state vertical-scroll-proportion="-7.551724" vertical-offset="7788" max-vertical-offset="11424">
+              <caret line="582" column="19" selection-start-line="582" selection-start-column="12" selection-end-line="582" selection-end-column="19" />
               <folding>
-                <element signature="e#311#331#0" expanded="true" />
-                <element signature="e#8261#8262#0" expanded="true" />
-                <element signature="e#8326#8327#0" expanded="true" />
                 <element signature="method#setMethodsAndAttributesLoaded#0;class#CoolClass#0;class#Support#0" expanded="false" />
                 <element signature="method#setAttributesInherited#0;class#CoolClass#0;class#Support#0" expanded="false" />
                 <element signature="method#toString#0;class#CoolClass#0;class#Support#0" expanded="false" />
                 <element signature="method#type_struct#0;class#Support#0" expanded="false" />
                 <element signature="class#CoolAttribute#0;class#Support#0" expanded="false" />
-                <element signature="e#25977#25978#0" expanded="true" />
-                <element signature="e#26024#26025#0" expanded="true" />
-                <element signature="e#27654#27655#0" expanded="true" />
-                <element signature="e#27697#27698#0" expanded="true" />
-                <element signature="e#27760#27761#0" expanded="true" />
-                <element signature="e#27816#27817#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -63,13 +57,15 @@
       <file leaf-file-name="CodeGenerator.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/CodeGenerator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.07272727" vertical-offset="4923" max-vertical-offset="5491">
-              <caret line="291" column="26" selection-start-line="291" selection-start-column="26" selection-end-line="291" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.9808917" vertical-offset="2072" max-vertical-offset="6205">
+              <caret line="140" column="25" selection-start-line="140" selection-start-column="25" selection-end-line="140" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#292#300#0" expanded="true" />
-                <element signature="e#13242#13243#0" expanded="true" />
-                <element signature="e#13276#13277#0" expanded="true" />
+                <element signature="e#3890#3908#0" expanded="true" />
+                <element signature="e#8485#8503#0" expanded="true" />
+                <element signature="e#14540#14541#0" expanded="true" />
+                <element signature="e#14574#14575#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -78,25 +74,19 @@
       <file leaf-file-name="TypeChecker.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TypeChecker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.172414" vertical-offset="2665" max-vertical-offset="10863">
-              <caret line="185" column="65" selection-start-line="185" selection-start-column="16" selection-end-line="185" selection-end-column="65" />
+            <state vertical-scroll-proportion="5.448276" vertical-offset="10817" max-vertical-offset="11492">
+              <caret line="755" column="0" selection-start-line="755" selection-start-column="0" selection-end-line="755" selection-end-column="0" />
               <folding>
                 <element signature="method#checkMainClass#0;class#TypeChecker#0" expanded="false" />
-                <element signature="method#getCaseTypes#0;class#TypeChecker#0" expanded="false" />
                 <element signature="method#GetMinimumCommonAncesstor#0;class#TypeChecker#0" expanded="false" />
                 <element signature="method#evaluateCondition#0;class#TypeChecker#0" expanded="false" />
                 <element signature="method#getParamTypes#0;class#TypeChecker#0" expanded="false" />
                 <element signature="method#typeCheckMethodParams#0;class#TypeChecker#0" expanded="false" />
                 <element signature="method#addLocalVarsFromLet#0;class#TypeChecker#0" expanded="false" />
-                <element signature="method#EvaluateList#0;class#TypeChecker#0" expanded="false" />
                 <element signature="method#typecheckAttribues#0;class#TypeChecker#0" expanded="false" />
                 <element signature="method#isTypesConsistant#0;class#TypeChecker#0" expanded="false" />
                 <element signature="method#SetNodeType#0;class#TypeChecker#0" expanded="false" />
                 <element signature="method#printStatus#0;class#TypeChecker#0" expanded="false" />
-                <element signature="e#24399#24429#0" expanded="true" />
-                <element signature="e#29534#29553#0" expanded="true" />
-                <element signature="e#29651#29670#0" expanded="true" />
-                <element signature="e#29981#30000#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -163,7 +153,7 @@
     <property name="options.lastSelected" value="configurable.group.appearance" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SinhalaClassifier" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SinhalaNewsClassifier" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -425,11 +415,12 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37315437" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44295302" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.50201344" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.50201344" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Unicode Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1651671" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -440,8 +431,8 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -503,20 +494,11 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4947">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#311#331#0" expanded="true" />
-            <element signature="e#8261#8262#0" expanded="true" />
-            <element signature="e#8326#8327#0" expanded="true" />
             <element signature="method#setMethodsAndAttributesLoaded#0;class#CoolClass#0;class#Support#0" expanded="false" />
             <element signature="method#setAttributesInherited#0;class#CoolClass#0;class#Support#0" expanded="false" />
             <element signature="method#toString#0;class#CoolClass#0;class#Support#0" expanded="false" />
             <element signature="method#type_struct#0;class#Support#0" expanded="false" />
             <element signature="class#CoolAttribute#0;class#Support#0" expanded="false" />
-            <element signature="e#25977#25978#0" expanded="true" />
-            <element signature="e#26024#26025#0" expanded="true" />
-            <element signature="e#27654#27655#0" expanded="true" />
-            <element signature="e#27697#27698#0" expanded="true" />
-            <element signature="e#27760#27761#0" expanded="true" />
-            <element signature="e#27816#27817#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -527,21 +509,15 @@
           <caret line="69" column="58" selection-start-line="69" selection-start-column="58" selection-end-line="69" selection-end-column="58" />
           <folding>
             <element signature="method#checkMainClass#0;class#TypeChecker#0" expanded="false" />
-            <element signature="method#getCaseTypes#0;class#TypeChecker#0" expanded="false" />
             <element signature="method#GetMinimumCommonAncesstor#0;class#TypeChecker#0" expanded="false" />
             <element signature="method#evaluateCondition#0;class#TypeChecker#0" expanded="false" />
             <element signature="method#getParamTypes#0;class#TypeChecker#0" expanded="false" />
             <element signature="method#typeCheckMethodParams#0;class#TypeChecker#0" expanded="false" />
             <element signature="method#addLocalVarsFromLet#0;class#TypeChecker#0" expanded="false" />
-            <element signature="method#EvaluateList#0;class#TypeChecker#0" expanded="false" />
             <element signature="method#typecheckAttribues#0;class#TypeChecker#0" expanded="false" />
             <element signature="method#isTypesConsistant#0;class#TypeChecker#0" expanded="false" />
             <element signature="method#SetNodeType#0;class#TypeChecker#0" expanded="false" />
             <element signature="method#printStatus#0;class#TypeChecker#0" expanded="false" />
-            <element signature="e#24399#24429#0" expanded="true" />
-            <element signature="e#29534#29553#0" expanded="true" />
-            <element signature="e#29651#29670#0" expanded="true" />
-            <element signature="e#29981#30000#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -599,7 +575,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="1343">
           <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
+          <folding>
+            <element signature="e#0#2427#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -628,7 +607,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="1343">
           <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
+          <folding>
+            <element signature="e#0#2427#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -657,7 +639,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="1343">
           <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
+          <folding>
+            <element signature="e#0#2427#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -686,7 +671,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="1343">
           <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
+          <folding>
+            <element signature="e#0#2427#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -869,67 +857,57 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1053" max-vertical-offset="1479">
           <caret line="75" column="6" selection-start-line="75" selection-start-column="6" selection-end-line="75" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TypeChecker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.172414" vertical-offset="2665" max-vertical-offset="10863">
-          <caret line="185" column="65" selection-start-line="185" selection-start-column="16" selection-end-line="185" selection-end-column="65" />
           <folding>
-            <element signature="method#checkMainClass#0;class#TypeChecker#0" expanded="false" />
-            <element signature="method#getCaseTypes#0;class#TypeChecker#0" expanded="false" />
-            <element signature="method#GetMinimumCommonAncesstor#0;class#TypeChecker#0" expanded="false" />
-            <element signature="method#evaluateCondition#0;class#TypeChecker#0" expanded="false" />
-            <element signature="method#getParamTypes#0;class#TypeChecker#0" expanded="false" />
-            <element signature="method#typeCheckMethodParams#0;class#TypeChecker#0" expanded="false" />
-            <element signature="method#addLocalVarsFromLet#0;class#TypeChecker#0" expanded="false" />
-            <element signature="method#EvaluateList#0;class#TypeChecker#0" expanded="false" />
-            <element signature="method#typecheckAttribues#0;class#TypeChecker#0" expanded="false" />
-            <element signature="method#isTypesConsistant#0;class#TypeChecker#0" expanded="false" />
-            <element signature="method#SetNodeType#0;class#TypeChecker#0" expanded="false" />
-            <element signature="method#printStatus#0;class#TypeChecker#0" expanded="false" />
-            <element signature="e#24399#24429#0" expanded="true" />
-            <element signature="e#29534#29553#0" expanded="true" />
-            <element signature="e#29651#29670#0" expanded="true" />
-            <element signature="e#29981#30000#0" expanded="true" />
+            <element signature="e#0#2427#0" expanded="false" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Support.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.689655" vertical-offset="9669" max-vertical-offset="11543">
-          <caret line="696" column="23" selection-start-line="696" selection-start-column="23" selection-end-line="696" selection-end-column="23" />
+        <state vertical-scroll-proportion="-7.551724" vertical-offset="7788" max-vertical-offset="11424">
+          <caret line="582" column="19" selection-start-line="582" selection-start-column="12" selection-end-line="582" selection-end-column="19" />
           <folding>
-            <element signature="e#311#331#0" expanded="true" />
-            <element signature="e#8261#8262#0" expanded="true" />
-            <element signature="e#8326#8327#0" expanded="true" />
             <element signature="method#setMethodsAndAttributesLoaded#0;class#CoolClass#0;class#Support#0" expanded="false" />
             <element signature="method#setAttributesInherited#0;class#CoolClass#0;class#Support#0" expanded="false" />
             <element signature="method#toString#0;class#CoolClass#0;class#Support#0" expanded="false" />
             <element signature="method#type_struct#0;class#Support#0" expanded="false" />
             <element signature="class#CoolAttribute#0;class#Support#0" expanded="false" />
-            <element signature="e#25977#25978#0" expanded="true" />
-            <element signature="e#26024#26025#0" expanded="true" />
-            <element signature="e#27654#27655#0" expanded="true" />
-            <element signature="e#27697#27698#0" expanded="true" />
-            <element signature="e#27760#27761#0" expanded="true" />
-            <element signature="e#27816#27817#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TypeChecker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="5.448276" vertical-offset="10817" max-vertical-offset="11492">
+          <caret line="755" column="0" selection-start-line="755" selection-start-column="0" selection-end-line="755" selection-end-column="0" />
+          <folding>
+            <element signature="method#checkMainClass#0;class#TypeChecker#0" expanded="false" />
+            <element signature="method#GetMinimumCommonAncesstor#0;class#TypeChecker#0" expanded="false" />
+            <element signature="method#evaluateCondition#0;class#TypeChecker#0" expanded="false" />
+            <element signature="method#getParamTypes#0;class#TypeChecker#0" expanded="false" />
+            <element signature="method#typeCheckMethodParams#0;class#TypeChecker#0" expanded="false" />
+            <element signature="method#addLocalVarsFromLet#0;class#TypeChecker#0" expanded="false" />
+            <element signature="method#typecheckAttribues#0;class#TypeChecker#0" expanded="false" />
+            <element signature="method#isTypesConsistant#0;class#TypeChecker#0" expanded="false" />
+            <element signature="method#SetNodeType#0;class#TypeChecker#0" expanded="false" />
+            <element signature="method#printStatus#0;class#TypeChecker#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CodeGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.07272727" vertical-offset="4923" max-vertical-offset="5491">
-          <caret line="291" column="26" selection-start-line="291" selection-start-column="26" selection-end-line="291" selection-end-column="26" />
+        <state vertical-scroll-proportion="0.9808917" vertical-offset="2072" max-vertical-offset="6205">
+          <caret line="140" column="25" selection-start-line="140" selection-start-column="25" selection-end-line="140" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#292#300#0" expanded="true" />
-            <element signature="e#13242#13243#0" expanded="true" />
-            <element signature="e#13276#13277#0" expanded="true" />
+            <element signature="e#3890#3908#0" expanded="true" />
+            <element signature="e#8485#8503#0" expanded="true" />
+            <element signature="e#14540#14541#0" expanded="true" />
+            <element signature="e#14574#14575#0" expanded="true" />
           </folding>
         </state>
       </provider>

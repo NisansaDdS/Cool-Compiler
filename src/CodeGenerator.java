@@ -70,6 +70,7 @@ public class CodeGenerator {
                             //Real logic
                             generateCode(sb,c,cm,cm.getNode());
 
+
                             sb.append(cm.createReturn());
                             sb.append(System.lineSeparator());
                             sb.append("}");
@@ -96,6 +97,7 @@ public class CodeGenerator {
             sbMain.append(generateTheLLVMmain());
 
             writeFile(sbMain.toString());
+            //System.out.println("AAAAAAAAAAAAAAAAAAAAAA");
         }catch (Exception e) {
                 System.err.println("Code Generation error");
                 System.err.println(e.getMessage());
@@ -103,12 +105,13 @@ public class CodeGenerator {
 
     }
 
-    private String generateCode(StringBuilder sb,Support.CoolClass c,Support.CoolMethod hm,ASTnode n){ //(hm-host method)
-
+    private ArrayList<Support.Register> generateCode(StringBuilder sb,Support.CoolClass c,Support.CoolMethod hm,ASTnode n) throws Exception { //(hm-host method)
+        ArrayList<Support.Register> regs=new ArrayList<Support.Register>();
 
         if(n.nodeSignature==AdditionalSym.METHOD_BLOCK){
 
-            sb.append(generateCode(sb,c,hm,n.rightChild));
+           // sb.append();
+            generateCode(sb,c,hm,n.rightChild);
             //do the return check
         }
         else if(n.nodeSignature==AdditionalSym.INVOKE){
@@ -134,7 +137,8 @@ public class CodeGenerator {
             String methodName=m.name;
 
             //Note this has to be done only when the owner is not this class (ie either inherited or n.leftchild was not null)
-            String ownerVar="%owner";
+            String ownerVar="%owner"+hm.ownerId;
+            hm.ownerId++;
 
             //%io = alloca %struct.obj_IO*, align 4
             sb.append("    "+ownerVar+" = alloca %struct.obj_"+ownerName+"*, align 4");
@@ -160,7 +164,7 @@ public class CodeGenerator {
             hm.callerID++;
             hm.callId++;
             ///////////////////////
-            String paramName=generateCode(sb,c, hm,n.rightChild); //Method params //la
+            ArrayList<Support.Register> params=generateCode(sb,c, hm,n.rightChild); //Method params
 
 
 
@@ -187,7 +191,7 @@ public class CodeGenerator {
 
             //%4 = load %struct.obj_IO* (%struct.obj_IO*, %struct.obj_Object*)** %IO_out, align 4
             String id4=hm.nextRegID();
-            sb.append("    "+id4+" = load %struct.obj_"+ownerName+"* (%struct.obj_"+ownerName+"*, %struct.obj_Object*)** "+methodVar+", align 4"); //Note: Second one should change depending on the params
+            sb.append("    "+id4+" = load %struct.obj_"+ownerName+"* (%struct.obj_"+ownerName+"*, %struct.obj_Object*)** "+methodVar+", align 4");
             sb.append(System.lineSeparator());
 
             //%5 = load %struct.obj_IO** %io, align 4
@@ -195,21 +199,43 @@ public class CodeGenerator {
             sb.append("    "+id5+" = load %struct.obj_"+ownerName+"** "+ownerVar+", align 4");
             sb.append(System.lineSeparator());
 
-            //%6 = load %struct.obj_String** %la, align 4
-            String id6=hm.nextRegID();
-            sb.append("    "+id6+" = load %struct.obj_String** "+paramName+", align 4"); //Note type and var should change depending on the argumets, perhaps get a list of registers instead of just param name
-            sb.append(System.lineSeparator());
 
-            //%7 = bitcast %struct.obj_String* %6 to %struct.obj_Object*
-            String id7=hm.nextRegID();
-            sb.append("    "+id7+" = bitcast %struct.obj_String* "+id6+" to %struct.obj_Object*"); //Note depends on above
-            sb.append(System.lineSeparator());
+            ArrayList<Support.Register> setParamRegs=new ArrayList<Support.Register>();
+
+            for (int i = 0; i <params.size() ; i++) {
+                Support.Register r=params.get(i);
+
+                //%6 = load %struct.obj_String** %la, align 4
+                String id6=hm.nextRegID();
+                sb.append("    "+id6+" = load "+r.getType()+" "+r.name+", align 4");
+                sb.append(System.lineSeparator());
+
+
+                //%7 = bitcast %struct.obj_String* %6 to %struct.obj_Object*
+                Support.Register id7=hm.nextRegister("%struct.obj_Object*"); //Note: fix this
+                sb.append("    "+id7.name+" = bitcast "+r.derefrencedType()+"* "+id6+" to "+id7.derefrencedType()+"*");
+                sb.append(System.lineSeparator());
+                setParamRegs.add(id7);
+
+            }
+
+
+            sb.append("    %call"+hm.callId+" = call %struct.obj_"+ownerName+"* "+id4+"(%struct.obj_"+ownerName+"* "+id5);
+            for (int i = 0; i < setParamRegs.size(); i++) {
+                Support.Register re=setParamRegs.get(i);
+                sb.append(", "+re.type+" "+re.name);
+            }
+            sb.append(")");
+
 
             //%call3 = call %struct.obj_IO* %4(%struct.obj_IO* %5, %struct.obj_Object* %7)
-            sb.append("    %call"+hm.callId+" = call %struct.obj_"+ownerName+"* "+id4+"(%struct.obj_"+ownerName+"* "+id5+", %struct.obj_Object* "+id7+")"); //Note depends on above
+           // sb.append("    %call"+hm.callId+" = call %struct.obj_"+ownerName+"* "+id4+"(%struct.obj_"+ownerName+"* "+id5+", %struct.obj_Object* "+id7+")"); //Note depends on above
             sb.append(System.lineSeparator());
 
+
             hm.callId++;
+
+            return regs;
         }
         else if(n.nodeSignature==sym.STRINGLIT){
 
@@ -222,8 +248,8 @@ public class CodeGenerator {
             globalVariables.add("@.strs"+stringId+" = private unnamed_addr constant ["+size+" x i8] c\""+val+"\\00\", align 1");
 
             //%la = alloca %struct.obj_String*, align 4
-            String la=hm.nextRegID();
-            sb.append("    "+la+" = alloca %struct.obj_String*, align 4");
+            Support.Register la=hm.nextRegister("%struct.obj_String*");
+            sb.append("    "+la.getName()+" = alloca %struct.obj_String*, align 4");
             sb.append(System.lineSeparator());
 
             //%0 = load %struct.obj_String* (...)** getelementptr inbounds (%struct.class_String* @the_class_String, i32 0, i32 1), align 4
@@ -240,15 +266,31 @@ public class CodeGenerator {
             sb.append(System.lineSeparator());
 
             //store %struct.obj_String* %call2, %struct.obj_String** %la, align 4
-            sb.append("    store %struct.obj_String* %call"+hm.callId+", %struct.obj_String** "+la+", align 4");
+            sb.append("    store %struct.obj_String* %call"+hm.callId+", %struct.obj_String** "+la.getName()+", align 4");
             sb.append(System.lineSeparator());
 
             hm.callerID++;
             hm.callId++;
             stringId++;
 
-            return la;
+            regs.add(la);
 
+            return regs;
+
+        }
+        else if(n.nodeSignature==AdditionalSym.LIST){
+            try {
+                if(n.leftChild!=null) {
+                    regs.addAll(generateCode(sb, c, hm, n.leftChild));
+                }
+                if(n.rightChild!=null) {
+                    regs.addAll(generateCode(sb, c, hm, n.rightChild));
+                }
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            return regs;
         }
         else{
             System.out.println(Converter.getName(n.nodeSignature));
@@ -256,7 +298,7 @@ public class CodeGenerator {
 
 
 
-        return("");
+        return(regs);
     }
 
     private String generateTheLLVMmain(){

@@ -580,6 +580,7 @@ public class Support {
         int id=1; //Local regs
         int callId=0;
         int callerID=0;
+        int ownerId=0;
 
         public CoolMethod(String name, CoolClass type)  {
             this.name = name;

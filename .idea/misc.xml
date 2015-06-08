@@ -149,4 +149,7 @@
     </configuration>
     <list size="0" />
   </component>
+  <component name="UnicodeBrowser">
+    <option name="fontName" value="Monospaced" />
+  </component>
 </project>
